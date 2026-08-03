@@ -92,42 +92,92 @@
       </div>
 
       <!-- all contrast ratio checks -->
-      <ul class="flex flex-wrap gap-4 sm:gap-8 p-4 border-t border-gray-200">
-        <li>
+      <ul class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 p-4 border-t border-gray-200">
+        <!-- contrast ratio -->
+        <li class="col-span-2 md:col-span-3 lg:col-span-6">
           <p class="font-semibold text-sm">
             {{ $t('contrastChecker.contrastRatio') }}:
           </p>
           <UBadge
             color="white"
+            size="lg"
             :label="contrastRatio.toFixed(2)"
           />
         </li>
+
+        <!-- AA Normal Text (>=4.5) -->
         <li>
-          <p class="font-semibold text-sm">
-            {{ $t('contrastChecker.normalText') }}:
+          <p class="font-semibold text-xs mb-1">
+            {{ $t('contrastChecker.wcag.aaNormal') }}
           </p>
           <UBadge
             :color="contrastRatio >= 4.5 ? 'green' : 'red'"
-            :label="contrastRatio < 4.5 ? $t('contrastChecker.failText') : contrastRatio < 7 ? 'AA' : 'AAA'"
+            :label="contrastRatio >= 4.5 ? $t('contrastChecker.passText') : $t('contrastChecker.failText')"
+            :ui="{ rounded: 'rounded-full' }"
           />
+          <p class="text-xs text-gray-500 mt-1">
+            ≥ 4.5
+          </p>
         </li>
+
+        <!-- AA Large Text (>=3) -->
         <li>
-          <p class="font-semibold text-sm">
-            {{ $t('contrastChecker.largeText') }}:
+          <p class="font-semibold text-xs mb-1">
+            {{ $t('contrastChecker.wcag.aaLarge') }}
           </p>
           <UBadge
             :color="contrastRatio >= 3 ? 'green' : 'red'"
-            :label="contrastRatio < 3 ? $t('contrastChecker.failText') : contrastRatio < 4.5 ? 'AA' : 'AAA'"
+            :label="contrastRatio >= 3 ? $t('contrastChecker.passText') : $t('contrastChecker.failText')"
+            :ui="{ rounded: 'rounded-full' }"
           />
+          <p class="text-xs text-gray-500 mt-1">
+            ≥ 3
+          </p>
         </li>
+
+        <!-- AAA Normal Text (>=7) -->
         <li>
-          <p class="font-semibold text-sm">
-            {{ $t('contrastChecker.uiComponents') }}:
+          <p class="font-semibold text-xs mb-1">
+            {{ $t('contrastChecker.wcag.aaaNormal') }}
+          </p>
+          <UBadge
+            :color="contrastRatio >= 7 ? 'green' : 'red'"
+            :label="contrastRatio >= 7 ? $t('contrastChecker.passText') : $t('contrastChecker.failText')"
+            :ui="{ rounded: 'rounded-full' }"
+          />
+          <p class="text-xs text-gray-500 mt-1">
+            ≥ 7
+          </p>
+        </li>
+
+        <!-- AAA Large Text (>=4.5) -->
+        <li>
+          <p class="font-semibold text-xs mb-1">
+            {{ $t('contrastChecker.wcag.aaaLarge') }}
+          </p>
+          <UBadge
+            :color="contrastRatio >= 4.5 ? 'green' : 'red'"
+            :label="contrastRatio >= 4.5 ? $t('contrastChecker.passText') : $t('contrastChecker.failText')"
+            :ui="{ rounded: 'rounded-full' }"
+          />
+          <p class="text-xs text-gray-500 mt-1">
+            ≥ 4.5
+          </p>
+        </li>
+
+        <!-- UI Components (>=3, AA) -->
+        <li>
+          <p class="font-semibold text-xs mb-1">
+            {{ $t('contrastChecker.uiComponents') }}
           </p>
           <UBadge
             :color="contrastRatio >= 3 ? 'green' : 'red'"
-            :label="contrastRatio < 3 ? $t('contrastChecker.failText') : 'AA'"
+            :label="contrastRatio >= 3 ? $t('contrastChecker.passText') : $t('contrastChecker.failText')"
+            :ui="{ rounded: 'rounded-full' }"
           />
+          <p class="text-xs text-gray-500 mt-1">
+            ≥ 3
+          </p>
         </li>
       </ul>
     </div>

@@ -143,6 +143,13 @@ export default defineI18nConfig(() => ({
         uiComponents: 'UI Components',
         exampleText: 'Example Primary text',
         failText: 'Fail',
+        passText: 'Pass',
+        wcag: {
+          aaNormal: 'AA Normal Text',
+          aaLarge: 'AA Large Text',
+          aaaNormal: 'AAA Normal Text',
+          aaaLarge: 'AAA Large Text'
+        },
         visionSimulator: 'Vision Simulator',
         vision: {
           normal: 'Normal Vision',
@@ -298,6 +305,13 @@ export default defineI18nConfig(() => ({
         uiComponents: 'UIコンポーネント',
         exampleText: 'プライマリテキストの例',
         failText: '不合格',
+        passText: '合格',
+        wcag: {
+          aaNormal: 'AA 通常テキスト',
+          aaLarge: 'AA 大きなテキスト',
+          aaaNormal: 'AAA 通常テキスト',
+          aaaLarge: 'AAA 大きなテキスト'
+        },
         visionSimulator: 'ビジョンシミュレーター',
         vision: {
           normal: '通常視力',
@@ -453,6 +467,13 @@ export default defineI18nConfig(() => ({
         uiComponents: 'Componenti UI',
         exampleText: 'Esempio di testo primario',
         failText: 'Non riuscito',
+        passText: 'Riuscito',
+        wcag: {
+          aaNormal: 'AA Testo Normale',
+          aaLarge: 'AA Testo Grande',
+          aaaNormal: 'AAA Testo Normale',
+          aaaLarge: 'AAA Testo Grande'
+        },
         visionSimulator: 'Simulatore di Visione',
         vision: {
           normal: 'Visione Normale',
