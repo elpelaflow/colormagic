@@ -16,7 +16,8 @@ export function mapPaletteEntityToDto(entity: PaletteEntity): PaletteDto {
     /** @description required because older names could be inappropriate */
     text: new Date(entity.createdAt).getTime() > paletteConfig.aiNamesStartDateMs
       ? entity.text
-      : 'Cool Palette'
+      : 'Cool Palette',
+    createdAt: entity.createdAt.toISOString()
   };
 }
 

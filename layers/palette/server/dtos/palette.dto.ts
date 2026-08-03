@@ -4,7 +4,8 @@ export const PaletteDtoSchema = Type.Object({
   id: Type.String({ pattern: '^[0-9a-fA-F]{24}$' }),
   colors: Type.Array(Type.String(), { minItems: 5, maxItems: 5 }),
   text: Type.String(),
-  tags: Type.Array(Type.String())
+  tags: Type.Array(Type.String()),
+  createdAt: Type.Optional(Type.String())
 });
 
 export type PaletteDto = Static<typeof PaletteDtoSchema>;
