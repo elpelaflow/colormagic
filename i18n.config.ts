@@ -167,7 +167,8 @@ export default defineI18nConfig(() => ({
         copyLink: 'Copy link',
         copiedLink: 'Copied!',
         exportPdf: 'Export PDF Report',
-        swapColors: 'Swap colors'
+        swapColors: 'Swap colors',
+        accessibleCombinations: 'Popular Accessible Color Combinations'
       }
     },
     ja: {
@@ -335,7 +336,8 @@ export default defineI18nConfig(() => ({
         copyLink: 'リンクをコピー',
         copiedLink: 'コピーしました！',
         exportPdf: 'PDFレポートをエクスポート',
-        swapColors: '色を入れ替え'
+        swapColors: '色を入れ替え',
+        accessibleCombinations: '人気のアクセシブルな色の組み合わせ'
       }
     },
     it: {
@@ -503,7 +505,8 @@ export default defineI18nConfig(() => ({
         copyLink: 'Copia link',
         copiedLink: 'Copiato!',
         exportPdf: 'Esporta Report PDF',
-        swapColors: 'Scambia colori'
+        swapColors: 'Scambia colori',
+        accessibleCombinations: 'Combinazioni di Colori Accessibili Popolari'
       }
     }
   }

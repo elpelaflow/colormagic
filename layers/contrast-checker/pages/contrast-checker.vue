@@ -444,6 +444,57 @@
         />
       </div>
     </div>
+
+    <!-- popular accessible color combinations -->
+    <div class="my-8">
+      <p class="font-semibold text-sm mb-3">
+        {{ $t('contrastChecker.accessibleCombinations') }}
+      </p>
+      <ul class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+        <li
+          v-for="palette in accessiblePalettes"
+          :key="palette.id"
+          class="border rounded-xl overflow-hidden cursor-pointer hover:border-gray-400 transition-colors"
+          role="button"
+          tabindex="0"
+          :aria-label="`${palette.label} - ratio ${palette.ratio.toFixed(2)}:1 ${palette.level}`"
+          @click="loadAccessiblePalette(palette)"
+          @keyup.enter="loadAccessiblePalette(palette)"
+        >
+          <!-- preview -->
+          <div
+            class="h-14 flex items-center justify-center"
+            :style="{ background: palette.secondary }"
+          >
+            <p
+              :style="{ color: palette.primary }"
+              class="font-semibold text-base"
+            >
+              Aa
+            </p>
+          </div>
+
+          <!-- info -->
+          <div class="p-2 bg-white">
+            <p class="text-xs font-semibold mb-1">
+              {{ palette.label }}
+            </p>
+            <div class="flex items-center gap-1.5">
+              <UBadge
+                color="white"
+                size="sm"
+                :label="`${palette.ratio.toFixed(2)}:1`"
+              />
+              <UBadge
+                :color="palette.level === 'AAA' ? 'green' : 'yellow'"
+                size="sm"
+                :label="palette.level"
+              />
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -452,6 +503,7 @@ import { object, type InferType, string } from 'yup';
 import ntc from '~/layers/palette/utils/ntc.util';
 import { simulateVision, VISION_OPTIONS, type VisionType } from '~/layers/contrast-checker/utils/color-vision.util';
 import { suggestAccessibleColors, getAccessibilityFails, hasAnyFail, type ColorSuggestion } from '~/layers/contrast-checker/utils/color-suggestions.util';
+import { ACCESSIBLE_PALETTES, type AccessiblePalette } from '~/layers/contrast-checker/utils/accessible-palettes.util';
 
 const { t } = useI18n();
 
@@ -582,6 +634,19 @@ const suggestions = computed<ColorSuggestion[]>(() =>
 function applySuggestion(suggestion: ColorSuggestion): void {
   state.value.primary = suggestion.primary;
   state.value.secondary = suggestion.secondary;
+  arrangePrimary.value.brightness = 0;
+  arrangePrimary.value.saturation = 0;
+  arrangePrimary.value.warmth = 0;
+  arrangeSecondary.value.brightness = 0;
+  arrangeSecondary.value.saturation = 0;
+  arrangeSecondary.value.warmth = 0;
+}
+
+const accessiblePalettes = ACCESSIBLE_PALETTES;
+
+function loadAccessiblePalette(palette: AccessiblePalette): void {
+  state.value.primary = palette.primary;
+  state.value.secondary = palette.secondary;
   arrangePrimary.value.brightness = 0;
   arrangePrimary.value.saturation = 0;
   arrangePrimary.value.warmth = 0;
