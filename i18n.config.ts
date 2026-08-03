@@ -142,6 +142,8 @@ export default defineI18nConfig(() => ({
         largeText: 'Large Text',
         uiComponents: 'UI Components',
         exampleText: 'Example Primary text',
+        exampleTextNormal: 'Example Primary text (This is normal text for preview.)',
+        exampleTextLarge: 'Example Primary text (This is large, bold text.)',
         failText: 'Fail',
         passText: 'Pass',
         wcag: {
@@ -323,6 +325,8 @@ export default defineI18nConfig(() => ({
         largeText: '大きなテキスト',
         uiComponents: 'UIコンポーネント',
         exampleText: 'プライマリテキストの例',
+        exampleTextNormal: 'プライマリテキストの例（これはプレビュー用の通常テキストです。）',
+        exampleTextLarge: 'プライマリテキストの例（これは大きく太いテキストです。）',
         failText: '不合格',
         passText: '合格',
         wcag: {
@@ -504,6 +508,8 @@ export default defineI18nConfig(() => ({
         largeText: 'Testo grande',
         uiComponents: 'Componenti UI',
         exampleText: 'Esempio di testo primario',
+        exampleTextNormal: 'Esempio di testo primario (Questo è testo normale di anteprima.)',
+        exampleTextLarge: 'Esempio di testo primario (Questo è testo grande e in grassetto.)',
         failText: 'Non riuscito',
         passText: 'Riuscito',
         wcag: {

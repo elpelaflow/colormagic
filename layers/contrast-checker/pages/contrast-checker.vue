@@ -23,14 +23,20 @@
         <!-- normal vision (full width) -->
         <div
           v-if="!visionDivides"
-          class="absolute inset-0 flex justify-center items-center"
+          class="absolute inset-0 flex flex-col justify-center items-center gap-2"
           :style="{ background: arrangedSecondaryColor[0] }"
         >
           <p
             :style="{ color: arrangedPrimaryColor[0] }"
-            class="font-semibold text-xl"
+            class="font-medium text-base"
           >
-            {{ $t('contrastChecker.exampleText') }}
+            {{ $t('contrastChecker.exampleTextNormal') }}
+          </p>
+          <p
+            :style="{ color: arrangedPrimaryColor[0] }"
+            class="font-bold text-2xl"
+          >
+            {{ $t('contrastChecker.exampleTextLarge') }}
           </p>
         </div>
 
@@ -38,38 +44,51 @@
         <template v-else>
           <!-- left: normal -->
           <div
-            class="absolute left-0 top-0 h-full w-1/2 flex justify-center items-center"
+            class="absolute left-0 top-0 h-full w-1/2 flex flex-col justify-center items-center gap-2"
             :style="{ background: arrangedSecondaryColor[0] }"
           >
             <p
               :style="{ color: arrangedPrimaryColor[0] }"
-              class="font-semibold text-xl"
+              class="font-medium text-base"
             >
-              {{ $t('contrastChecker.exampleText') }}
+              {{ $t('contrastChecker.exampleTextNormal') }}
+            </p>
+            <p
+              :style="{ color: arrangedPrimaryColor[0] }"
+              class="font-bold text-2xl"
+            >
+              {{ $t('contrastChecker.exampleTextLarge') }}
             </p>
           </div>
           <!-- right: simulated -->
           <div
-            class="absolute right-0 top-0 h-full w-1/2 flex justify-center items-center"
+            class="absolute right-0 top-0 h-full w-1/2 flex flex-col justify-center items-center gap-2"
             :style="{ background: simulatedSecondary }"
           >
             <p
               :style="{ color: simulatedPrimary }"
-              class="font-semibold text-xl"
+              class="font-medium text-base"
             >
-              {{ $t('contrastChecker.exampleText') }}
+              {{ $t('contrastChecker.exampleTextNormal') }}
+            </p>
+            <p
+              :style="{ color: simulatedPrimary }"
+              class="font-bold text-2xl"
+            >
+              {{ $t('contrastChecker.exampleTextLarge') }}
             </p>
           </div>
         </template>
 
-        <!-- vision badge corner (top-right) -->
+        <!-- vision badge (top-center) — derived from background color -->
         <UBadge
-          color="black"
-          variant="solid"
           size="sm"
-          class="absolute top-3 right-3 pointer-events-none"
-          :label="currentVisionLabel"
-        />
+          class="absolute top-3 left-1/2 -translate-x-1/2 pointer-events-none"
+          :style="{ background: visionBadgeBackground }"
+          :ui="{ rounded: 'rounded-full' }"
+        >
+          <span class="text-white drop-shadow">{{ currentVisionLabel }}</span>
+        </UBadge>
       </div>
 
       <!-- vision simulator selector -->
@@ -532,6 +551,7 @@ import ntc from '~/layers/palette/utils/ntc.util';
 import { simulateVision, VISION_OPTIONS, type VisionType } from '~/layers/contrast-checker/utils/color-vision.util';
 import { suggestAccessibleColors, getAccessibilityFails, hasAnyFail, type ColorSuggestion } from '~/layers/contrast-checker/utils/color-suggestions.util';
 import { ACCESSIBLE_PALETTES, type AccessiblePalette } from '~/layers/contrast-checker/utils/accessible-palettes.util';
+import { hexToRgb, rgbToHsl, hslToRgb, rgbToHex } from '~/layers/palette/utils/color-converter.util';
 
 const { t } = useI18n();
 
@@ -644,6 +664,15 @@ const currentVisionLabel = computed(() => {
 
 const simulatedPrimary = computed(() => simulateVision(arrangedPrimaryColor.value[0], selectedVision.value));
 const simulatedSecondary = computed(() => simulateVision(arrangedSecondaryColor.value[0], selectedVision.value));
+
+// Background color for the vision badge. Derived from the secondary (background)
+// color: keeps the hue and saturation, but forces a low lightness so white text
+// on top stays legible regardless of the chosen background color.
+const visionBadgeBackground = computed(() => {
+  const bg = visionDivides.value ? simulatedSecondary.value : arrangedSecondaryColor.value[0];
+  const { h, s } = rgbToHsl(hexToRgb(bg));
+  return rgbToHex(hslToRgb({ h, s, l: 20 }));
+});
 
 const contrastRatio = computed(() => {
   return calculateContrastRatio(
