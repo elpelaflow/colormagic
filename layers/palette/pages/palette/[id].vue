@@ -163,7 +163,7 @@
         </div>
 
         <!-- Preview UI Components -->
-        <div class="mt-12 space-y-4">
+        <div class="mt-12 space-y-6">
           <h2 class="text-xl font-semibold">
             {{ $t('palette.previewTitle') }}
           </h2>
@@ -176,91 +176,202 @@
             {{ $t('palette.previewDescriptionSuffix') }}
           </p>
 
-          <!-- UI Examples grid -->
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <!-- Card example -->
-            <div
-              class="rounded-xl overflow-hidden border border-gray-200"
-              :style="{ background: arrangedColors[2] }"
-            >
-              <div class="h-20" :style="{ background: arrangedColors[0] }" />
-              <div class="p-4 space-y-3">
-                <h4 class="text-base font-semibold" :style="{ color: arrangedColors[3] }">
-                  {{ data.text }}
-                </h4>
-                <p class="text-xs" :style="{ color: arrangedColors[4] }">
-                  A preview of how this palette looks on a card component.
-                </p>
+          <!-- ============ Componentes principales ============ -->
+          <div class="space-y-4">
+            <!-- Buttons -->
+            <div class="border border-gray-200 rounded-xl p-4 space-y-3">
+              <h4 class="text-sm font-semibold">{{ $t('palette.previewSectionButtons') }}</h4>
+              <div class="flex flex-wrap gap-2">
                 <UButton
+                  v-for="(color, index) in arrangedColors"
+                  :key="`btn-${index}`"
                   size="xs"
-                  :style="{ background: arrangedColors[1], color: arrangedColors[4] }"
+                  :variant="index === 3 ? 'solid' : 'soft'"
+                  :style="index === 3
+                    ? { background: color, color: arrangedColors[4], outline: `2px solid ${color}` }
+                    : { background: color + '20', color: color }"
                   class="pointer-events-none"
                 >
-                  Action Button
+                  Button {{ index + 1 }}
                 </UButton>
               </div>
             </div>
 
-            <!-- Dashboard example -->
-            <div
-              class="rounded-xl p-4 border border-gray-200 space-y-3"
-              :style="{ background: arrangedColors[4] }"
-            >
-              <div class="flex items-center justify-between">
-                <h4 class="text-sm font-semibold" :style="{ color: arrangedColors[3] }">
-                  Dashboard
-                </h4>
-                <div
-                  class="w-6 h-6 rounded-md"
-                  :style="{ background: arrangedColors[0] }"
-                />
+            <!-- Tags -->
+            <div class="border border-gray-200 rounded-xl p-4 space-y-3">
+              <h4 class="text-sm font-semibold">{{ $t('palette.previewSectionTags') }}</h4>
+              <div class="flex flex-wrap gap-2">
+                <UBadge
+                  v-for="(color, index) in arrangedColors"
+                  :key="`tag-${index}`"
+                  size="sm"
+                  color="white"
+                  :style="index === 3
+                    ? { color, border: `2px solid ${color}` }
+                    : { color, border: `1px solid ${color}60` }"
+                >
+                  Tag {{ index + 1 }}
+                </UBadge>
               </div>
+            </div>
+
+            <!-- Alerts -->
+            <div class="border border-gray-200 rounded-xl p-4 space-y-3">
+              <h4 class="text-sm font-semibold">{{ $t('palette.previewSectionAlerts') }}</h4>
               <div class="space-y-2">
-                <div class="flex justify-between text-xs">
-                  <span :style="{ color: arrangedColors[3] }">Revenue</span>
-                  <span class="font-semibold" :style="{ color: arrangedColors[0] }">$12,345</span>
-                </div>
-                <UProgress
-                  :value="75"
-                  :ui="{ progress: { background: arrangedColors[0] } }"
-                  :style="{ '--ui-progress-bg': arrangedColors[1] }"
+                <UAlert
+                  variant="subtle"
+                  :style="{ background: arrangedColors[0] + '20', color: arrangedColors[3] }"
+                  :description="`Alert message using ${arrangedColors[0]}`"
                 />
-                <div class="flex justify-between text-xs">
-                  <span :style="{ color: arrangedColors[3] }">Users</span>
-                  <span class="font-semibold" :style="{ color: arrangedColors[1] }">1,234</span>
-                </div>
-                <UProgress
-                  :value="50"
-                  :ui="{ progress: { background: arrangedColors[1] } }"
+                <UAlert
+                  variant="subtle"
+                  :style="{ background: arrangedColors[1] + '20', color: arrangedColors[3] }"
+                  :description="`Alert message using ${arrangedColors[1]}`"
                 />
               </div>
             </div>
 
-            <!-- Navbar example -->
-            <div
-              class="rounded-xl border border-gray-200 lg:col-span-2"
-              :style="{ background: arrangedColors[3] }"
-            >
-              <div class="flex items-center justify-between p-3">
-                <div class="flex items-center gap-2">
-                  <div
-                    class="w-6 h-6 rounded-md"
-                    :style="{ background: arrangedColors[0] }"
-                  />
-                  <span class="text-sm font-semibold" :style="{ color: arrangedColors[4] }">
-                    {{ data.text }}
+            <!-- Stats Cards -->
+            <div class="border border-gray-200 rounded-xl p-4 space-y-3">
+              <h4 class="text-sm font-semibold">{{ $t('palette.previewSectionStats') }}</h4>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div
+                  v-for="(stat, i) in statsCards"
+                  :key="`stat-${i}`"
+                  class="rounded-lg p-3"
+                  :style="{ background: arrangedColors[i + 2] + '30' }"
+                >
+                  <p class="text-xs text-gray-600">{{ stat.label }}</p>
+                  <p class="text-lg font-bold" :style="{ color: arrangedColors[i] }">{{ stat.value }}</p>
+                  <p class="text-xs" :style="{ color: arrangedColors[3] }">{{ stat.delta }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ============ Formularios y Controles ============ -->
+          <div class="space-y-4">
+            <h4 class="text-sm font-semibold text-gray-700">{{ $t('palette.previewSectionForms') }}</h4>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
+              <!-- Login Form -->
+              <div class="border border-gray-200 rounded-xl p-4 space-y-3">
+                <h5 class="text-xs font-semibold text-gray-600">{{ $t('palette.previewSectionLogin') }}</h5>
+                <UForm class="space-y-3">
+                  <UFormGroup>
+                    <UInput
+                      :placeholder="$t('palette.previewEmailPlaceholder')"
+                      :style="{ borderColor: arrangedColors[0], color: arrangedColors[3] }"
+                      class="w-full pointer-events-none"
+                    />
+                  </UFormGroup>
+                  <UFormGroup>
+                    <UInput
+                      type="password"
+                      :placeholder="$t('palette.previewPasswordPlaceholder')"
+                      :style="{ borderColor: arrangedColors[1], color: arrangedColors[3] }"
+                      class="w-full pointer-events-none"
+                    />
+                  </UFormGroup>
+                  <UButton
+                    size="sm"
+                    :style="{ background: arrangedColors[0], color: arrangedColors[4] }"
+                    class="pointer-events-none"
+                  >
+                    {{ $t('palette.previewSignIn') }}
+                  </UButton>
+                </UForm>
+              </div>
+
+              <!-- Settings -->
+              <div class="border border-gray-200 rounded-xl p-4 space-y-3">
+                <h5 class="text-xs font-semibold text-gray-600">{{ $t('palette.previewSectionSettings') }}</h5>
+                <div class="space-y-3">
+                  <div class="flex items-center justify-between">
+                    <span class="text-sm" :style="{ color: arrangedColors[3] }">{{ $t('palette.previewNotifications') }}</span>
+                    <UToggle
+                      :model-value="true"
+                      :style="{ '--ui-toggle-bg': arrangedColors[0] }"
+                      class="pointer-events-none"
+                    />
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-sm" :style="{ color: arrangedColors[3] }">{{ $t('palette.previewDarkMode') }}</span>
+                    <UToggle
+                      :model-value="false"
+                      class="pointer-events-none"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ============ Datos y Utilidades ============ -->
+          <div class="space-y-4">
+            <h4 class="text-sm font-semibold text-gray-700">{{ $t('palette.previewSectionData') }}</h4>
+
+            <!-- Table -->
+            <div class="border border-gray-200 rounded-xl p-4 space-y-3">
+              <h5 class="text-xs font-semibold text-gray-600">{{ $t('palette.previewSectionTable') }}</h5>
+              <UTable
+                :columns="tableColumns"
+                :rows="tableRows"
+                :ui="{ th: { background: arrangedColors[2], color: arrangedColors[3] }, td: { color: arrangedColors[3] } }"
+                class="pointer-events-none"
+              />
+            </div>
+
+            <!-- Calendar + Move Goal -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
+              <!-- Calendar -->
+              <div class="border border-gray-200 rounded-xl p-4 space-y-3">
+                <h5 class="text-xs font-semibold text-gray-600">{{ $t('palette.previewSectionCalendar') }}</h5>
+                <p class="text-sm font-medium" :style="{ color: arrangedColors[3] }">{{ $t('palette.previewMonthJune') }}</p>
+                <div class="grid grid-cols-7 gap-1 text-center">
+                  <span
+                    v-for="(day, idx) in calendarDays"
+                    :key="`day-${idx}`"
+                    class="text-xs w-7 h-7 flex items-center justify-center rounded"
+                    :style="day === 13
+                      ? { background: arrangedColors[0], color: arrangedColors[4], fontWeight: 'bold' }
+                      : { color: arrangedColors[3] }"
+                  >
+                    {{ day || '' }}
                   </span>
                 </div>
-                <div class="hidden sm:flex gap-3 text-xs" :style="{ color: arrangedColors[4] }">
-                  <span v-for="(color, index) in arrangedColors" :key="index">Link {{ index + 1 }}</span>
+              </div>
+
+              <!-- Move Goal -->
+              <div class="border border-gray-200 rounded-xl p-4 space-y-3">
+                <h5 class="text-xs font-semibold text-gray-600">{{ $t('palette.previewMoveGoal') }}</h5>
+                <div class="flex items-center justify-between">
+                  <UButton
+                    size="2xs"
+                    variant="soft"
+                    color="gray"
+                    icon="i-heroicons-minus"
+                    class="pointer-events-none"
+                  />
+                  <span class="text-3xl font-bold" :style="{ color: arrangedColors[0] }">350</span>
+                  <UButton
+                    size="2xs"
+                    variant="soft"
+                    color="gray"
+                    icon="i-heroicons-plus"
+                    class="pointer-events-none"
+                  />
                 </div>
-                <UButton
-                  size="2xs"
-                  :style="{ background: arrangedColors[0], color: arrangedColors[4] }"
-                  class="pointer-events-none"
-                >
-                  Get Started
-                </UButton>
+                <!-- bar chart -->
+                <div class="flex items-end gap-1 h-12 pt-2">
+                  <div
+                    v-for="(h, i) in moveGoalBars"
+                    :key="`bar-${i}`"
+                    class="flex-1 rounded-t"
+                    :style="{ height: h + '%', background: arrangedColors[(i % 5)] }"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -527,4 +638,57 @@ const createdAtFormatted = computed(() => {
     return data.value.createdAt;
   }
 });
+
+const statsCards = computed(() => [
+  {
+    label: t('palette.previewTotalRevenue'),
+    value: '$15,231.89',
+    delta: '▲ 20.1% vs last month'
+  },
+  {
+    label: t('palette.previewActiveUsers'),
+    value: '12,234',
+    delta: '▲ 2.3% vs last week'
+  },
+  {
+    label: t('palette.previewConversionRate'),
+    value: '3.42%',
+    delta: '▲ 0.5% vs yesterday'
+  }
+]);
+
+const tableColumns = computed(() => [
+  { key: 'status', label: t('palette.previewTableStatus') },
+  { key: 'email', label: t('palette.previewTableEmail') },
+  { key: 'amount', label: t('palette.previewTableAmount') }
+]);
+
+const tableRows = computed(() => [
+  {
+    status: t('palette.previewTableSuccess'),
+    email: 'user1@example.com',
+    amount: '$62.04'
+  },
+  {
+    status: t('palette.previewTableSuccess'),
+    email: 'user2@example.com',
+    amount: '$132.28'
+  },
+  {
+    status: t('palette.previewTableSuccess'),
+    email: 'user3@example.com',
+    amount: '$396.18'
+  }
+]);
+
+const calendarDays = computed(() => {
+  const firstWeekday = 3;
+  const daysInMonth = 30;
+  const cells = [];
+  for (let i = 0; i < firstWeekday; i++) cells.push(null);
+  for (let d = 1; d <= daysInMonth; d++) cells.push(d);
+  return cells;
+});
+
+const moveGoalBars = [22, 55, 42, 75, 30, 60, 47];
 </script>
