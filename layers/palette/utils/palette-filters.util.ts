@@ -73,7 +73,10 @@ export function getPaletteToneFilter(): PaletteFilter[] {
     { id: 'muted', label: { en: 'Muted', ja: 'ミュート', it: 'Smutato' }, hex: '#696969' },
     { id: 'monochromatic', label: { en: 'Monochromatic', ja: 'モノクローム', it: 'Monocromatico' }, hex: '#2F4F4F' },
     { id: 'deep', label: { en: 'Deep', ja: 'ディープ', it: 'Profondo' }, hex: '#4B0082' },
-    { id: 'high-contrast', label: { en: 'High Contrast', ja: 'ハイコントラスト', it: 'Alto Contrasto' }, hex: '#FFFFFF' }
+    { id: 'high-contrast', label: { en: 'High Contrast', ja: 'ハイコントラスト', it: 'Alto Contrasto' }, hex: '#FFFFFF' },
+    { id: 'trending', label: { en: 'Trending', ja: 'トレンド', it: 'Tendenze' }, hex: '#FF1B6B' },
+    { id: 'neon', label: { en: 'Neon', ja: 'ネオン', it: 'Neon' }, hex: '#39FF14' },
+    { id: 'corporate', label: { en: 'Corporate', ja: 'コーポレート', it: 'Corporativo' }, hex: '#003366' }
   ].sort((a, b) => a.id.localeCompare(b.id));
 }
 
