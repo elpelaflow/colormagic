@@ -377,37 +377,65 @@
       </div>
     </UForm>
 
-    <!-- description + links -->
-    <div class="my-8 text-sm print:hidden">
-      <p class="mb-4">
-        {{ $t('contrastChecker.legibilityDescription') }}
-      </p>
-      <ul class="list-inside list-decimal pl-4 flex flex-col gap-2">
-        <li>
-          <UButton
-            variant="link"
-            :padded="false"
-            to="https://www.w3.org/TR/WCAG21/#contrast-minimum"
-            label="1.4.3 Minimum Contrast (AA)"
-          />
-        </li>
-        <li>
-          <UButton
-            variant="link"
-            :padded="false"
-            to="https://www.w3.org/TR/WCAG21/#contrast-enhanced"
-            label="1.4.6 Enhanced Contrast (AAA)"
-          />
-        </li>
-        <li>
-          <UButton
-            variant="link"
-            :padded="false"
-            to="https://www.w3.org/TR/WCAG21/#non-text-contrast"
-            label="1.4.11 Non-Text Contrast (AA)"
-          />
-        </li>
-      </ul>
+    <!-- About WCAG Contrast -->
+    <div class="my-8 border border-gray-200 rounded-2xl overflow-hidden">
+      <div class="p-4 space-y-3 text-sm">
+        <!-- title -->
+        <p class="font-semibold text-base">
+          {{ $t('contrastChecker.aboutWcagTitle') }}
+        </p>
+
+        <!-- intro -->
+        <p class="text-gray-700">
+          {{ $t('contrastChecker.aboutWcagIntro') }}
+        </p>
+
+        <!-- UI components note -->
+        <p class="text-gray-700">
+          <span class="font-semibold">{{ $t('contrastChecker.uiComponents') }}:</span>
+          {{ $t('contrastChecker.uiComponentsDescription') }}
+        </p>
+
+        <!-- table -->
+        <UTable
+          :columns="wcagTableColumns"
+          :rows="wcagTableRows"
+          :ui="{ wrapper: 'mt-2' }"
+        />
+
+        <!-- references -->
+        <div class="pt-2 border-t border-gray-100">
+          <p class="font-semibold mb-2">
+            {{ $t('contrastChecker.referencesLabel') }}:
+          </p>
+          <ul class="list-inside list-disc pl-2 flex flex-col gap-1.5">
+            <li>
+              <UButton
+                variant="link"
+                :padded="false"
+                to="https://www.w3.org/TR/WCAG21/#contrast-minimum"
+                :label="$t('contrastChecker.reference.143')"
+              />
+            </li>
+            <li>
+              <UButton
+                variant="link"
+                :padded="false"
+                to="https://www.w3.org/TR/WCAG21/#contrast-enhanced"
+                :label="$t('contrastChecker.reference.146')"
+              />
+            </li>
+            <li>
+              <UButton
+                variant="link"
+                :padded="false"
+                to="https://www.w3.org/TR/WCAG21/#non-text-contrast"
+                :label="$t('contrastChecker.reference.1411')"
+              />
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
 
     <!-- share + export -->
@@ -643,6 +671,19 @@ function applySuggestion(suggestion: ColorSuggestion): void {
 }
 
 const accessiblePalettes = ACCESSIBLE_PALETTES;
+
+const wcagTableColumns = computed(() => [
+  { key: 'level', label: t('contrastChecker.wcagTableLevel') },
+  { key: 'textSize', label: t('contrastChecker.wcagTableTextSize') },
+  { key: 'ratio', label: t('contrastChecker.wcagTableRatio') }
+]);
+
+const wcagTableRows = computed(() => [
+  { level: 'AA', textSize: t('contrastChecker.normalText'), ratio: '4.5:1' },
+  { level: 'AA', textSize: t('contrastChecker.largeText'), ratio: '3:1' },
+  { level: 'AAA', textSize: t('contrastChecker.normalText'), ratio: '7:1' },
+  { level: 'AAA', textSize: t('contrastChecker.largeText'), ratio: '4.5:1' }
+]);
 
 function loadAccessiblePalette(palette: AccessiblePalette): void {
   state.value.primary = palette.primary;

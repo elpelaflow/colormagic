@@ -168,7 +168,19 @@ export default defineI18nConfig(() => ({
         copiedLink: 'Copied!',
         exportPdf: 'Export PDF Report',
         swapColors: 'Swap colors',
-        accessibleCombinations: 'Popular Accessible Color Combinations'
+        accessibleCombinations: 'Popular Accessible Color Combinations',
+        aboutWcagTitle: 'About WCAG Contrast',
+        aboutWcagIntro: 'Sufficient contrast is vital for accessibility. This tool measures the contrast ratio between your selected colors against the Web Content Accessibility Guidelines (WCAG) standards.',
+        uiComponentsDescription: 'WCAG 1.4.11 requires visual elements like input borders, focus indicators, and icons to have at least a 3:1 contrast ratio.',
+        referencesLabel: 'References',
+        wcagTableLevel: 'Level',
+        wcagTableTextSize: 'Text Size',
+        wcagTableRatio: 'Ratio',
+        reference: {
+          '143': '1.4.3 Minimum Contrast (AA)',
+          '146': '1.4.6 Enhanced Contrast (AAA)',
+          '1411': '1.4.11 Non-Text Contrast (AA)'
+        }
       }
     },
     ja: {
@@ -337,7 +349,19 @@ export default defineI18nConfig(() => ({
         copiedLink: 'コピーしました！',
         exportPdf: 'PDFレポートをエクスポート',
         swapColors: '色を入れ替え',
-        accessibleCombinations: '人気のアクセシブルな色の組み合わせ'
+        accessibleCombinations: '人気のアクセシブルな色の組み合わせ',
+        aboutWcagTitle: 'WCAGコントラストについて',
+        aboutWcagIntro: '十分なコントラストはアクセシビリティに不可欠です。このツールは、選択した色のコントラスト比をWebコンテンツアクセシビリティガイドライン（WCAG）基準に対して測定します。',
+        uiComponentsDescription: 'WCAG 1.4.11は、入力ボーダー、フォーカスインジケーター、アイコンなどの視覚要素に少なくとも3:1のコントラスト比を要求します。',
+        referencesLabel: '参考文献',
+        wcagTableLevel: 'レベル',
+        wcagTableTextSize: 'テキストサイズ',
+        wcagTableRatio: '比',
+        reference: {
+          '143': '1.4.3 最小コントラスト（AA）',
+          '146': '1.4.6 拡張コントラスト（AAA）',
+          '1411': '1.4.11 非テキストコントラスト（AA）'
+        }
       }
     },
     it: {
@@ -506,7 +530,19 @@ export default defineI18nConfig(() => ({
         copiedLink: 'Copiato!',
         exportPdf: 'Esporta Report PDF',
         swapColors: 'Scambia colori',
-        accessibleCombinations: 'Combinazioni di Colori Accessibili Popolari'
+        accessibleCombinations: 'Combinazioni di Colori Accessibili Popolari',
+        aboutWcagTitle: 'Informazioni sul Contrasto WCAG',
+        aboutWcagIntro: 'Un contrasto sufficiente è vitale per l\'accessibilità. Questo strumento misura il rapporto di contrasto tra i colori selezionati rispetto agli standard delle Web Content Accessibility Guidelines (WCAG).',
+        uiComponentsDescription: 'WCAG 1.4.11 richiede che gli elementi visivi come bordi dei campi, indicatori di focus e icone abbiano almeno un rapporto di contrasto di 3:1.',
+        referencesLabel: 'Riferimenti',
+        wcagTableLevel: 'Livello',
+        wcagTableTextSize: 'Dimensione Testo',
+        wcagTableRatio: 'Rapporto',
+        reference: {
+          '143': '1.4.3 Contrasto Minimo (AA)',
+          '146': '1.4.6 Contrasto Avanzato (AAA)',
+          '1411': '1.4.11 Contrasto Non Testuale (AA)'
+        }
       }
     }
   }
