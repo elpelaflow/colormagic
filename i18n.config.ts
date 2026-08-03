@@ -142,7 +142,19 @@ export default defineI18nConfig(() => ({
         largeText: 'Large Text',
         uiComponents: 'UI Components',
         exampleText: 'Example Primary text',
-        failText: 'Fail'
+        failText: 'Fail',
+        visionSimulator: 'Vision Simulator',
+        vision: {
+          normal: 'Normal Vision',
+          normalVision: 'NORMAL VISION',
+          protanopia: 'Protanopia (Red-Blind)',
+          deuteranopia: 'Deuteranopia (Green-Blind)',
+          tritanopia: 'Tritanopia (Blue-Blind)',
+          achromatopsia: 'Achromatopsia (Monochrome)'
+        },
+        smartSuggestionsTitle: 'Smart Suggestions',
+        smartSuggestionsDescription: 'This color combination fails WCAG requirements. Try one of these accessible alternatives that pass AA (4.5:1) or better.',
+        applySuggestion: 'Apply'
       }
     },
     ja: {
@@ -285,7 +297,19 @@ export default defineI18nConfig(() => ({
         largeText: '大きなテキスト',
         uiComponents: 'UIコンポーネント',
         exampleText: 'プライマリテキストの例',
-        failText: '不合格'
+        failText: '不合格',
+        visionSimulator: 'ビジョンシミュレーター',
+        vision: {
+          normal: '通常視力',
+          normalVision: '通常視力',
+          protanopia: 'プロタノピア（赤色盲）',
+          deuteranopia: 'デューテラノピア（緑色盲）',
+          tritanopia: 'トリタノピア（青色盲）',
+          achromatopsia: 'アクロマトプシア（モノクロ）'
+        },
+        smartSuggestionsTitle: 'スマートサジェスチョン',
+        smartSuggestionsDescription: 'この色の組み合わせはWCAG要件を満たしていません。AA（4.5:1）以上に合格する、これらのアクセシブルな代替案をお試しください。',
+        applySuggestion: '適用'
       }
     },
     it: {
@@ -428,7 +452,19 @@ export default defineI18nConfig(() => ({
         largeText: 'Testo grande',
         uiComponents: 'Componenti UI',
         exampleText: 'Esempio di testo primario',
-        failText: 'Non riuscito'
+        failText: 'Non riuscito',
+        visionSimulator: 'Simulatore di Visione',
+        vision: {
+          normal: 'Visione Normale',
+          normalVision: 'VISIONE NORMALE',
+          protanopia: 'Protanopia (Cecità al Rosso)',
+          deuteranopia: 'Deuteranopia (Cecità al Verde)',
+          tritanopia: 'Tritanopia (Cecità al Blu)',
+          achromatopsia: 'Acromatopsia (Monocromatico)'
+        },
+        smartSuggestionsTitle: 'Suggerimenti Smart',
+        smartSuggestionsDescription: 'Questa combinazione di colori non soddisfa i requisiti WCAG. Prova una di queste alternative accessibili che superano AA (4.5:1) o meglio.',
+        applySuggestion: 'Applica'
       }
     }
   }

@@ -17,15 +17,78 @@
     <div class="overflow-hidden border border-gray-200 rounded-2xl mb-4">
       <!-- the color block -->
       <div
-        class="h-44 w-full flex justify-center items-center"
-        :style="{ background: arrangedSecondaryColor[0] }"
+        class="h-44 w-full flex justify-center items-center relative"
+        :class="visionDivides ? 'divide-x-0' : ''"
       >
-        <p
-          :style="{ color: arrangedPrimaryColor[0] }"
-          class="font-semibold text-xl"
+        <!-- normal vision (full width) -->
+        <div
+          v-if="!visionDivides"
+          class="absolute inset-0 flex justify-center items-center"
+          :style="{ background: arrangedSecondaryColor[0] }"
         >
-          {{ $t('contrastChecker.exampleText') }}
+          <p
+            :style="{ color: arrangedPrimaryColor[0] }"
+            class="font-semibold text-xl"
+          >
+            {{ $t('contrastChecker.exampleText') }}
+          </p>
+        </div>
+
+        <!-- split: left = normal vision, right = simulated vision -->
+        <template v-else>
+          <!-- left: normal -->
+          <div
+            class="absolute left-0 top-0 h-full w-1/2 flex justify-center items-center"
+            :style="{ background: arrangedSecondaryColor[0] }"
+          >
+            <p
+              :style="{ color: arrangedPrimaryColor[0] }"
+              class="font-semibold text-xl"
+            >
+              {{ $t('contrastChecker.exampleText') }}
+            </p>
+          </div>
+          <!-- right: simulated -->
+          <div
+            class="absolute right-0 top-0 h-full w-1/2 flex justify-center items-center"
+            :style="{ background: simulatedSecondary }"
+          >
+            <p
+              :style="{ color: simulatedPrimary }"
+              class="font-semibold text-xl"
+            >
+              {{ $t('contrastChecker.exampleText') }}
+            </p>
+          </div>
+        </template>
+
+        <!-- vision badge corner (top-right) -->
+        <UBadge
+          color="black"
+          variant="solid"
+          size="sm"
+          class="absolute top-3 right-3 pointer-events-none"
+          :label="currentVisionLabel"
+        />
+      </div>
+
+      <!-- vision simulator selector -->
+      <div class="flex flex-wrap items-center gap-3 p-4 border-t border-gray-200">
+        <p class="font-semibold text-sm">
+          {{ $t('contrastChecker.visionSimulator') }}:
         </p>
+        <div class="w-56">
+          <USelectMenu
+            v-model="selectedVision"
+            size="sm"
+            by="id"
+            value-attribute="id"
+            option-attribute="label"
+            :options="visionOptions"
+            :popper="{ placement: 'bottom-start' }"
+            :ui-menu="{ container: 'min-w-56' }"
+          />
+        </div>
       </div>
 
       <!-- all contrast ratio checks -->
@@ -67,6 +130,81 @@
           />
         </li>
       </ul>
+    </div>
+
+    <!-- Smart suggestions (WCAG fails) -->
+    <div
+      v-if="showSmartSuggestions"
+      class="mb-4 border border-amber-200 rounded-2xl overflow-hidden bg-amber-50"
+    >
+      <div class="p-4">
+        <div class="flex items-start gap-3 mb-4">
+          <UIcon
+            name="i-heroicons-light-bulb"
+            class="text-amber-500 text-xl mt-0.5 shrink-0"
+          />
+          <div>
+            <p class="font-semibold text-sm mb-1">
+              {{ $t('contrastChecker.smartSuggestionsTitle') }}
+            </p>
+            <p class="text-sm text-gray-700">
+              {{ $t('contrastChecker.smartSuggestionsDescription') }}
+            </p>
+          </div>
+        </div>
+
+        <ul class="grid sm:grid-cols-2 gap-3">
+          <li
+            v-for="(suggestion, index) in suggestions"
+            :key="index"
+            class="border border-gray-200 rounded-xl overflow-hidden bg-white"
+          >
+            <!-- preview -->
+            <div
+              class="h-16 flex items-center justify-center"
+              :style="{ background: suggestion.secondary }"
+            >
+              <p
+                :style="{ color: suggestion.primary }"
+                class="font-semibold text-base"
+              >
+                Aa
+              </p>
+            </div>
+
+            <!-- info + apply -->
+            <div class="p-3">
+              <div class="flex items-center justify-between gap-2 mb-2">
+                <div class="flex items-center gap-2">
+                  <UBadge
+                    color="white"
+                    size="sm"
+                    :label="suggestion.ratio.toFixed(2)"
+                  />
+                  <UBadge
+                    :color="suggestion.ratio >= 7 ? 'green' : 'yellow'"
+                    size="sm"
+                    :label="suggestion.ratio >= 7 ? 'AAA' : 'AA'"
+                  />
+                </div>
+                <UButton
+                  size="xs"
+                  variant="soft"
+                  :label="$t('contrastChecker.applySuggestion')"
+                  @click="applySuggestion(suggestion)"
+                />
+              </div>
+              <div class="flex gap-2 text-xs font-mono">
+                <span :style="{ color: suggestion.primary }">●</span>
+                <span class="text-gray-600">{{ suggestion.primary }}</span>
+                <span class="text-gray-400">/</span>
+                <span :style="{ color: suggestion.secondary }">●</span>
+                <span class="text-gray-600">{{ suggestion.secondary }}</span>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
 
     <!-- form -->
@@ -212,6 +350,8 @@
 <script setup lang="ts">
 import { object, type InferType, string } from 'yup';
 import ntc from '~/layers/palette/utils/ntc.util';
+import { simulateVision, VISION_OPTIONS, type VisionType } from '~/layers/contrast-checker/utils/color-vision.util';
+import { suggestAccessibleColors, getAccessibilityFails, hasAnyFail, type ColorSuggestion } from '~/layers/contrast-checker/utils/color-suggestions.util';
 
 const { t } = useI18n();
 
@@ -262,12 +402,53 @@ const arrangedSecondaryColor = computed(() => arrangeColors([state.value.seconda
   warmth: arrangeSecondary.value.warmth
 }));
 
+// --- Vision simulator ---
+const selectedVision = ref<VisionType>('normal');
+
+const visionOptions = computed(() => VISION_OPTIONS.map(v => ({
+  id: v.id,
+  label: t(`contrastChecker.vision.${v.id}`)
+})));
+
+const visionDivides = computed(() => {
+  const opt = VISION_OPTIONS.find(o => o.id === selectedVision.value);
+  return opt?.divides ?? false;
+});
+
+const currentVisionLabel = computed(() => {
+  if (selectedVision.value === 'normal') {
+    return t('contrastChecker.vision.normalVision');
+  }
+  return t(`contrastChecker.vision.${selectedVision.value}`);
+});
+
+const simulatedPrimary = computed(() => simulateVision(arrangedPrimaryColor.value[0], selectedVision.value));
+const simulatedSecondary = computed(() => simulateVision(arrangedSecondaryColor.value[0], selectedVision.value));
+
 const contrastRatio = computed(() => {
   return calculateContrastRatio(
     ntc.rgb(arrangedPrimaryColor.value[0]),
     ntc.rgb(arrangedSecondaryColor.value[0])
   );
 });
+
+// --- Smart suggestions (WCAG fails) ---
+const accessibilityFails = computed(() => getAccessibilityFails(contrastRatio.value));
+const showSmartSuggestions = computed(() => hasAnyFail(accessibilityFails.value));
+const suggestions = computed<ColorSuggestion[]>(() =>
+  suggestAccessibleColors(arrangedPrimaryColor.value[0], arrangedSecondaryColor.value[0])
+);
+
+function applySuggestion(suggestion: ColorSuggestion): void {
+  state.value.primary = suggestion.primary;
+  state.value.secondary = suggestion.secondary;
+  arrangePrimary.value.brightness = 0;
+  arrangePrimary.value.saturation = 0;
+  arrangePrimary.value.warmth = 0;
+  arrangeSecondary.value.brightness = 0;
+  arrangeSecondary.value.saturation = 0;
+  arrangeSecondary.value.warmth = 0;
+}
 
 const primaryHasChanges = computed(() => {
   return arrangePrimary.value.brightness !== 0 ||
