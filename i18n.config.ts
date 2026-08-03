@@ -161,7 +161,12 @@ export default defineI18nConfig(() => ({
         },
         smartSuggestionsTitle: 'Smart Suggestions',
         smartSuggestionsDescription: 'This color combination fails WCAG requirements. Try one of these accessible alternatives that pass AA (4.5:1) or better.',
-        applySuggestion: 'Apply'
+        applySuggestion: 'Apply',
+        shareExportTitle: 'Share & Export',
+        shareText: 'Check out this color contrast analysis',
+        copyLink: 'Copy link',
+        copiedLink: 'Copied!',
+        exportPdf: 'Export PDF Report'
       }
     },
     ja: {
@@ -323,7 +328,12 @@ export default defineI18nConfig(() => ({
         },
         smartSuggestionsTitle: 'スマートサジェスチョン',
         smartSuggestionsDescription: 'この色の組み合わせはWCAG要件を満たしていません。AA（4.5:1）以上に合格する、これらのアクセシブルな代替案をお試しください。',
-        applySuggestion: '適用'
+        applySuggestion: '適用',
+        shareExportTitle: '共有・エクスポート',
+        shareText: 'このカラーコントラスト分析をチェックしてください',
+        copyLink: 'リンクをコピー',
+        copiedLink: 'コピーしました！',
+        exportPdf: 'PDFレポートをエクスポート'
       }
     },
     it: {
@@ -485,7 +495,12 @@ export default defineI18nConfig(() => ({
         },
         smartSuggestionsTitle: 'Suggerimenti Smart',
         smartSuggestionsDescription: 'Questa combinazione di colori non soddisfa i requisiti WCAG. Prova una di queste alternative accessibili che superano AA (4.5:1) o meglio.',
-        applySuggestion: 'Applica'
+        applySuggestion: 'Applica',
+        shareExportTitle: 'Condividi & Esporta',
+        shareText: 'Dai un\'occhiata a questa analisi del contrasto dei colori',
+        copyLink: 'Copia link',
+        copiedLink: 'Copiato!',
+        exportPdf: 'Esporta Report PDF'
       }
     }
   }

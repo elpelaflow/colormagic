@@ -73,7 +73,7 @@
       </div>
 
       <!-- vision simulator selector -->
-      <div class="flex flex-wrap items-center gap-3 p-4 border-t border-gray-200">
+      <div class="flex flex-wrap items-center gap-3 p-4 border-t border-gray-200 print:hidden">
         <p class="font-semibold text-sm">
           {{ $t('contrastChecker.visionSimulator') }}:
         </p>
@@ -240,6 +240,7 @@
                 <UButton
                   size="xs"
                   variant="soft"
+                  class="print:hidden"
                   :label="$t('contrastChecker.applySuggestion')"
                   @click="applySuggestion(suggestion)"
                 />
@@ -261,7 +262,7 @@
     <UForm
       :state="state"
       :schema="FormSchema"
-      class="grid sm:grid-cols-2 gap-4 items-start"
+      class="grid sm:grid-cols-2 gap-4 items-start print:hidden"
     >
       <!-- primary -->
       <div class="border rounded-2xl overflow-hidden">
@@ -363,7 +364,7 @@
     </UForm>
 
     <!-- description + links -->
-    <div class="my-8 text-sm">
+    <div class="my-8 text-sm print:hidden">
       <p class="mb-4">
         {{ $t('contrastChecker.legibilityDescription') }}
       </p>
@@ -394,6 +395,41 @@
         </li>
       </ul>
     </div>
+
+    <!-- share + export -->
+    <div class="my-8 print:hidden">
+      <p class="font-semibold text-sm mb-3">
+        {{ $t('contrastChecker.shareExportTitle') }}
+      </p>
+      <div class="flex flex-wrap gap-3 items-center">
+        <!-- share buttons -->
+        <CommonSocialShareButtons
+          type="text"
+          orientation="horizontal"
+          :text="`${t('contrastChecker.shareText')}`"
+        />
+
+        <!-- divider -->
+        <span class="hidden sm:block h-6 w-px bg-gray-200" />
+
+        <!-- copy link -->
+        <UButton
+          icon="i-heroicons-link"
+          :color="copiedLink ? 'green' : 'primary'"
+          :variant="copiedLink ? 'solid' : 'soft'"
+          :label="copiedLink ? $t('contrastChecker.copiedLink') : $t('contrastChecker.copyLink')"
+          @click="copyShareLink"
+        />
+
+        <!-- export PDF -->
+        <UButton
+          icon="i-heroicons-document-arrow-down"
+          variant="soft"
+          :label="$t('contrastChecker.exportPdf')"
+          @click="exportPdf"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -416,9 +452,28 @@ useSeoMeta({
   ogImageUrl: `${useRuntimeConfig().public.siteUrl}/img/og.png`
 });
 
+const route = useRoute();
+const router = useRouter();
+const localePath = useLocalePath();
+
+const HEX_QUERY_RE = /^#?[0-9a-fA-F]{6}$/;
+const INT_QUERY_RE = /^-?\d+$/;
+
+function readHexQuery(q: Record<string, any>, key: string, fallback: string): string {
+  const v = q[key];
+  return typeof v === 'string' && HEX_QUERY_RE.test(v)
+    ? (v.startsWith('#') ? v : '#' + v)
+    : fallback;
+}
+function readIntQuery(q: Record<string, any>, key: string, fallback: number): number {
+  const v = q[key];
+  return typeof v === 'string' && INT_QUERY_RE.test(v) ? Math.max(-100, Math.min(100, parseInt(v, 10))) : fallback;
+}
+
+const initialized = ref(false);
 const state = ref({
-  primary: '#fae8c7',
-  secondary: '#9a6acd'
+  primary: readHexQuery(route.query, 'primary', '#fae8c7'),
+  secondary: readHexQuery(route.query, 'secondary', '#9a6acd')
 });
 
 const FormSchema = object({
@@ -429,15 +484,36 @@ const FormSchema = object({
 export type Form = InferType<typeof FormSchema>;
 
 const arrangePrimary = ref({
-  brightness: 0,
-  saturation: 0,
-  warmth: 0
+  brightness: readIntQuery(route.query, 'pBrightness', 0),
+  saturation: readIntQuery(route.query, 'pSaturation', 0),
+  warmth: readIntQuery(route.query, 'pWarmth', 0)
 });
 
 const arrangeSecondary = ref({
-  brightness: 0,
-  saturation: 0,
-  warmth: 0
+  brightness: readIntQuery(route.query, 'sBrightness', 0),
+  saturation: readIntQuery(route.query, 'sSaturation', 0),
+  warmth: readIntQuery(route.query, 'sWarmth', 0)
+});
+
+// Sincronizar estado -> URL (query params). Se desactiva brevemente cuando
+// cargamos desde query para no pisar la URL original antes del primer render.
+watch([state, arrangePrimary, arrangeSecondary], () => {
+  if (initialized.value === false) return;
+  const q = {
+    primary: state.value.primary,
+    secondary: state.value.secondary,
+    pBrightness: String(arrangePrimary.value.brightness),
+    pSaturation: String(arrangePrimary.value.saturation),
+    pWarmth: String(arrangePrimary.value.warmth),
+    sBrightness: String(arrangeSecondary.value.brightness),
+    sSaturation: String(arrangeSecondary.value.saturation),
+    sWarmth: String(arrangeSecondary.value.warmth)
+  };
+  router.replace({ query: q });
+}, { deep: true });
+
+onMounted(() => {
+  initialized.value = true;
 });
 
 const arrangedPrimaryColor = computed(() => arrangeColors([state.value.primary], {
@@ -498,6 +574,25 @@ function applySuggestion(suggestion: ColorSuggestion): void {
   arrangeSecondary.value.brightness = 0;
   arrangeSecondary.value.saturation = 0;
   arrangeSecondary.value.warmth = 0;
+}
+
+// --- Share + Export ---
+const copiedLink = ref(false);
+
+async function copyShareLink(): Promise<void> {
+  try {
+    await navigator.clipboard.writeText(window.location.href);
+    copiedLink.value = true;
+    setTimeout(() => { copiedLink.value = false; }, 2000);
+  } catch {
+    // ignore: el navegador no permite clipboard
+  }
+}
+
+function exportPdf(): void {
+  if (typeof window !== 'undefined') {
+    window.print();
+  }
 }
 
 const primaryHasChanges = computed(() => {
