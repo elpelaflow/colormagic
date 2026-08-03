@@ -166,7 +166,8 @@ export default defineI18nConfig(() => ({
         shareText: 'Check out this color contrast analysis',
         copyLink: 'Copy link',
         copiedLink: 'Copied!',
-        exportPdf: 'Export PDF Report'
+        exportPdf: 'Export PDF Report',
+        swapColors: 'Swap colors'
       }
     },
     ja: {
@@ -333,7 +334,8 @@ export default defineI18nConfig(() => ({
         shareText: 'このカラーコントラスト分析をチェックしてください',
         copyLink: 'リンクをコピー',
         copiedLink: 'コピーしました！',
-        exportPdf: 'PDFレポートをエクスポート'
+        exportPdf: 'PDFレポートをエクスポート',
+        swapColors: '色を入れ替え'
       }
     },
     it: {
@@ -500,7 +502,8 @@ export default defineI18nConfig(() => ({
         shareText: 'Dai un\'occhiata a questa analisi del contrasto dei colori',
         copyLink: 'Copia link',
         copiedLink: 'Copiato!',
-        exportPdf: 'Esporta Report PDF'
+        exportPdf: 'Esporta Report PDF',
+        swapColors: 'Scambia colori'
       }
     }
   }

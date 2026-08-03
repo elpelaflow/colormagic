@@ -262,7 +262,7 @@
     <UForm
       :state="state"
       :schema="FormSchema"
-      class="grid sm:grid-cols-2 gap-4 items-start print:hidden"
+      class="grid sm:grid-cols-[1fr_auto_1fr] gap-4 items-center print:hidden"
     >
       <!-- primary -->
       <div class="border rounded-2xl overflow-hidden">
@@ -311,6 +311,20 @@
           <!-- copy buttons-->
           <ColorCopyButtons :hex="arrangedPrimaryColor[0]" />
         </div>
+      </div>
+
+      <!-- swap button -->
+      <div class="flex justify-center">
+        <UButton
+          icon="i-heroicons-arrow-path"
+          variant="soft"
+          color="gray"
+          size="md"
+          :aria-label="$t('contrastChecker.swapColors')"
+          circle
+          class="print:hidden"
+          @click="swapColors"
+        />
       </div>
 
       <!-- secondary -->
@@ -574,6 +588,16 @@ function applySuggestion(suggestion: ColorSuggestion): void {
   arrangeSecondary.value.brightness = 0;
   arrangeSecondary.value.saturation = 0;
   arrangeSecondary.value.warmth = 0;
+}
+
+function swapColors(): void {
+  const tmpPrimary = state.value.primary;
+  state.value.primary = state.value.secondary;
+  state.value.secondary = tmpPrimary;
+
+  const tmpArr = { ...arrangePrimary.value };
+  arrangePrimary.value = { ...arrangeSecondary.value };
+  arrangeSecondary.value = tmpArr;
 }
 
 // --- Share + Export ---
