@@ -92,15 +92,15 @@
       </div>
 
       <!-- all contrast ratio checks -->
-      <ul class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 p-4 border-t border-gray-200">
+      <ul class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 lg:gap-4 p-4 border-t border-gray-200">
         <!-- contrast ratio -->
-        <li class="col-span-2 md:col-span-3 lg:col-span-6">
-          <p class="font-semibold text-sm">
-            {{ $t('contrastChecker.contrastRatio') }}:
+        <li class="col-span-2 sm:col-span-1 lg:col-span-1 flex flex-col gap-1">
+          <p class="font-semibold text-xs">
+            {{ $t('contrastChecker.contrastRatio') }}
           </p>
           <UBadge
             color="white"
-            size="lg"
+            size="sm"
             :label="contrastRatio.toFixed(2)"
           />
         </li>
