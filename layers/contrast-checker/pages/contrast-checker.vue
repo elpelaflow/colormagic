@@ -23,18 +23,18 @@
         <!-- normal vision (full width) -->
         <div
           v-if="!visionDivides"
-          class="absolute inset-0 flex flex-col justify-center items-center gap-2"
+          class="absolute inset-0 flex flex-col justify-center items-center gap-2 text-center px-6"
           :style="{ background: arrangedSecondaryColor[0] }"
         >
           <p
             :style="{ color: arrangedPrimaryColor[0] }"
-            class="font-medium text-base"
+            class="font-medium text-base sm:text-lg"
           >
             {{ $t('contrastChecker.exampleTextNormal') }}
           </p>
           <p
             :style="{ color: arrangedPrimaryColor[0] }"
-            class="font-bold text-2xl"
+            class="font-bold text-2xl sm:text-3xl"
           >
             {{ $t('contrastChecker.exampleTextLarge') }}
           </p>
@@ -44,36 +44,36 @@
         <template v-else>
           <!-- left: normal -->
           <div
-            class="absolute left-0 top-0 h-full w-1/2 flex flex-col justify-center items-center gap-2"
+            class="absolute left-0 top-0 h-full w-1/2 flex flex-col justify-center items-center gap-1.5 text-center px-2 sm:px-4"
             :style="{ background: arrangedSecondaryColor[0] }"
           >
             <p
               :style="{ color: arrangedPrimaryColor[0] }"
-              class="font-medium text-base"
+              class="font-medium text-xs sm:text-sm"
             >
               {{ $t('contrastChecker.exampleTextNormal') }}
             </p>
             <p
               :style="{ color: arrangedPrimaryColor[0] }"
-              class="font-bold text-2xl"
+              class="font-bold text-base sm:text-xl"
             >
               {{ $t('contrastChecker.exampleTextLarge') }}
             </p>
           </div>
           <!-- right: simulated -->
           <div
-            class="absolute right-0 top-0 h-full w-1/2 flex flex-col justify-center items-center gap-2"
+            class="absolute right-0 top-0 h-full w-1/2 flex flex-col justify-center items-center gap-1.5 text-center px-2 sm:px-4"
             :style="{ background: simulatedSecondary }"
           >
             <p
               :style="{ color: simulatedPrimary }"
-              class="font-medium text-base"
+              class="font-medium text-xs sm:text-sm"
             >
               {{ $t('contrastChecker.exampleTextNormal') }}
             </p>
             <p
               :style="{ color: simulatedPrimary }"
-              class="font-bold text-2xl"
+              class="font-bold text-base sm:text-xl"
             >
               {{ $t('contrastChecker.exampleTextLarge') }}
             </p>
