@@ -7,6 +7,9 @@ export enum PlausibleEventName {
 
   RANDOM_COLOR_GENERATED = 'random-color:generated',
 
+  COLOR_MIXER_OPENED = 'color-mixer:opened',
+  COLOR_MIXER_PRESET_LOADED = 'color-mixer:preset-loaded',
+
   GITHUB_BUTTON_FLOATING_CLICKED = 'github-button:floating:clicked',
 
   FEEDBACK_SUBMITTED = 'feedback:submitted',

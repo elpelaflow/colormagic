@@ -170,6 +170,12 @@ const toolsLinks = computed(() => [{
   label: t('nav.contrastChecker'),
   description: t('contrastChecker.seoDescription'),
   icon: 'i-heroicons-sun'
+},
+{
+  to: localePath('/color-mixer'),
+  label: t('nav.colorMixer'),
+  description: t('colorMixer.seoDescription'),
+  icon: 'i-heroicons-swatch'
 }]);
 
 watch(useRoute(), () => {

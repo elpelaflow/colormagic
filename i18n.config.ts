@@ -37,7 +37,8 @@ export default defineI18nConfig(() => ({
         more: 'More',
         news: 'News',
         api: 'Colors API',
-        contrastChecker: 'Contrast Checker'
+        contrastChecker: 'Contrast Checker',
+        colorMixer: 'Color Mixer'
       },
       palette: {
         seoTitle: 'ColorMagic - AI Color Palette Generator',
@@ -183,6 +184,25 @@ export default defineI18nConfig(() => ({
           '146': '1.4.6 Enhanced Contrast (AAA)',
           '1411': '1.4.11 Non-Text Contrast (AA)'
         }
+      },
+      colorMixer: {
+        title: 'Color Mixer',
+        seoTitle: 'Color Mixer - ColorMagic',
+        seoDescription: 'Mix two colors together in real time with a subtractive RYB paint model.',
+        colorALabel: 'Color A',
+        colorBLabel: 'Color B',
+        mixRatio: 'Mix Ratio',
+        mixedResult: 'Mixed Result',
+        swapColors: 'Swap colors',
+        openColorPage: 'Open color page',
+        presetsTitle: 'Preset mixes',
+        presets: {
+          blueYellow: 'Blue + Yellow → Green',
+          redYellow: 'Red + Yellow → Orange',
+          redBlue: 'Red + Blue → Purple',
+          blueWhite: 'Blue + White → Tint',
+          redBlack: 'Red + Black → Shade'
+        }
       }
     },
     ja: {
@@ -220,7 +240,8 @@ export default defineI18nConfig(() => ({
         more: 'もっと',
         news: 'ニュース',
         api: 'カラーAPI',
-        contrastChecker: 'コントラストチェッカー'
+        contrastChecker: 'コントラストチェッカー',
+        colorMixer: 'カラーミキサー'
       },
       palette: {
         seoTitle: 'あなたの思い描く色をかんたんに',
@@ -366,6 +387,25 @@ export default defineI18nConfig(() => ({
           '146': '1.4.6 拡張コントラスト（AAA）',
           '1411': '1.4.11 非テキストコントラスト（AA）'
         }
+      },
+      colorMixer: {
+        title: 'カラーミキサー',
+        seoTitle: 'カラーミキサー - ColorMagic',
+        seoDescription: '2つの色をリアルタイムで混ぜ合わせる、絵の具のような減法混色RYBモデル。',
+        colorALabel: 'カラーA',
+        colorBLabel: 'カラーB',
+        mixRatio: '混色比率',
+        mixedResult: '混色結果',
+        swapColors: '色を入れ替え',
+        openColorPage: 'カラーページを開く',
+        presetsTitle: 'プリセット混色',
+        presets: {
+          blueYellow: '青 + 黄 → 緑',
+          redYellow: '赤 + 黄 → オレンジ',
+          redBlue: '赤 + 青 → 紫',
+          blueWhite: '青 + 白 → ティント',
+          redBlack: '赤 + 黒 → シェード'
+        }
       }
     },
     it: {
@@ -403,7 +443,8 @@ export default defineI18nConfig(() => ({
         more: 'Di più',
         news: 'Notizia',
         api: 'API dei colori',
-        contrastChecker: 'Controllo Contrasto'
+        contrastChecker: 'Controllo Contrasto',
+        colorMixer: 'Mescolatore di Colori'
       },
       palette: {
         seoTitle: 'Genera la tua palette di colori ideale',
@@ -548,6 +589,25 @@ export default defineI18nConfig(() => ({
           '143': '1.4.3 Contrasto Minimo (AA)',
           '146': '1.4.6 Contrasto Avanzato (AAA)',
           '1411': '1.4.11 Contrasto Non Testuale (AA)'
+        }
+      },
+      colorMixer: {
+        title: 'Mescolatore di Colori',
+        seoTitle: 'Mescolatore di Colori - ColorMagic',
+        seoDescription: 'Mescola due colori in tempo reale con un modello sottrattivo RYB che imita la pittura.',
+        colorALabel: 'Colore A',
+        colorBLabel: 'Colore B',
+        mixRatio: 'Rapporto di miscelazione',
+        mixedResult: 'Risultato',
+        swapColors: 'Scambia colori',
+        openColorPage: 'Apri pagina colore',
+        presetsTitle: 'Miscele predefinite',
+        presets: {
+          blueYellow: 'Blu + Giallo → Verde',
+          redYellow: 'Rosso + Giallo → Arancione',
+          redBlue: 'Rosso + Blu → Viola',
+          blueWhite: 'Blu + Bianco → Tinta',
+          redBlack: 'Rosso + Nero → Ombra'
         }
       }
     }
