@@ -177,11 +177,23 @@ export function rgbToHsv(rgb: Rgb): Hsv {
   };
 };
 
+export function hsvToHsl(hsv: Hsv): Hsl {
+  const v = hsv.v / 100;
+  const s = hsv.s / 100;
+  const l = v - (v * s) / 2;
+  const min = Math.min(l, 1 - l);
+  const sl = min === 0 ? 0 : (v - l) / min;
+  return {
+    h: hsv.h,
+    s: sl * 100,
+    l: l * 100
+  };
+};
+
 export function hsvToRgb(hsv: Hsv): Rgb {
   const h = hsv.h / 360;
   const s = hsv.s / 100;
   const v = hsv.v / 100;
-
   let r = 0;
   let g = 0;
   let b = 0;

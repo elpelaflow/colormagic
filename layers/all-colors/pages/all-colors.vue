@@ -191,8 +191,8 @@ import { getRandomHexColor } from '~/layers/random-color/utils/random-color.util
 import {
   generateShadeVariants,
   hexToRgb,
-  hslToRgb,
   hsvToRgb,
+  hsvToHsl,
   normalizeHex,
   rgbToCmyk,
   rgbToHex,
@@ -239,13 +239,22 @@ const description = t('allColors.seoDescription');
 const selectedHex = ref('#1B4474');
 const hexInput = ref('#1B4474');
 
+const pickerHsv = ref<{ h: number, s: number, v: number }>({ h: 212, s: 0.77, v: 0.45 });
+
+function syncPickerFromHex(hex: string): void {
+  const hsv = rgbToHsv(hexToRgb(hex));
+  pickerHsv.value = { h: hsv.h, s: hsv.s / 100, v: hsv.v / 100 };
+}
+
+syncPickerFromHex(selectedHex.value);
+
 const pickerColors = computed<PickerColors>(() => {
-  const rgb = hexToRgb(selectedHex.value);
-  const hsv = rgbToHsv(rgb);
-  const hsl = rgbToHsl(rgb);
+  const hsv = { h: pickerHsv.value.h, s: pickerHsv.value.s, v: pickerHsv.value.v, a: 1 };
+  const hsl = hsvToHsl({ h: pickerHsv.value.h, s: pickerHsv.value.s * 100, v: pickerHsv.value.v * 100 });
+  const rgb = hsvToRgb({ h: pickerHsv.value.h, s: pickerHsv.value.s * 100, v: pickerHsv.value.v * 100 });
   return {
     hsl: { h: hsl.h, s: hsl.s / 100, l: hsl.l / 100, a: 1 },
-    hsv: { h: hsv.h, s: hsv.s / 100, v: hsv.v / 100, a: 1 },
+    hsv,
     hex: selectedHex.value,
     rgb: { r: rgb.r, g: rgb.g, b: rgb.b, a: 1 },
     a: 1,
@@ -310,16 +319,19 @@ function round4(value: number): number {
 function setHex(hex: string): void {
   selectedHex.value = hex;
   hexInput.value = hex;
+  syncPickerFromHex(hex);
 }
 
 function onSaturationChange(payload: ChangePayload): void {
-  const hsv: Hsv = { h: payload.h, s: payload.s * 100, v: (payload.v ?? 1) * 100 };
-  setHex(rgbToHex(hsvToRgb(hsv)));
+  pickerHsv.value = { h: payload.h, s: payload.s, v: payload.v ?? 1 };
+  selectedHex.value = rgbToHex(hsvToRgb({ h: pickerHsv.value.h, s: pickerHsv.value.s * 100, v: pickerHsv.value.v * 100 }));
+  hexInput.value = selectedHex.value;
 }
 
 function onHueChange(payload: ChangePayload): void {
-  const hsl: Hsl = { h: payload.h, s: payload.s * 100, l: (payload.l ?? 100) * 100 };
-  setHex(rgbToHex(hslToRgb(hsl)));
+  pickerHsv.value = { h: payload.h, s: pickerHsv.value.s, v: pickerHsv.value.v };
+  selectedHex.value = rgbToHex(hsvToRgb({ h: pickerHsv.value.h, s: pickerHsv.value.s * 100, v: pickerHsv.value.v * 100 }));
+  hexInput.value = selectedHex.value;
 }
 
 function commitHex(): void {
