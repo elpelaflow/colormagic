@@ -38,7 +38,8 @@ export default defineI18nConfig(() => ({
         news: 'News',
         api: 'Colors API',
         contrastChecker: 'Contrast Checker',
-        colorMixer: 'Color Mixer'
+        colorMixer: 'Color Mixer',
+        allColors: 'All Colors'
       },
       palette: {
         seoTitle: 'ColorMagic - AI Color Palette Generator',
@@ -203,6 +204,26 @@ export default defineI18nConfig(() => ({
           blueWhite: 'Blue + White → Tint',
           redBlack: 'Red + Black → Shade'
         }
+      },
+      allColors: {
+        title: 'All Colors',
+        seoTitle: 'All Colors - ColorMagic',
+        seoDescription: 'Pick any color and explore it across every color model, then generate its full range of tints and shades.',
+        shadesTintsTitle: 'Shades & Tints',
+        shadesTintsDescription: 'Select a color and instantly generate its light tints and dark shades.',
+        selectColor: 'Select a color',
+        hexInputPlaceholder: '#000000',
+        formatsTitle: 'Color formats',
+        copyHex: 'Copy HEX',
+        randomColor: 'Random',
+        openColorPage: 'Open color page',
+        downloadPng: 'Download PNG',
+        variantsTitle: 'Light tints → dark shades',
+        variantKind: {
+          tint: 'Tint',
+          base: 'Base',
+          shade: 'Shade'
+        }
       }
     },
     ja: {
@@ -241,7 +262,8 @@ export default defineI18nConfig(() => ({
         news: 'ニュース',
         api: 'カラーAPI',
         contrastChecker: 'コントラストチェッカー',
-        colorMixer: 'カラーミキサー'
+        colorMixer: 'カラーミキサー',
+        allColors: 'オールカラー'
       },
       palette: {
         seoTitle: 'あなたの思い描く色をかんたんに',
@@ -406,6 +428,26 @@ export default defineI18nConfig(() => ({
           blueWhite: '青 + 白 → ティント',
           redBlack: '赤 + 黒 → シェード'
         }
+      },
+      allColors: {
+        title: 'オールカラー',
+        seoTitle: 'オールカラー - ColorMagic',
+        seoDescription: '色を選んで全てのカラーモデルで確認し、ティントとシェードの全範囲を生成しましょう。',
+        shadesTintsTitle: 'シェード & ティント',
+        shadesTintsDescription: '色を選んで、明るいティントと暗いシェードを瞬時に生成します。',
+        selectColor: '色を選択',
+        hexInputPlaceholder: '#000000',
+        formatsTitle: 'カラーフォーマット',
+        copyHex: 'HEXをコピー',
+        randomColor: 'ランダム',
+        openColorPage: 'カラーページを開く',
+        downloadPng: 'PNGをダウンロード',
+        variantsTitle: '明るいティント → 暗いシェード',
+        variantKind: {
+          tint: 'ティント',
+          base: 'ベース',
+          shade: 'シェード'
+        }
       }
     },
     it: {
@@ -444,7 +486,8 @@ export default defineI18nConfig(() => ({
         news: 'Notizia',
         api: 'API dei colori',
         contrastChecker: 'Controllo Contrasto',
-        colorMixer: 'Mescolatore di Colori'
+        colorMixer: 'Mescolatore di Colori',
+        allColors: 'Tutti i Colori'
       },
       palette: {
         seoTitle: 'Genera la tua palette di colori ideale',
@@ -608,6 +651,26 @@ export default defineI18nConfig(() => ({
           redBlue: 'Rosso + Blu → Viola',
           blueWhite: 'Blu + Bianco → Tinta',
           redBlack: 'Rosso + Nero → Ombra'
+        }
+      },
+      allColors: {
+        title: 'Tutti i Colori',
+        seoTitle: 'Tutti i Colori - ColorMagic',
+        seoDescription: 'Scegli un colore ed esploralo in ogni modello cromatico, poi genera la sua gamma completa di tinte e ombre.',
+        shadesTintsTitle: 'Tinte e Ombre',
+        shadesTintsDescription: 'Seleziona un colore e genera all\'istante le sue tinte chiare e le ombre scure.',
+        selectColor: 'Seleziona un colore',
+        hexInputPlaceholder: '#000000',
+        formatsTitle: 'Formati di colore',
+        copyHex: 'Copia HEX',
+        randomColor: 'Casuale',
+        openColorPage: 'Apri pagina colore',
+        downloadPng: 'Scarica PNG',
+        variantsTitle: 'Tinte chiare → ombre scure',
+        variantKind: {
+          tint: 'Tinta',
+          base: 'Base',
+          shade: 'Ombra'
         }
       }
     }

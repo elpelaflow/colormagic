@@ -10,6 +10,11 @@ export enum PlausibleEventName {
   COLOR_MIXER_OPENED = 'color-mixer:opened',
   COLOR_MIXER_PRESET_LOADED = 'color-mixer:preset-loaded',
 
+  ALL_COLORS_RANDOM_COLOR_GENERATED = 'all-colors:random-color:generated',
+  ALL_COLORS_COLOR_COPIED = 'all-colors:color:copied',
+  ALL_COLORS_SHADE_COPIED = 'all-colors:shade:copied',
+  ALL_COLORS_COLOR_PAGE_OPENED = 'all-colors:color-page:opened',
+
   GITHUB_BUTTON_FLOATING_CLICKED = 'github-button:floating:clicked',
 
   FEEDBACK_SUBMITTED = 'feedback:submitted',
