@@ -24,6 +24,9 @@ Todos los endpoints devuelven JSON, excepto los marcados como binarios. La valid
 | `GET` | `/contrast-checker` | nuevo | Ratio de contraste WCAG entre dos colores |
 | `GET` | `/color-mixer` | nuevo | Mezcla dos colores (HSL + RGB lineal) |
 | `POST` | `/image-color-picker` | nuevo | Extrae N colores dominantes de una imagen base64 |
+| `GET` | `/harmonies` | nuevo | Genera paletas de armonía con el generador OKLCH (pro-color-harmonies) |
+| `GET` | `/pantone` | nuevo | Busca en el dataset Pantone (3.219 muestras): por hex, código o nombre |
+| `GET` | `/color-name` | nuevo | Nombre del color más cercano del diccionario (14.394 nombres) |
 
 ---
 
@@ -210,6 +213,83 @@ Mezcla dos colores en una proporción dada. Devuelve dos resultados en paralelo:
 - **Response 400:** si algún hex no es válido.
 - **Archivo:** `layers/palette/server/api/color-mixer/index.get.ts`
 - **Dependencias:** `hexToRgb`, `rgbToHsl`, `hslToRgb`, `rgbToHex` (de `color-converter.util`).
+
+### `GET /harmonies`
+
+Genera una paleta de armonía de colores con la **misma lógica** que la tool "Color Palette Creator" (port 1:1 de `pro-color-harmonies`, espacio perceptual OKLCH). Sin dependencias externas — toda la matemática corre en el server.
+
+- **Query:**
+  - `base` (obligatorio): hex code del color base (con o sin `#`)
+  - `type` (opcional): `analogous` (default) | `complementary` | `triadic` | `tetradic` | `splitComplementary` | `tintsShades`
+  - `style` (opcional): `default` | `square` (default) | `triangle` | `circle` | `diamond`
+  - `count` (opcional): cantidad de colores, **3..30** (default 6). Menos de 6 se hace por downsample, más de 6 por interpolación en OKLab
+  - `sine`/`wave`/`zap`/`block` (opcional): modificadores, **-1..1** (default 0)
+  - `clamp` (opcional): `true` (default, igual que la UI) | `false` — clampa a sRGB reduciendo chroma; `false` devuelve colores que pueden quedar fuera de gamut (crudos)
+  - `interpolation` (opcional): `true` (default) | `false` — blend suave de variaciones en los umbrales de lightness
+- **Response 200:**
+  ```json
+  {
+    "base": "#2d6a4f",
+    "type": "analogous",
+    "style": "circle",
+    "count": 8,
+    "clampToGamut": true,
+    "interpolation": true,
+    "modifiers": {},
+    "colors": ["#2d6a4f", "#184922", "#1f4723", "#365b43", "#4a7967", "#5a9b8b", "#80c1b5", "#c3e9e7"]
+  }
+  ```
+- **Response 400:** si `base` no es un hex válido → `"Invalid hex color. Use ?base=#RRGGBB"`
+- **Archivo:** `layers/color-palette-creator/server/api/harmonies/index.get.ts`
+- **Dependencias:** ninguna (OKLCH implementado a mano, sin librerías).
+
+### `GET /pantone`
+
+Busca en el dataset Pantone (3.219 muestras de la guía Solid Coated, las mismas de la tool "All Colors"). Soporta 3 modos según el query:
+
+- **Modo hex (match perceptual):** `?hex=#RRGGBB&limit=12`
+  - Devuelve los `limit` Pantone más cercanos al color de referencia, ordenados por **ΔE2000** (CIEDE2000). `limit` entre 1 y 50 (default 12).
+  ```json
+  {
+    "mode": "match",
+    "hex": "#f6eb64",
+    "matches": [
+      { "code": "PANTONE 100 C", "name": "100 C", "category": "Solid Coated", "hex": "#f6eb64", "deltaE": 0 },
+      { "code": "PANTONE 3935 C", "name": "3935 C", "category": "Solid Coated", "hex": "#f2ec61", "deltaE": 1.12 }
+    ]
+  }
+  ```
+- **Modo código:** `?code=PANTONE 185 C` (case-insensitive, acepta `185 C`)
+  ```json
+  { "mode": "code", "swatch": { "code": "PANTONE 185 C", "name": "185 C", "category": "Solid Coated", "hex": "#e4092d" } }
+  ```
+- **Modo búsqueda:** `?q=green` (substring case-insensitive en nombre/código, máx 50 resultados)
+  ```json
+  { "mode": "search", "query": "green", "results": [ { "code": "PANTONE Green C", "name": "Green C", "category": "Solid Coated", "hex": "#00ab84" } ] }
+  ```
+- **Errores:** 400 si falta query o el hex es inválido; **404** si el código no existe.
+- **Archivo:** `layers/all-colors/server/api/pantone/index.get.ts`
+- **Dependencias:** ninguna (dataset JSON + CIEDE2000 propio).
+
+### `GET /color-name`
+
+Resuelve el **nombre del color** más cercano del diccionario ampliado (14.394 nombres, el mismo que usa toda la app). Usa la misma métrica que ntc (distancia RGB + 2× HSL) pero implementada en TS puro — no importa el `.js` legacy por el bug de Windows+Nitro.
+
+- **Query:**
+  - `hex` (obligatorio): hex code con o sin `#`
+- **Response 200:**
+  ```json
+  {
+    "hex": "#2C3E50",
+    "name": "Cloud Burst",
+    "exactMatch": false,
+    "matchedHex": "#2D3A52"
+  }
+  ```
+  `exactMatch: true` cuando el hex existe en el diccionario (ej. `#FFFFFF` → `White`).
+- **Response 400:** hex inválido → `"Invalid hex color. Use ?hex=#RRGGBB"`
+- **Archivo:** `layers/all-colors/server/api/color-name/index.get.ts`
+- **Dependencias:** `color-names-data.json` (367 KB, incluido en el repo).
 
 ### `POST /image-color-picker`
 
