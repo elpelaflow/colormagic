@@ -377,3 +377,72 @@ export function generateShadeVariants(hex: string, count = 10): ShadeVariant[] {
   const tints = generateTints(hex, count).map<ShadeVariant>(tint => ({ hex: tint, kind: 'tint' }));
   return [...shades, base, ...tints];
 };
+
+const deg2rad = (deg: number): number => (deg * Math.PI) / 180;
+const rad2deg = (rad: number): number => (rad * 180) / Math.PI;
+
+export function deltaE2000(labA: Lab, labB: Lab): number {
+  const { l: L1, a: a1, b: b1 } = labA;
+  const { l: L2, a: a2, b: b2 } = labB;
+
+  const avgL = (L1 + L2) / 2;
+  const C1 = Math.sqrt(a1 * a1 + b1 * b1);
+  const C2 = Math.sqrt(a2 * a2 + b2 * b2);
+  const avgC = (C1 + C2) / 2;
+
+  const G = 0.5 * (1 - Math.sqrt(Math.pow(avgC, 7) / (Math.pow(avgC, 7) + Math.pow(25, 7))));
+  const a1p = a1 * (1 + G);
+  const a2p = a2 * (1 + G);
+  const C1p = Math.sqrt(a1p * a1p + b1 * b1);
+  const C2p = Math.sqrt(a2p * a2p + b2 * b2);
+  const avgCp = (C1p + C2p) / 2;
+
+  let h1p = Math.atan2(b1, a1p);
+  let h2p = Math.atan2(b2, a2p);
+  if (h1p < 0) h1p += 2 * Math.PI;
+  if (h2p < 0) h2p += 2 * Math.PI;
+
+  const dLp = L2 - L1;
+  const dCp = C2p - C1p;
+
+  let dhp = h2p - h1p;
+  if (Math.abs(dhp) <= Math.PI) {
+    // keep
+  } else if (dhp > Math.PI) {
+    dhp -= 2 * Math.PI;
+  } else {
+    dhp += 2 * Math.PI;
+  }
+  const dHp = 2 * Math.sqrt(C1p * C2p) * Math.sin(dhp / 2);
+
+  const avgLp = (L1 + L2) / 2;
+  const avgHp = (() => {
+    if (C1p * C2p === 0) return h1p + h2p;
+    const diff = Math.abs(h1p - h2p);
+    if (diff <= Math.PI) return (h1p + h2p) / 2;
+    if (h1p + h2p < 2 * Math.PI) return (h1p + h2p + 2 * Math.PI) / 2;
+    return (h1p + h2p - 2 * Math.PI) / 2;
+  })();
+
+  const T = 1
+    - 0.17 * Math.cos(avgHp - deg2rad(30))
+    + 0.24 * Math.cos(2 * avgHp)
+    + 0.32 * Math.cos(3 * avgHp + deg2rad(6));
+
+  const dTheta = deg2rad(30) * Math.exp(-Math.pow((rad2deg(avgHp) - 275) / 25, 2));
+  const RC = 2 * Math.sqrt(Math.pow(avgCp, 7) / (Math.pow(avgCp, 7) + Math.pow(25, 7)));
+  const SL = 1 + (0.015 * Math.pow(avgLp - 50, 2)) / Math.sqrt(20 + Math.pow(avgLp - 50, 2));
+  const SC = 1 + 0.045 * avgCp;
+  const SH = 1 + 0.015 * avgCp * T;
+  const RT = -Math.sin(2 * dTheta) * RC;
+
+  const kL = 1;
+  const kC = 1;
+  const kH = 1;
+
+  const termL = dLp / (kL * SL);
+  const termC = dCp / (kC * SC);
+  const termH = dHp / (kH * SH);
+
+  return Math.sqrt(termL * termL + termC * termC + termH * termH + RT * (termC * termH));
+};

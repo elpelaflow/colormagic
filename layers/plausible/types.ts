@@ -14,6 +14,8 @@ export enum PlausibleEventName {
   ALL_COLORS_COLOR_COPIED = 'all-colors:color:copied',
   ALL_COLORS_SHADE_COPIED = 'all-colors:shade:copied',
   ALL_COLORS_COLOR_PAGE_OPENED = 'all-colors:color-page:opened',
+  ALL_COLORS_PANTONE_COPIED = 'all-colors:pantone:copied',
+  ALL_COLORS_PANTONE_IMAGE_DOWNLOADED = 'all-colors:pantone:image-downloaded',
 
   GITHUB_BUTTON_FLOATING_CLICKED = 'github-button:floating:clicked',
 

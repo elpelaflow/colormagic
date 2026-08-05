@@ -223,7 +223,16 @@ export default defineI18nConfig(() => ({
           tint: 'Tint',
           base: 'Base',
           shade: 'Shade'
-        }
+        },
+        pantoneTitle: 'Similar Ink Alternatives',
+        pantoneDescription: 'Translate your on-screen color to real printing inks from standardized guides (Pantone). Listed by perceptual closeness (Delta E 2000).',
+        pantoneExportPdf: 'PDF',
+        pantoneExportImage: 'Image',
+        pantoneExportAse: 'ASE',
+        pantoneEmpty: 'No ink alternatives found for this color.',
+        pantoneDisclaimer: 'References are approximate visual estimates, subject to screen calibration, and are not affiliated with or endorsed by Pantone LLC. Use Pantone Connect for exact specifications.',
+        pantoneComingSoon: 'Coming soon',
+        pantoneComingSoonDescription: 'This export format will be available in a future update.'
       }
     },
     ja: {
@@ -447,7 +456,16 @@ export default defineI18nConfig(() => ({
           tint: 'ティント',
           base: 'ベース',
           shade: 'シェード'
-        }
+        },
+        pantoneTitle: '類似インクの代替',
+        pantoneDescription: '画面上の色を標準化されたガイド（Pantone）の実際の印刷インクに変換します。知覚的近さ（Delta E 2000）順に表示します。',
+        pantoneExportPdf: 'PDF',
+        pantoneExportImage: '画像',
+        pantoneExportAse: 'ASE',
+        pantoneEmpty: 'この色に対応するインクの代替が見つかりませんでした。',
+        pantoneDisclaimer: '参照は概算の視覚推定値であり、画面のキャリブレーションに依存します。Pantone LLCとは提携・承認されていません。正確な仕様にはPantone Connectを使用してください。',
+        pantoneComingSoon: '近日公開',
+        pantoneComingSoonDescription: 'このエクスポート形式は今後のアップデートで利用可能になります。'
       }
     },
     it: {
@@ -671,7 +689,16 @@ export default defineI18nConfig(() => ({
           tint: 'Tinta',
           base: 'Base',
           shade: 'Ombra'
-        }
+        },
+        pantoneTitle: 'Alternative di inchiostro simili',
+        pantoneDescription: 'Traduci il colore a schermo in inchiostri di stampa reali da guide standardizzate (Pantone). Elencate per vicinanza percettiva (Delta E 2000).',
+        pantoneExportPdf: 'PDF',
+        pantoneExportImage: 'Immagine',
+        pantoneExportAse: 'ASE',
+        pantoneEmpty: 'Nessuna alternativa di inchiostro trovata per questo colore.',
+        pantoneDisclaimer: 'I riferimenti sono stime visive approssimative, soggette alla calibrazione dello schermo, e non sono affiliati né approvati da Pantone LLC. Usa Pantone Connect per specifiche esatte.',
+        pantoneComingSoon: 'Prossimamente',
+        pantoneComingSoonDescription: 'Questo formato di esportazione sarà disponibile in un futuro aggiornamento.'
       }
     }
   }

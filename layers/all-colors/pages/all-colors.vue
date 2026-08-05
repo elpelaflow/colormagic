@@ -178,6 +178,118 @@
         </ul>
       </div>
     </section>
+
+    <!-- section: similar ink alternatives / pantone equivalences -->
+    <section class="mt-12">
+      <!-- header -->
+      <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+        <div>
+          <h2 class="text-2xl font-semibold mb-1">
+            {{ $t('allColors.pantoneTitle') }}
+          </h2>
+          <p class="text-gray-500 max-w-xl">
+            {{ $t('allColors.pantoneDescription') }}
+          </p>
+        </div>
+
+        <!-- export buttons -->
+        <div class="flex flex-wrap gap-2">
+          <UButton
+            icon="i-heroicons-arrow-down-tray"
+            :label="$t('allColors.pantoneExportPdf')"
+            size="md"
+            color="red"
+            variant="solid"
+            @click="exportPantonePdf"
+          />
+          <UButton
+            icon="i-heroicons-photo"
+            :label="$t('allColors.pantoneExportImage')"
+            size="md"
+            color="red"
+            variant="solid"
+            :to="pantoneImageUrl"
+            target="_blank"
+            @click="exportPantoneImage"
+          />
+          <UButton
+            icon="i-heroicons-swatch"
+            :label="$t('allColors.pantoneExportAse')"
+            size="md"
+            color="red"
+            variant="solid"
+            @click="exportPantoneAse"
+          />
+        </div>
+      </div>
+
+      <!-- equivalences grid -->
+      <ul
+        v-if="pantoneMatches.length > 0"
+        class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3"
+      >
+        <li
+          v-for="match in pantoneMatches"
+          :key="match.swatch.code"
+          class="border border-gray-200 rounded-xl overflow-hidden"
+        >
+          <div class="flex">
+            <!-- swatch -->
+            <div
+              class="w-20 shrink-0 relative"
+              :style="{ background: match.swatch.hex }"
+            >
+              <span
+                class="absolute top-1 left-1 text-[10px] font-mono px-1 rounded bg-black/30"
+                :style="{ color: getContrastTextColor(match.swatch.hex) }"
+              >
+                ΔE {{ match.deltaE.toFixed(1) }}
+              </span>
+            </div>
+
+            <!-- info -->
+            <div class="p-2 flex-1 min-w-0">
+              <p class="text-sm font-semibold truncate">
+                {{ match.swatch.code }}
+              </p>
+              <p class="text-xs text-gray-500 truncate">
+                {{ match.swatch.name }}
+              </p>
+              <p class="text-[10px] text-gray-400 truncate">
+                {{ match.swatch.category }}
+              </p>
+
+              <!-- hex + copy -->
+              <div class="mt-1 flex items-center gap-1">
+                <span class="text-xs font-mono">{{ match.swatch.hex.toUpperCase() }}</span>
+                <UButton
+                  icon="i-heroicons-clipboard"
+                  size="xs"
+        color="blue"
+                  variant="ghost"
+                  :aria-label="`Copy ${match.swatch.hex}`"
+                  @click="copyPantoneHex(match.swatch.hex)"
+                />
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+
+      <!-- empty state (e.g. dataset not loaded) -->
+      <UAlert
+        v-else
+        icon="i-heroicons-information-circle"
+        color="blue"
+        variant="subtle"
+        :description="$t('allColors.pantoneEmpty')"
+      />
+
+      <!-- disclaimer -->
+      <p class="mt-4 text-xs text-gray-400 max-w-2xl">
+        {{ $t('allColors.pantoneDisclaimer') }}
+      </p>
+    </section>
   </div>
 </template>
 
@@ -188,8 +300,10 @@ import { PlausibleEventName } from '~/layers/plausible/types';
 import ntc from '~/layers/palette/utils/ntc.util';
 import { formatOgUrl } from '~/layers/og/utils/og.util';
 import { getRandomHexColor } from '~/layers/random-color/utils/random-color.util';
+import { findNearestPantones } from '~/layers/all-colors/utils/pantone-dataset';
 import {
   generateShadeVariants,
+  getContrastTextColor,
   hexToRgb,
   hsvToRgb,
   hsvToHsl,
@@ -296,6 +410,15 @@ const siteUrl = useRuntimeConfig().public.siteUrl;
 
 const colorPageUrl = computed(() => `${siteUrl}${formatOgUrl([selectedHex.value], encodeURIComponent(colorName.value))}`);
 
+const pantoneMatches = computed(() => findNearestPantones(selectedHex.value, 12));
+
+const pantoneImageUrl = computed(() => {
+  const colors = pantoneMatches.value.map(match => match.swatch.hex);
+  return `${siteUrl}${formatOgUrl(colors, encodeURIComponent(t('allColors.pantoneTitle')))}`;
+});
+
+const toast = useToast();
+
 useSeoMeta({
   title,
   description,
@@ -365,5 +488,32 @@ function randomColor(): void {
 
 function onOpenColorPage(): void {
   sendPlausibleEvent(PlausibleEventName.ALL_COLORS_COLOR_PAGE_OPENED);
+}
+
+function copyPantoneHex(hex: string): void {
+  copy(hex);
+  sendPlausibleEvent(PlausibleEventName.ALL_COLORS_PANTONE_COPIED);
+}
+
+function exportPantoneImage(): void {
+  sendPlausibleEvent(PlausibleEventName.ALL_COLORS_PANTONE_IMAGE_DOWNLOADED);
+}
+
+function exportPantonePdf(): void {
+  toast.add({
+    title: t('allColors.pantoneComingSoon'),
+    description: t('allColors.pantoneComingSoonDescription'),
+    icon: 'i-heroicons-information-circle',
+    color: 'blue'
+  });
+}
+
+function exportPantoneAse(): void {
+  toast.add({
+    title: t('allColors.pantoneComingSoon'),
+    description: t('allColors.pantoneComingSoonDescription'),
+    icon: 'i-heroicons-information-circle',
+    color: 'blue'
+  });
 }
 </script>
