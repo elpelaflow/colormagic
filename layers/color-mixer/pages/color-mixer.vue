@@ -261,13 +261,19 @@ const ratioLabel = computed(() => `${ratioPercent.value}% A · ${100 - ratioPerc
 
 const mixedResult = computed(() => mixColorsRyb(state.value.colorA, state.value.colorB, ratioPercent.value / 100));
 
-const colorAName = computed(() => ntc.name(state.value.colorA)[1].toString());
-const colorBName = computed(() => ntc.name(state.value.colorB)[1].toString());
-const mixedName = computed(() => ntc.name(mixedResult.value.hex)[1].toString());
+// Nombres desambiguados en orden visual (A -> mezcla -> B): si dos colores de la
+// misma vista caen al mismo nombre, los siguientes llevan sufijo "· 2", "· 3".
+const swatchNames = computed(() => ntc.uniqueNames([state.value.colorA, mixedResult.value.hex, state.value.colorB]));
+const colorAName = computed(() => swatchNames.value[0]);
+const mixedName = computed(() => swatchNames.value[1]);
+const colorBName = computed(() => swatchNames.value[2]);
+
+// el nombre puro (sin sufijo) para la URL del OG image, que no es una etiqueta visible
+const mixedPureName = computed(() => ntc.name(mixedResult.value.hex)[1].toString());
 
 const siteUrl = useRuntimeConfig().public.siteUrl;
 
-const colorPageUrl = computed(() => `${siteUrl}${formatOgUrl([mixedResult.value.hex], encodeURIComponent(mixedName.value))}`);
+const colorPageUrl = computed(() => `${siteUrl}${formatOgUrl([mixedResult.value.hex], encodeURIComponent(mixedPureName.value))}`);
 
 useSeoMeta({
   title,

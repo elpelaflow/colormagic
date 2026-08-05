@@ -52,7 +52,7 @@
                 class="w-full h-48 relative"
               >
                 <UTooltip
-                  :text="`Generate a ${ntc.name(item)[1].toString()} palette`"
+                  :text="`Generate a ${arrangedNames[index]} palette`"
                   class="bottom-0 left-0 absolute p-2 w-full"
                 >
                   <UButton
@@ -61,9 +61,9 @@
                     truncate
                     class="max-w-[90%]"
                     :loading="isCreating"
-                    @click="onClickExample(`${ntc.name(item)[1].toString()} (${ntc.name(item)[0]})`)"
+                    @click="onClickExample(`${ntc.name(item)[1].toString()} (${item})`)"
                   >
-                    <span class="hidden sm:block truncate">{{ ntc.name(item)[1].toString() }}</span>
+                    <span class="hidden sm:block truncate">{{ arrangedNames[index] }}</span>
                   </UButton>
                 </UTooltip>
               </div>
@@ -141,7 +141,7 @@
           <strong>{{ data.text }}</strong>
           {{ $t('palette.descriptionSuffix') }}
           <template v-for="(color, index) in arrangedColors" :key="index">
-            <strong :style="{ color }">{{ ntcName(color) }}</strong>
+            <strong :style="{ color }">{{ arrangedNames[index] }}</strong>
             <span class="text-gray-500">({{ color }})</span><template v-if="index < arrangedColors.length - 1">, </template><template v-else>.</template>
           </template>
         </p>
@@ -535,6 +535,9 @@ const arrangedColors = computed(() => arrangeColors(colors.value, {
   warmth: arrange.value.warmth
 }));
 
+/** @description nombres de los colores, desambiguados (sufijo "· 2" si dos colores de la paleta repiten nombre) */
+const arrangedNames = computed(() => ntc.uniqueNames(arrangedColors.value));
+
 function resetArrange(): void {
   arrange.value.brightness = 0;
   arrange.value.saturation = 0;
@@ -578,9 +581,6 @@ watch(data, (newValue) => {
   }
 }, { immediate: true });
 
-function ntcName(hex: string): string {
-  return ntc.name(hex)[1].toString();
-}
 
 const cssClasses = computed(() => {
   const paletteName = data.value?.text ?? 'Palette';

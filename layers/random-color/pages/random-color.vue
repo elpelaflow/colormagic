@@ -68,7 +68,7 @@
           >
             <ColorPaletteButton
               :colors="[item]"
-              :name="ntc.name(item)[1].toString()"
+              :name="recentNames[index]"
               @click="viewRecentColor(item)"
             />
           </li>
@@ -130,6 +130,9 @@ const arrangedColor = computed(() => arrangeColors([color.value], {
   saturation: arrange.value.saturation,
   warmth: arrange.value.warmth
 }));
+
+/** @description nombres de los recientes, desambiguados (sufijo "· 2" si dos colores de la misma grilla repiten nombre) */
+const recentNames = computed(() => ntc.uniqueNames(session.value));
 
 const hasChanges = computed(() => {
   return arrange.value.brightness !== 0 ||
