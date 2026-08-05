@@ -185,6 +185,10 @@ const toolsLinks = computed(() => [{
   label: t('nav.colorPaletteCreator')
 },
 {
+  to: localePath('/gradient-generator'),
+  label: t('nav.gradientGenerator')
+},
+{
   to: localePath('/api'),
   label: t('nav.api')
 }]);

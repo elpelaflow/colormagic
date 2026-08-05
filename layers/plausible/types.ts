@@ -23,6 +23,13 @@ export enum PlausibleEventName {
   COLOR_PALETTE_CREATOR_ASE_DOWNLOADED = 'color-palette-creator:ase:downloaded',
   COLOR_PALETTE_CREATOR_PDF_EXPORTED = 'color-palette-creator:pdf:exported',
 
+  GRADIENT_GENERATOR_STOP_ADDED = 'gradient-generator:stop-added',
+  GRADIENT_GENERATOR_COPY_CSS = 'gradient-generator:copied:css',
+  GRADIENT_GENERATOR_SAVED = 'gradient-generator:saved',
+  GRADIENT_GENERATOR_CSS_DOWNLOADED = 'gradient-generator:css:downloaded',
+  GRADIENT_GENERATOR_TAILWIND_DOWNLOADED = 'gradient-generator:tailwind:downloaded',
+  GRADIENT_GENERATOR_JSON_DOWNLOADED = 'gradient-generator:json:downloaded',
+
   GITHUB_BUTTON_FLOATING_CLICKED = 'github-button:floating:clicked',
 
   FEEDBACK_SUBMITTED = 'feedback:submitted',

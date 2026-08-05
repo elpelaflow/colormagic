@@ -40,7 +40,8 @@ export default defineI18nConfig(() => ({
         contrastChecker: 'Contrast Checker',
         colorMixer: 'Color Mixer',
         allColors: 'All Colors',
-        colorPaletteCreator: 'Color Palette Creator'
+        colorPaletteCreator: 'Color Palette Creator',
+        gradientGenerator: 'Gradient Generator'
       },
       palette: {
         seoTitle: 'ColorMagic - AI Color Palette Generator',
@@ -269,6 +270,37 @@ export default defineI18nConfig(() => ({
           splitComplementary: 'Split Complementary',
           tintsShades: 'Tints & Shades'
         }
+      },
+      gradientGenerator: {
+        title: 'Gradient Generator',
+        seoTitle: 'Gradient Generator - ColorMagic',
+        seoDescription: 'Create, customize and export beautiful CSS gradients: linear, radial and conic, with full control over color stops, positions and angle.',
+        gradientType: 'Gradient Type',
+        types: {
+          linear: 'Linear',
+          radial: 'Radial',
+          conic: 'Conic'
+        },
+        angle: 'Angle',
+        stopsTitle: 'Color Stops',
+        addStop: 'Add Stop',
+        position: 'Position',
+        deleteStop: 'Delete stop',
+        copyCss: 'Copy CSS',
+        previewCss: 'CSS',
+        saveGradient: 'Save Gradient',
+        exportTitle: 'Export Options',
+        downloadCss: 'Download CSS',
+        downloadTailwind: 'Download Tailwind Config',
+        downloadJson: 'Download JSON',
+        savedTitle: 'Saved Gradients',
+        savedEmpty: 'No saved gradients yet. Save your first gradient to keep it here.',
+        loadGradient: 'Load gradient',
+        deleteGradient: 'Delete gradient',
+        copiedCss: 'CSS copied to clipboard',
+        savedSuccess: 'Gradient saved',
+        loadedSuccess: 'Gradient loaded',
+        savedName: 'Gradient {number}'
       }
     },
     ja: {
@@ -309,7 +341,8 @@ export default defineI18nConfig(() => ({
         contrastChecker: 'コントラストチェッカー',
         colorMixer: 'カラーミキサー',
         allColors: 'オールカラー',
-        colorPaletteCreator: 'カラーパレットクリエーター'
+        colorPaletteCreator: 'カラーパレットクリエーター',
+        gradientGenerator: 'グラデーションジェネレーター'
       },
       palette: {
         seoTitle: 'あなたの思い描く色をかんたんに',
@@ -538,6 +571,37 @@ export default defineI18nConfig(() => ({
           splitComplementary: '分割補色',
           tintsShades: 'ティント & シェード'
         }
+      },
+      gradientGenerator: {
+        title: 'グラデーションジェネレーター',
+        seoTitle: 'グラデーションジェネレーター - ColorMagic',
+        seoDescription: '美しいCSSグラデーションを作成・カスタマイズ・エクスポート：線形・放射・扇形の3タイプ、カラーストップ・位置・角度を自由に調整できます。',
+        gradientType: 'グラデーションの種類',
+        types: {
+          linear: '線形',
+          radial: '放射',
+          conic: '扇形'
+        },
+        angle: '角度',
+        stopsTitle: 'カラーストップ',
+        addStop: 'ストップを追加',
+        position: '位置',
+        deleteStop: 'ストップを削除',
+        copyCss: 'CSSをコピー',
+        previewCss: 'CSS',
+        saveGradient: 'グラデーションを保存',
+        exportTitle: 'エクスポートオプション',
+        downloadCss: 'CSSをダウンロード',
+        downloadTailwind: 'Tailwind設定をダウンロード',
+        downloadJson: 'JSONをダウンロード',
+        savedTitle: '保存済みグラデーション',
+        savedEmpty: '保存済みのグラデーションはまだありません。最初のグラデーションを保存するとここに表示されます。',
+        loadGradient: 'グラデーションを読み込む',
+        deleteGradient: 'グラデーションを削除',
+        copiedCss: 'CSSをクリップボードにコピーしました',
+        savedSuccess: 'グラデーションを保存しました',
+        loadedSuccess: 'グラデーションを読み込みました',
+        savedName: 'グラデーション {number}'
       }
     },
     it: {
@@ -578,7 +642,8 @@ export default defineI18nConfig(() => ({
         contrastChecker: 'Controllo Contrasto',
         colorMixer: 'Mescolatore di Colori',
         allColors: 'Tutti i Colori',
-        colorPaletteCreator: 'Color Palette Creator'
+        colorPaletteCreator: 'Color Palette Creator',
+        gradientGenerator: 'Generatore di Gradienti'
       },
       palette: {
         seoTitle: 'Genera la tua palette di colori ideale',
@@ -807,6 +872,37 @@ export default defineI18nConfig(() => ({
           splitComplementary: 'Complementari divisi',
           tintsShades: 'Tinte e ombre'
         }
+      },
+      gradientGenerator: {
+        title: 'Generatore di Gradienti',
+        seoTitle: 'Generatore di Gradienti - ColorMagic',
+        seoDescription: 'Crea, personalizza ed esporta gradienti CSS: lineari, radiali e conici, con controllo completo su color stop, posizioni e angolo.',
+        gradientType: 'Tipo di gradiente',
+        types: {
+          linear: 'Lineare',
+          radial: 'Radiale',
+          conic: 'Conico'
+        },
+        angle: 'Angolo',
+        stopsTitle: 'Color Stop',
+        addStop: 'Aggiungi Stop',
+        position: 'Posizione',
+        deleteStop: 'Elimina stop',
+        copyCss: 'Copia CSS',
+        previewCss: 'CSS',
+        saveGradient: 'Salva gradiente',
+        exportTitle: 'Opzioni di esportazione',
+        downloadCss: 'Scarica CSS',
+        downloadTailwind: 'Scarica config Tailwind',
+        downloadJson: 'Scarica JSON',
+        savedTitle: 'Gradienti salvati',
+        savedEmpty: 'Nessun gradiente salvato. Salva il tuo primo gradiente per conservarlo qui.',
+        loadGradient: 'Carica gradiente',
+        deleteGradient: 'Elimina gradiente',
+        copiedCss: 'CSS copiato negli appunti',
+        savedSuccess: 'Gradiente salvato',
+        loadedSuccess: 'Gradiente caricato',
+        savedName: 'Gradiente {number}'
       }
     }
   }
