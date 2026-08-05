@@ -182,6 +182,12 @@ const toolsLinks = computed(() => [{
   label: t('nav.allColors'),
   description: t('allColors.seoDescription'),
   icon: 'i-heroicons-adjustments-horizontal'
+},
+{
+  to: localePath('/color-palette-creator'),
+  label: t('nav.colorPaletteCreator'),
+  description: t('colorPaletteCreator.seoDescription'),
+  icon: 'i-heroicons-squares-2x2'
 }]);
 
 watch(useRoute(), () => {

@@ -9,7 +9,8 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "start": "node .output/server/index.mjs",
-    "typecheck": "nuxi typecheck"
+    "typecheck": "nuxi typecheck",
+    "test:parity": "node --experimental-strip-types layers/color-palette-creator/utils/__tests__/palette-parity.test.ts"
   },
   "dependencies": {
     "@apideck/better-ajv-errors": "0.3.6",

@@ -1,4 +1,54 @@
 {
   // https://nuxt.com/docs/guide/concepts/typescript
-  "extends": "./.nuxt/tsconfig.json"
+  "extends": "./.nuxt/tsconfig.json",
+  // `exclude` reemplaza al del config extendido (no se mergea), así que se
+  // replica la lista que genera nuxi (paths relativos a este archivo) y se
+  // agrega la carpeta de tests de paridad: contiene la copia literal de
+  // pro-color-harmonies (importa 'culori', que no es dependencia del proyecto)
+  // y el harness, que se ejecuta con Node (node --experimental-strip-types).
+  "exclude": [
+    "./dist",
+    "./node_modules",
+    "./node_modules/nuxt/node_modules",
+    "./node_modules/@nuxt/ui-pro/node_modules",
+    "./layers/ai/node_modules",
+    "./layers/all-colors/node_modules",
+    "./layers/color-mixer/node_modules",
+    "./layers/color-palette-creator/node_modules",
+    "./layers/common/node_modules",
+    "./layers/contrast-checker/node_modules",
+    "./layers/feedback/node_modules",
+    "./layers/image-color-picker/node_modules",
+    "./layers/log/node_modules",
+    "./layers/mongo/node_modules",
+    "./layers/og/node_modules",
+    "./layers/openai/node_modules",
+    "./layers/palette/node_modules",
+    "./layers/plausible/node_modules",
+    "./layers/random-color/node_modules",
+    "./layers/setup/node_modules",
+    "./node_modules/@nuxt/ui-pro/modules/pro/node_modules",
+    "./node_modules/@nuxt/ui-pro/modules/pro/runtime/server",
+    "./node_modules/@nuxt/ui-pro/modules/pro/dist/runtime/server",
+    "./node_modules/@nuxtjs/google-fonts/runtime/server",
+    "./node_modules/@nuxtjs/google-fonts/dist/runtime/server",
+    "./node_modules/@nuxt/icon/runtime/server",
+    "./node_modules/@nuxt/icon/dist/runtime/server",
+    "./node_modules/@nuxtjs/color-mode/runtime/server",
+    "./node_modules/@nuxtjs/color-mode/dist/runtime/server",
+    "./node_modules/@nuxtjs/tailwindcss/runtime/server",
+    "./node_modules/@nuxtjs/tailwindcss/dist/runtime/server",
+    "./node_modules/@nuxt/ui/runtime/server",
+    "./node_modules/@nuxt/ui/dist/runtime/server",
+    "./node_modules/@nuxtjs/plausible/runtime/server",
+    "./node_modules/@nuxtjs/plausible/dist/runtime/server",
+    "./node_modules/@nuxtjs/i18n/runtime/server",
+    "./node_modules/@nuxtjs/i18n/dist/runtime/server",
+    "./node_modules/@nuxt/devtools/runtime/server",
+    "./node_modules/@nuxt/devtools/dist/runtime/server",
+    "./node_modules/@nuxt/telemetry/runtime/server",
+    "./node_modules/@nuxt/telemetry/dist/runtime/server",
+    "./.output",
+    "./layers/color-palette-creator/utils/__tests__"
+  ]
 }

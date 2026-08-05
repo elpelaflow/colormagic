@@ -12,3 +12,7 @@ dist
 colornames.txt
 colordatabase.json
 colors_and_palettes.csv
+
+# Harness de paridad — artefactos generados en runtime
+layers/color-palette-creator/utils/__tests__/.tmp-parity/
+layers/color-palette-creator/utils/__tests__/parity-diffs.json

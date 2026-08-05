@@ -39,7 +39,8 @@ export default defineI18nConfig(() => ({
         api: 'Colors API',
         contrastChecker: 'Contrast Checker',
         colorMixer: 'Color Mixer',
-        allColors: 'All Colors'
+        allColors: 'All Colors',
+        colorPaletteCreator: 'Color Palette Creator'
       },
       palette: {
         seoTitle: 'ColorMagic - AI Color Palette Generator',
@@ -233,6 +234,41 @@ export default defineI18nConfig(() => ({
         pantoneDisclaimer: 'References are approximate visual estimates, subject to screen calibration, and are not affiliated with or endorsed by Pantone LLC. Use Pantone Connect for exact specifications.',
         pantoneComingSoon: 'Coming soon',
         pantoneComingSoonDescription: 'This export format will be available in a future update.'
+      },
+      colorPaletteCreator: {
+        title: 'Color Palette Creator',
+        seoTitle: 'Color Palette Creator - ColorMagic',
+        seoDescription: 'Generate complete color schemes from a single base color: 6 harmony types, 4 styles and creative modifiers, all in perceptual OKLCH space.',
+        baseColor: 'Base color',
+        random: 'Random',
+        style: 'Style',
+        styles: {
+          square: 'Square',
+          triangle: 'Triangle',
+          circle: 'Circle',
+          diamond: 'Diamond'
+        },
+        colorCount: 'Colors',
+        modifiers: 'Modifiers',
+        modifiersReset: 'Reset',
+        modifierNames: {
+          sine: 'Sine',
+          wave: 'Wave',
+          zap: 'Zap',
+          block: 'Block'
+        },
+        copyAll: 'Copy all',
+        downloadPng: 'PNG',
+        exportPdf: 'PDF',
+        exportAse: 'ASE',
+        types: {
+          analogous: 'Analogous',
+          complementary: 'Complementary',
+          triadic: 'Triadic',
+          tetradic: 'Tetradic',
+          splitComplementary: 'Split Complementary',
+          tintsShades: 'Tints & Shades'
+        }
       }
     },
     ja: {
@@ -272,7 +308,8 @@ export default defineI18nConfig(() => ({
         api: 'カラーAPI',
         contrastChecker: 'コントラストチェッカー',
         colorMixer: 'カラーミキサー',
-        allColors: 'オールカラー'
+        allColors: 'オールカラー',
+        colorPaletteCreator: 'カラーパレットクリエーター'
       },
       palette: {
         seoTitle: 'あなたの思い描く色をかんたんに',
@@ -466,6 +503,41 @@ export default defineI18nConfig(() => ({
         pantoneDisclaimer: '参照は概算の視覚推定値であり、画面のキャリブレーションに依存します。Pantone LLCとは提携・承認されていません。正確な仕様にはPantone Connectを使用してください。',
         pantoneComingSoon: '近日公開',
         pantoneComingSoonDescription: 'このエクスポート形式は今後のアップデートで利用可能になります。'
+      },
+      colorPaletteCreator: {
+        title: 'カラーパレットクリエーター',
+        seoTitle: 'カラーパレットクリエーター - ColorMagic',
+        seoDescription: '1つのベースカラーから配色スキームを生成：6種類のハーモニー、4つのスタイル、クリエイティブなモディファイア（知覚色空間OKLCH）。',
+        baseColor: 'ベースカラー',
+        random: 'ランダム',
+        style: 'スタイル',
+        styles: {
+          square: 'スクエア',
+          triangle: 'トライアングル',
+          circle: 'サークル',
+          diamond: 'ダイヤモンド'
+        },
+        colorCount: '色数',
+        modifiers: 'モディファイア',
+        modifiersReset: 'リセット',
+        modifierNames: {
+          sine: 'サイン',
+          wave: 'ウェーブ',
+          zap: 'ザップ',
+          block: 'ブロック'
+        },
+        copyAll: 'すべてコピー',
+        downloadPng: 'PNG',
+        exportPdf: 'PDF',
+        exportAse: 'ASE',
+        types: {
+          analogous: '類似色',
+          complementary: '補色',
+          triadic: 'トライアド',
+          tetradic: 'テトラード',
+          splitComplementary: '分割補色',
+          tintsShades: 'ティント & シェード'
+        }
       }
     },
     it: {
@@ -505,7 +577,8 @@ export default defineI18nConfig(() => ({
         api: 'API dei colori',
         contrastChecker: 'Controllo Contrasto',
         colorMixer: 'Mescolatore di Colori',
-        allColors: 'Tutti i Colori'
+        allColors: 'Tutti i Colori',
+        colorPaletteCreator: 'Color Palette Creator'
       },
       palette: {
         seoTitle: 'Genera la tua palette di colori ideale',
@@ -699,6 +772,41 @@ export default defineI18nConfig(() => ({
         pantoneDisclaimer: 'I riferimenti sono stime visive approssimative, soggette alla calibrazione dello schermo, e non sono affiliati né approvati da Pantone LLC. Usa Pantone Connect per specifiche esatte.',
         pantoneComingSoon: 'Prossimamente',
         pantoneComingSoonDescription: 'Questo formato di esportazione sarà disponibile in un futuro aggiornamento.'
+      },
+      colorPaletteCreator: {
+        title: 'Color Palette Creator',
+        seoTitle: 'Color Palette Creator - ColorMagic',
+        seoDescription: 'Genera schemi di colori da un singolo colore base: 6 tipi di armonia, 4 stili e modificatori creativi, tutto nello spazio percettivo OKLCH.',
+        baseColor: 'Colore base',
+        random: 'Casuale',
+        style: 'Stile',
+        styles: {
+          square: 'Quadrato',
+          triangle: 'Triangolo',
+          circle: 'Cerchio',
+          diamond: 'Diamante'
+        },
+        colorCount: 'Colori',
+        modifiers: 'Modificatori',
+        modifiersReset: 'Reimposta',
+        modifierNames: {
+          sine: 'Sine',
+          wave: 'Onda',
+          zap: 'Zap',
+          block: 'Blocco'
+        },
+        copyAll: 'Copia tutto',
+        downloadPng: 'PNG',
+        exportPdf: 'PDF',
+        exportAse: 'ASE',
+        types: {
+          analogous: 'Analoghi',
+          complementary: 'Complementari',
+          triadic: 'Triadici',
+          tetradic: 'Tetradici',
+          splitComplementary: 'Complementari divisi',
+          tintsShades: 'Tinte e ombre'
+        }
       }
     }
   }

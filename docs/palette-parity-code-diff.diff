@@ -1,0 +1,2218 @@
+diff --git a/scripts/.tmp-before/palette-generator.util.ts b/layers/color-palette-creator/utils/palette-generator.util.ts
+index 03ae0a2..8b91756 100644
+--- a/scripts/.tmp-before/palette-generator.util.ts
++++ b/layers/color-palette-creator/utils/palette-generator.util.ts
+@@ -1,15 +1,24 @@
+ /**
+- * Generador de paletas "Color Palette Creator" — port a mano de la logica de
+- * pro-color-harmonies (meodai), reconstruida en
+- * docs/informe-pro-color-harmonies-DEFINITIVO.md a partir de los 12 archivos
+- * reales del proyecto.
++ * Generador de paletas "Color Palette Creator" — port 1:1 de la lógica de
++ * pro-color-harmonies v0.11.0 (meodai, MIT).
+  *
+- * Pipeline real (orden exacto):
+- *   achromatic-check -> style-resolve -> hue-strategy -> variations(+blend
+- *   suave) -> safeColor(muddy-zones si enhanced) -> enhance+polish(si enhanced)
+- *   -> modifiers(orden fijo) -> gamut-clamp -> hex
++ * La copia literal de la librería original vive en
++ * utils/__tests__/reference/pro-color-harmonies/ (verificada por md5 contra
++ * el tag v0.11.0). Este archivo es la traducción directa de:
++ *   - src/index.ts            (tipos + ColorPaletteGenerator + 5 ensambladores)
++ *   - src/utils/color.ts      (clampOKLCH, avoidMuddyZones, safeColor)
++ *   - src/utils/palette.ts    (createPaletteGenerator, neutral palette)
++ *   - src/utils/hue-strategies.ts
++ *   - src/utils/variations.ts
++ *   - src/utils/enhancer.ts   (ChromaNarrative + ColorHierarchy + polish)
++ *   - src/utils/modifiers.ts
++ *   - src/utils/tintsShades.ts
++ *   - src/utils/demo-palette.ts (extendPalette -> expandPalette)
+  *
+- * - `tintsShades` es autónomo (no pasa por el pipeline).
+- * - `square` es el modo matematico puro (sin correcciones) -> baseline de testing.
+- * - Modelo de color: OKLCH { l, c, h } (ver oklch.util.ts).
++ * La paridad numérica (tolerancia 0.0005 por componente l/c/h) se mantiene con
++ * utils/__tests__/palette-parity.test.ts:
++ *   node --experimental-strip-types layers/color-palette-creator/utils/__tests__/palette-parity.test.ts
++ *
++ * Única divergencia deliberada: `clampToGamut` — ver PARITY-REPORT.md (la UI
++ * lo usa en true; el original lo tiene off por defecto).
+  */
+@@ -21,3 +30,2 @@ import {
+   normalizeHue,
+-  oklabToOklch,
+   oklchToHex,
+@@ -48,5 +56,14 @@ export interface PaletteModifiers {
+ export interface GeneratorOptions {
++  /** The geometric style to use for hue calculation */
+   style: PaletteStyle
++  /** Optional modifiers to apply to the generated palette */
+   modifiers?: PaletteModifiers
++  /** Whether to interpolate variations for smooth transitions */
+   interpolation?: boolean
++  /**
++   * Clamp the generated colors into sRGB by reducing chroma (lightness and hue
++   * are preserved). Off by default (como en el original): los valores OKLCH
++   * crudos pueden quedar fuera de gamut, lo que es fino para CSS `oklch()`
++   * pero clipea con corrimientos de hue al convertir a hex en JS.
++   */
+   clampToGamut?: boolean
+@@ -54,3 +71,3 @@ export interface GeneratorOptions {
+ 
+-const OKLCH_LIMITS = {
++export const OKLCH_LIMITS = {
+   l: { min: 0.01, max: 0.99 },
+@@ -60,20 +77,30 @@ const OKLCH_LIMITS = {
+ 
++/** Chroma below this value is treated as achromatic (gray) input. */
+ export const ACHROMATIC_CHROMA_THRESHOLD = 0.002;
+ 
+-interface Variant {
+-  l: number // delta de lightness (se SUMA)
+-  c: number // multiplicador de chroma (se MULTIPLICA)
+-}
+-
+-type VariantSet = Record<'dark' | 'mid' | 'light', Record<string, Variant>>;
++export const PALETTE_TYPES: PaletteType[] = [
++  'analogous',
++  'complementary',
++  'triadic',
++  'tetradic',
++  'splitComplementary',
++  'tintsShades'
++];
+ 
+ // ---------------------------------------------------------------------------
+-// Utilidades base
++// src/utils/color.ts
+ // ---------------------------------------------------------------------------
+ 
++/** Normalize hue to 0-360 range (delegada a oklch.util). */
++export { normalizeHue };
++
++/**
++ * Clamp OKLCH values to valid ranges. El hue se devuelve tal cual (el original
++ * no lo normaliza aquí; todas las llamadas lo pasan ya normalizado).
++ */
+ export function clampOKLCH(l: number, c: number, h: number): Oklch {
+   return {
+-    l: Math.min(OKLCH_LIMITS.l.max, Math.max(OKLCH_LIMITS.l.min, l)),
+-    c: Math.min(OKLCH_LIMITS.c.max, Math.max(OKLCH_LIMITS.c.min, c)),
+-    h: normalizeHue(h)
++    l: Math.max(OKLCH_LIMITS.l.min, Math.min(OKLCH_LIMITS.l.max, l)),
++    c: Math.max(OKLCH_LIMITS.c.min, Math.min(OKLCH_LIMITS.c.max, c)),
++    h
+   };
+@@ -81,41 +108,103 @@ export function clampOKLCH(l: number, c: number, h: number): Oklch {
+ 
+-const isAchromatic = (base: Oklch): boolean => base.c < ACHROMATIC_CHROMA_THRESHOLD;
++/**
++ * Avoid muddy zones in the color space by shifting hue away from problematic
++ * areas. Zonas "feas": marrón-oliva [25,65], verde enfermizo [100,140], cian
++ * cadaver [180,200]. Primera zona que matchea gana.
++ */
++export function avoidMuddyZones(hue: number, lightness: number, chroma: number): Oklch {
++  const mudZones = [
++    { range: [25, 65], name: 'brown-olive' },
++    { range: [100, 140], name: 'sick-green' },
++    { range: [180, 200], name: 'corpse-cyan' }
++  ];
++
++  for (const zone of mudZones) {
++    if (hue >= zone.range[0] && hue <= zone.range[1]) {
++      if (chroma < 0.15) {
++        // Muy apagado: neutral sofisticado
++        return clampOKLCH(lightness, chroma * 0.5, hue);
++      }
++      // Empujar mas alla del borde de la zona (el hue sale de la zona)
++      const escapeMargin = 10;
++      const pushDirection = hue > (zone.range[0] + zone.range[1]) / 2 ? 1 : -1;
++      const newHue = normalizeHue(
++        pushDirection === 1 ? zone.range[1] + escapeMargin : zone.range[0] - escapeMargin
++      );
++      // Boost de chroma para escapar del barro
++      return clampOKLCH(lightness, chroma * 1.1, newHue);
++    }
++  }
++
++  return clampOKLCH(lightness, chroma, hue);
++}
++
++/** Builds a color, avoiding muddy zones when enhanced mode is on. */
++export function safeColor(hue: number, lightness: number, chroma: number, enhanced: boolean): Oklch {
++  if (!enhanced) return { l: lightness, c: chroma, h: hue };
++  return avoidMuddyZones(hue, lightness, chroma);
++}
+ 
+ // ---------------------------------------------------------------------------
+-// safeColor / avoidMuddyZones (solo en estilos "enhanced")
++// src/utils/palette.ts — resolvePaletteStyle / isAchromatic / neutral
+ // ---------------------------------------------------------------------------
+ 
+-interface MudZone { range: [number, number] }
++/** 'default' es un alias de 'square': producen paletas identicas. */
++export function resolvePaletteStyle(style: PaletteStyle): Exclude<PaletteStyle, 'default'> {
++  return style === 'default' ? 'square' : style;
++}
+ 
+-const MUD_ZONES: MudZone[] = [
+-  { range: [25, 65] },     // brown-olive
+-  { range: [100, 140] },   // sick-green
+-  { range: [180, 200] }    // corpse-cyan
+-];
++/** Whether a color is effectively achromatic (a gray). */
++export function isAchromatic(color: Oklch): boolean {
++  return color.c < ACHROMATIC_CHROMA_THRESHOLD;
++}
+ 
+ /**
+- * Zonas "feas" del circulo de hue (marrón-oliva, verde enfermizo, cian cadaver).
+- * - Si el color ya venia apagado (c < 0.15): se asume intencion -> chroma / 2.
+- * - Si venia con intensidad (c >= 0.15): se empuja el hue 10° fuera de la zona
+- *   (hacia el borde mas cercano) y se sube el chroma 10% para "reforzar la fuga".
++ * Rampa neutral para input acromatico: el base primero, luego la rampa con el
++ * slot mas cercano a su lightness quitado.
+  */
+-export function avoidMuddyZones(hue: number, l: number, c: number): Oklch {
+-  const zone = MUD_ZONES.find(({ range }) => hue >= range[0] && hue <= range[1]);
+-  if (!zone) return { l, c, h: hue };
++export function generateNeutralPalette(base: Oklch): Oklch[] {
++  const ramp = [0.2, 0.35, 0.5, 0.65, 0.8, 0.95];
+ 
+-  if (c < 0.15) {
+-    return { l, c: c * 0.5, h: hue };
+-  }
++  const nearestIndex = ramp.reduce(
++    (best, l, i) => (Math.abs(l - base.l) < Math.abs(ramp[best] - base.l) ? i : best),
++    0
++  );
+ 
+-  const [low, high] = zone.range;
+-  const mid = (low + high) / 2;
+-  const escaped = hue < mid ? low - 10 : high + 10;
+-  return clampOKLCH(l, c * 1.1, escaped);
++  return [
++    { l: base.l, c: base.c, h: base.h },
++    ...ramp
++      .filter((_, i) => i !== nearestIndex)
++      .map((l) => ({ l, c: base.c, h: base.h }))
++  ];
+ }
+ 
+-/** gateada por `enhanced`: square/devuelve crudo, el resto aplica muddy-zones */
+-function safeColor(hue: number, l: number, c: number, enhanced: boolean): Oklch {
+-  if (!enhanced) return clampOKLCH(l, c, hue);
+-  const adjusted = avoidMuddyZones(normalizeHue(hue), l, c);
+-  return clampOKLCH(adjusted.l, adjusted.c, adjusted.h);
++// ---------------------------------------------------------------------------
++// src/utils/interpolation.ts — interpolateDeep
++// ---------------------------------------------------------------------------
++
++/** Deep interpolation between two objects or numbers. */
++export function interpolateDeep<T>(start: T, end: T, amt: number): T {
++  if (typeof start === 'number' && typeof end === 'number') {
++    return lerp(amt, start, end) as unknown as T;
++  }
++
++  if (typeof start === 'object' && start !== null && typeof end === 'object' && end !== null) {
++    if (Array.isArray(start) && Array.isArray(end)) {
++      return start.map((val, i) => interpolateDeep(val, end[i], amt)) as unknown as T;
++    }
++
++    const result = {} as T;
++    for (const key in start) {
++      if (Object.prototype.hasOwnProperty.call(start, key)) {
++        (result as Record<string, unknown>)[key] = interpolateDeep(
++          (start as Record<string, unknown>)[key],
++          (end as Record<string, unknown>)[key],
++          amt
++        );
++      }
++    }
++    return result;
++  }
++
++  return start;
+ }
+@@ -123,202 +212,228 @@ function safeColor(hue: number, l: number, c: number, enhanced: boolean): Oklch
+ // ---------------------------------------------------------------------------
+-// Hue strategies: calculo de hues por estilo
+-// (square = rotaciones fijas; triangle = buckets; circle = bandas trig;
+-//  diamond = condiciones compuestas + catch-all)
++// src/utils/hue-strategies.ts
+ // ---------------------------------------------------------------------------
+ 
+-function getComplementaryHue(base: Oklch, style: PaletteStyle): number {
+-  const { l, c, h } = base;
++/** Calculates the complementary hue based on the selected style. */
++export const getComplementaryHue = (base: Oklch, style: PaletteStyle): number => {
++  const { h: hue, l: lightness, c: chroma } = base;
++
+   switch (style) {
+-    case 'square':
+-      return normalizeHue(h + 180);
+-    case 'triangle': {
+-      // rectas por tramos (buckets de 60°)
+-      if (h < 60) return normalizeHue(h + 173);
+-      if (h < 120) return normalizeHue(h + 185);
+-      if (h < 180) return normalizeHue(h + 192);
+-      if (h < 240) return normalizeHue(h + 176);
+-      if (h < 300) return normalizeHue(h + 168);
+-      return normalizeHue(h + 183);
+-    }
++    case 'triangle':
++      if (hue < 30) return 170 + hue * 0.3;
++      if (hue < 90) return 240 + (hue - 30) * 0.5;
++      if (hue < 150) return 320 + (hue - 90) * 0.6;
++      if (hue < 210) return 20 + (hue - 150) * 0.4;
++      if (hue < 270) return 40 + (hue - 210) * 0.3;
++      return 90 + (hue - 270) * 0.4;
+     case 'circle':
+-      return normalizeHue(h + 180 + Math.sin((h * Math.PI) / 180) * 12);
++      if (hue >= 345 || hue < 30) return 180 + Math.sin((hue * Math.PI) / 180) * 20;
++      if (hue < 90) return 240 + (chroma * lightness) * 30;
++      if (hue < 150) return 320 + (hue - 90) * 0.5;
++      if (hue < 210) return 30 + Math.cos((hue * Math.PI) / 180) * 15;
++      if (hue < 270) return 50 + (270 - hue) * 0.4;
++      return 100 + Math.sin(((hue - 270) * Math.PI) / 90) * 25;
+     case 'diamond':
+-      // condiciones compuestas reales del proyecto (chroma adaptado a 0..0.37)
+-      if (l > 0.8 && c < 0.3) return normalizeHue(h + 200);
+-      if (h >= 30 && h < 90 && l > 0.6) return normalizeHue(240 + (h - 30) * 0.3);
+-      if (h >= 180 && h < 240 && l < 0.5) return normalizeHue(40 + (h - 180) * 0.4);
+-      if (c > 0.25 && l < 0.4) return normalizeHue(h < 180 ? h + 160 : h + 200);
+-      if (h >= 270 && h < 330) return normalizeHue(90 + (h - 270) * 0.6);
+-      return normalizeHue(h + 180 + (l * 20 - 10)); // catch-all
++      if (lightness > 0.8 && chroma < 0.3) return normalizeHue(hue + 200);
++      if (hue >= 30 && hue < 90 && lightness > 0.6) return 240 + (hue - 30) * 0.3;
++      if (hue >= 180 && hue < 240 && lightness < 0.5) return 40 + (hue - 180) * 0.4;
++      if (chroma > 0.8 && lightness < 0.4) {
++        return hue < 180 ? normalizeHue(hue + 160) : normalizeHue(hue + 200);
++      }
++      if (hue >= 270 && hue < 330) return 90 + (hue - 270) * 0.6;
++      return normalizeHue(hue + 180 + (lightness * 20 - 10));
++    case 'square':
+     default:
+-      return normalizeHue(h + 180);
++      return normalizeHue(hue + 180);
+   }
+-}
++};
+ 
+-const ANALOGOUS_BUCKETS: number[][] = [
+-  [0, -15, -8, 8, 20, 35],  // 0-60
+-  [0, -22, -10, 8, 18, 30], // 60-120
+-  [0, -18, -9, 9, 22, 34],  // 120-180
+-  [0, -25, -12, 6, 16, 28], // 180-240
+-  [0, -20, -10, 8, 18, 30], // 240-300
+-  [0, -16, -8, 10, 24, 38]  // 300-360
+-];
++/** Calculates analogous hues based on the selected style. */
++export const getAnalogousHues = (base: Oklch, style: PaletteStyle): number[] => {
++  const { h: hue, l: lightness, c: chroma } = base;
+ 
+-function getAnalogousHues(base: Oklch, style: PaletteStyle): number[] {
+-  const { l, c, h } = base;
+-  let offsets: number[];
+   switch (style) {
+-    case 'square':
+-      offsets = [0, -30, -20, -10, 15, 30];
+-      break;
+     case 'triangle':
+-      offsets = ANALOGOUS_BUCKETS[Math.floor(h / 60) % 6];
+-      break;
+-    case 'circle': {
+-      const s = Math.sin((h * Math.PI) / 180) * 6;
+-      offsets = [0, -20 - s, -10 - s / 2, 8 + s, 18 + s, 30 + s * 1.5];
+-      break;
+-    }
+-    case 'diamond': {
+-      if (l > 0.8 && c < 0.3) offsets = [0, -30, -14, 10, 24, 40];
+-      else offsets = [0, -22, -10, 8, 18, 30];
+-      break;
+-    }
++      if (hue < 30) return [0, -15, -8, 8, 20, 35].map((d) => normalizeHue(hue + d));
++      if (hue < 90) {
++        if (hue < 50) return [0, -25, -12, 10, 20, 30].map((d) => normalizeHue(hue + d));
++        return [0, -20, -10, 8, 18, 30].map((d) => normalizeHue(hue + d));
++      }
++      if (hue < 180) return [0, -25, -12, 10, 20, 35].map((d) => normalizeHue(hue + d));
++      if (hue < 240) return [0, -20, -10, 8, 18, 30].map((d) => normalizeHue(hue + d));
++      return [0, -25, -12, 10, 20, 35].map((d) => normalizeHue(hue + d));
++    case 'circle':
++      if (hue >= 345 || hue < 30) return [0, -20, -10, 8, 18, 30].map((d) => normalizeHue(hue + d));
++      if (hue >= 30 && hue < 90) return [0, -25, -12, 10, 20, 35].map((d) => normalizeHue(hue + d));
++      if (hue >= 90 && hue < 150) return [0, -22, -10, 10, 20, 35].map((d) => normalizeHue(hue + d));
++      if (hue >= 150 && hue < 210) return [0, -20, -10, 8, 18, 30].map((d) => normalizeHue(hue + d));
++      if (hue >= 210 && hue < 270) return [0, -25, -12, 10, 20, 35].map((d) => normalizeHue(hue + d));
++      return [0, -20, -10, 10, 20, 35].map((d) => normalizeHue(hue + d));
++    case 'diamond':
++      if (lightness > 0.8 && chroma < 0.3) return [0, -22, -10, 8, 18, 30].map((d) => normalizeHue(hue + d));
++      if (hue >= 30 && hue < 90 && lightness > 0.6) return [0, -20, -10, 8, 18, 30].map((d) => normalizeHue(hue + d));
++      if (hue >= 180 && hue < 240 && lightness < 0.5) return [0, -25, -12, 10, 20, 35].map((d) => normalizeHue(hue + d));
++      if (chroma > 0.8 && lightness < 0.4) return [0, -35, -18, 15, 28, 45].map((d) => normalizeHue(hue + d));
++      if (hue >= 270 && hue < 330) return [0, -30, -15, 12, 25, 40].map((d) => normalizeHue(hue + d));
++      return [0, -22, -10, 8, 18, 30].map((d) => normalizeHue(hue + d));
++    case 'square':
+     default:
+-      offsets = [0, -30, -20, -10, 15, 30];
++      return [0, -30, -20, -10, 15, 30].map((d) => normalizeHue(hue + d));
+   }
+-  return offsets.map((o) => normalizeHue(h + o));
+-}
++};
++
++/** Calculates triadic hues based on the selected style. */
++export const getTriadicHues = (base: Oklch, style: PaletteStyle): number[] => {
++  const { h: hue, l: lightness, c: chroma } = base;
+ 
+-function getTriadicHues(base: Oklch, style: PaletteStyle): number[] {
+-  const { l, h } = base;
+   switch (style) {
++    case 'triangle':
++      if (hue < 60) return [hue, normalizeHue(hue + 125), normalizeHue(hue + 235)];
++      if (hue < 120) return [hue, normalizeHue(hue + 135), normalizeHue(hue + 225)];
++      if (hue < 180) return [hue, normalizeHue(hue + 115), normalizeHue(hue + 245)];
++      if (hue < 240) return [hue, normalizeHue(hue + 120), normalizeHue(hue + 240)];
++      if (hue < 300) return [hue, normalizeHue(hue + 115), normalizeHue(hue + 245)];
++      return [hue, normalizeHue(hue + 125), normalizeHue(hue + 235)];
++    case 'circle':
++      if (hue >= 345 || hue < 30) return [hue, normalizeHue(hue + 130), normalizeHue(hue + 230)];
++      if (hue >= 30 && hue < 90) {
++        const i = chroma * lightness;
++        return [hue, normalizeHue(hue + 120 + i * 15), normalizeHue(hue + 240 - i * 10)];
++      }
++      if (hue >= 90 && hue < 150) return [hue, normalizeHue(hue + 125), normalizeHue(hue + 235)];
++      if (hue >= 150 && hue < 210) return [hue, normalizeHue(hue + 115), normalizeHue(hue + 245)];
++      if (hue >= 210 && hue < 270) return [hue, normalizeHue(hue + 130), normalizeHue(hue + 230)];
++      return [hue, normalizeHue(hue + 120), normalizeHue(hue + 240)];
++    case 'diamond':
++      if (lightness > 0.8 && chroma < 0.3) return [hue, normalizeHue(hue + 125), normalizeHue(hue + 235)];
++      if (hue >= 30 && hue < 90 && lightness > 0.6) return [hue, normalizeHue(hue + 110), normalizeHue(hue + 250)];
++      if (hue >= 180 && hue < 240 && lightness < 0.5) return [hue, normalizeHue(hue + 130), normalizeHue(hue + 230)];
++      if (chroma > 0.8 && lightness < 0.4) {
++        return hue < 180
++          ? [hue, normalizeHue(hue + 115), normalizeHue(hue + 245)]
++          : [hue, normalizeHue(hue + 125), normalizeHue(hue + 235)];
++      }
++      if (hue >= 270 && hue < 330) return [hue, normalizeHue(hue + 135), normalizeHue(hue + 225)];
++      const inf = (lightness - 0.5) * 15;
++      return [hue, normalizeHue(hue + 120 + inf), normalizeHue(hue + 240 - inf)];
+     case 'square':
+-      return [h, normalizeHue(h + 120), normalizeHue(h + 240)];
+-    case 'triangle': {
+-      const bucket = Math.floor(h / 60) % 6;
+-      const desv = [4, -3, 2, -4, 3, -2][bucket];
+-      return [h, normalizeHue(h + 120 + desv), normalizeHue(h + 240 - desv)];
+-    }
+-    case 'circle': {
+-      const s = Math.sin((h * Math.PI) / 180) * 6;
+-      return [h, normalizeHue(h + 120 + s), normalizeHue(h + 240 - s)];
+-    }
+-    case 'diamond': {
+-      const d = l * 10 - 5;
+-      return [h, normalizeHue(h + 120 + d), normalizeHue(h + 240 - d)];
+-    }
+     default:
+-      return [h, normalizeHue(h + 120), normalizeHue(h + 240)];
++      return [hue, normalizeHue(hue + 120), normalizeHue(hue + 240)];
+   }
+-}
++};
++
++/** Calculates tetradic hues based on the selected style. */
++export const getTetradicHues = (base: Oklch, style: PaletteStyle): number[] => {
++  const { h: hue, l: lightness, c: chroma } = base;
+ 
+-function getTetradicHues(base: Oklch, style: PaletteStyle): number[] {
+-  const { l, h } = base;
+   switch (style) {
++    case 'triangle':
++      if (hue < 45) return [0, 75, 165, 255].map((d) => normalizeHue(hue + d));
++      if (hue < 90) return [0, 105, 195, 285].map((d) => normalizeHue(hue + d));
++      if (hue < 135) return [0, 85, 175, 265].map((d) => normalizeHue(hue + d));
++      if (hue < 180) return [0, 80, 170, 280].map((d) => normalizeHue(hue + d));
++      if (hue < 225) return [0, 85, 175, 275].map((d) => normalizeHue(hue + d));
++      if (hue < 270) return [0, 90, 180, 270].map((d) => normalizeHue(hue + d));
++      if (hue < 315) return [0, 95, 185, 275].map((d) => normalizeHue(hue + d));
++      return [0, 85, 165, 255].map((d) => normalizeHue(hue + d));
++    case 'circle':
++      if (hue >= 345 || hue < 30) return [0, 75, 165, 255].map((d) => normalizeHue(hue + d));
++      if (hue < 90) {
++        const i = chroma * lightness;
++        return [hue, normalizeHue(hue + 90 + i * 10), normalizeHue(hue + 180), normalizeHue(hue + 270 - i * 5)];
++      }
++      if (hue < 150) return [0, 85, 175, 265].map((d) => normalizeHue(hue + d));
++      if (hue < 210) return [0, 80, 170, 280].map((d) => normalizeHue(hue + d));
++      if (hue < 270) return [0, 95, 185, 275].map((d) => normalizeHue(hue + d));
++      return [0, 90, 180, 270].map((d) => normalizeHue(hue + d));
++    case 'diamond':
++      if (lightness > 0.8 && chroma < 0.3) return [0, 85, 185, 275].map((d) => normalizeHue(hue + d));
++      if (hue >= 30 && hue < 90 && lightness > 0.6) return [0, 70, 160, 250].map((d) => normalizeHue(hue + d));
++      if (hue >= 180 && hue < 240 && lightness < 0.5) return [0, 95, 175, 285].map((d) => normalizeHue(hue + d));
++      if (chroma > 0.8 && lightness < 0.4) {
++        const wc = hue < 180 ? 1 : -1;
++        return [hue, normalizeHue(hue + 80 * wc), normalizeHue(hue + 160), normalizeHue(hue + 260 * wc)];
++      }
++      if (hue >= 270 && hue < 330) return [0, 100, 200, 280].map((d) => normalizeHue(hue + d));
++      const inf = (lightness - 0.5) * 20;
++      return [hue, normalizeHue(hue + 90 + inf), normalizeHue(hue + 180), normalizeHue(hue + 270 - inf)];
+     case 'square':
+-      return [h, normalizeHue(h + 90), normalizeHue(h + 180), normalizeHue(h + 270)];
+-    case 'triangle': {
+-      const bucket = Math.floor(h / 60) % 6;
+-      const desv = [2, -1, 1, -2, 1, -1][bucket];
+-      return [h, normalizeHue(h + 90 + desv), normalizeHue(h + 180 - desv), normalizeHue(h + 270 + desv)];
+-    }
+-    case 'circle': {
+-      const s = Math.sin((h * Math.PI) / 180) * 4;
+-      return [h, normalizeHue(h + 90 + s), normalizeHue(h + 180 - s), normalizeHue(h + 270 + s)];
+-    }
+-    case 'diamond': {
+-      const d = l * 8 - 4;
+-      return [h, normalizeHue(h + 90 + d), normalizeHue(h + 180 - d), normalizeHue(h + 270 + d)];
+-    }
+     default:
+-      return [h, normalizeHue(h + 90), normalizeHue(h + 180), normalizeHue(h + 270)];
++      return [0, 90, 180, 270].map((d) => normalizeHue(hue + d));
+   }
+-}
++};
++
++/** Calculates split complementary hues based on the selected style. */
++export const getSplitComplementaryHues = (base: Oklch, style: PaletteStyle): number[] => {
++  const { h: hue, l: lightness, c: chroma } = base;
+ 
+-function getSplitComplementaryHues(base: Oklch, style: PaletteStyle): number[] {
+-  const { l, h } = base;
+-  const split = (desv: number): number[] => [
+-    h,
+-    normalizeHue(h + 150 + desv),
+-    normalizeHue(h + 210 - desv)
+-  ];
+   switch (style) {
+-    case 'square':
+-      return split(0);
+-    case 'triangle': {
+-      const bucket = Math.floor(h / 60) % 6;
+-      return split([4, -2, 3, -4, 2, -3][bucket]);
+-    }
++    case 'triangle':
++      if (hue < 45) return [hue, normalizeHue(hue + 155), normalizeHue(hue + 185)];
++      if (hue < 90) return [hue, normalizeHue(hue + 165), normalizeHue(hue + 205)];
++      if (hue < 135) return [hue, normalizeHue(hue + 170), normalizeHue(hue + 210)];
++      if (hue < 180) return [hue, normalizeHue(hue + 160), normalizeHue(hue + 200)];
++      if (hue < 225) return [hue, normalizeHue(hue + 150), normalizeHue(hue + 190)];
++      if (hue < 270) return [hue, normalizeHue(hue + 145), normalizeHue(hue + 175)];
++      if (hue < 315) return [hue, normalizeHue(hue + 135), normalizeHue(hue + 165)];
++      return [hue, normalizeHue(hue + 125), normalizeHue(hue + 155)];
+     case 'circle':
+-      return split(Math.sin((h * Math.PI) / 180) * 8);
++      if (hue >= 345 || hue < 30) return [hue, normalizeHue(hue + 165), normalizeHue(hue + 195)];
++      if (hue >= 30 && hue < 90) {
++        const i = chroma * lightness;
++        return [hue, normalizeHue(hue + 160 + i * 15), normalizeHue(hue + 200 + i * 10)];
++      }
++      if (hue < 150) return [hue, normalizeHue(hue + 170), normalizeHue(hue + 210)];
++      if (hue < 210) return [hue, normalizeHue(hue + 155), normalizeHue(hue + 185)];
++      if (hue < 270) return [hue, normalizeHue(hue + 145), normalizeHue(hue + 175)];
++      return [hue, normalizeHue(hue + 135), normalizeHue(hue + 165)];
+     case 'diamond':
+-      return split(l * 6 - 3);
+-    default:
+-      return split(0);
++      if (lightness > 0.8 && chroma < 0.3) return [hue, normalizeHue(hue + 170), normalizeHue(hue + 190)];
++      if (hue >= 30 && hue < 90 && lightness > 0.6) return [hue, normalizeHue(hue + 160), normalizeHue(hue + 190)];
++      if (hue >= 180 && hue < 240 && lightness < 0.5) return [hue, normalizeHue(hue + 140), normalizeHue(hue + 170)];
++      if (chroma > 0.8 && lightness < 0.4) {
++        return [hue, normalizeHue(hue + 150), normalizeHue(hue + 210)];
++      }
++      if (hue >= 270 && hue < 330) return [hue, normalizeHue(hue + 120), normalizeHue(hue + 160)];
++      const inf = lightness * 15 - 7.5;
++      return [hue, normalizeHue(hue + 165 + inf), normalizeHue(hue + 195 - inf)];
++    case 'square':
++    default: {
++      const c = normalizeHue(hue + 180);
++      return [hue, normalizeHue(c - 30), normalizeHue(c + 30)];
++    }
+   }
+-}
++};
+ 
+ // ---------------------------------------------------------------------------
+-// Variations: sistema de umbrales adaptativo por lightness con blend suave.
+-// Sistema default: 0.3/0.7 (zona de blend 0.1 centrada en cada umbral).
+-// Los valores siguen la filosofia del proyecto: base protegido de negro/blanco
+-// puro, "pure" con chroma alto, "muted"/"dark" con chroma reducido.
++// src/utils/variations.ts
+ // ---------------------------------------------------------------------------
+ 
+-const interpDeep = (a: Record<string, Variant>, b: Record<string, Variant>, t: number): Record<string, Variant> => {
+-  const out: Record<string, Variant> = {};
+-  for (const key of Object.keys(a)) {
+-    out[key] = { l: lerp(t, a[key].l, b[key].l), c: lerp(t, a[key].c, b[key].c) };
++type Variation = { l: number; c: number };
++
++type TriadVariations = {
++  base: { dark: Variation }
++  triad: {
++    first: { pure: Variation; muted: Variation }
++    second: { pure: Variation; muted: Variation }
+   }
+-  return out;
+ };
+ 
+-/**
+- * Selecciona las variaciones para el lightness del base. Con interpolacion
+- * activa (default) hay blend suave en los bordes de los umbrales (evita saltos
+- * al mover el color base); con interpolacion off usa cortes duros.
+- * Nota: el proyecto de referencia tiene un sistema interno propio para
+- * `triangle` (umbrales 0.4/0.6, informe §6.1); aca todos los estilos usan el
+- * sistema default 0.3/0.7, que es el fallback universal del propio proyecto.
+- */
+-function blendVariations(set: VariantSet, l: number, interpolate = true, t1 = 0.3, t2 = 0.7, zone = 0.1): Record<string, Variant> {
+-  if (!interpolate) {
+-    if (l <= t1) return set.dark;
+-    if (l <= t2) return set.mid;
+-    return set.light;
+-  }
+-  const a = t1 - zone / 2;
+-  const b = t1 + zone / 2;
+-  const cc = t2 - zone / 2;
+-  const d = t2 + zone / 2;
+-  if (l <= a) return set.dark;
+-  if (l < b) return interpDeep(set.dark, set.mid, (l - a) / (b - a));
+-  if (l <= cc) return set.mid;
+-  if (l < d) return interpDeep(set.mid, set.light, (l - cc) / (d - cc));
+-  return set.light;
+-}
++type ComplementaryVariations = {
++  base: { dark: Variation; light: Variation }
++  complement: { main: Variation; light: Variation; muted: Variation }
++};
++
++type AnalogousVariations = Variation[];
+ 
+-// triadic — numeros exactos del informe (§6.3)
+-const TRIADIC_VARIANTS: VariantSet = {
+-  dark: {
+-    baseDark: { l: -0.05, c: 1.0 }, // oscuro cae poco (proteccion anti-negro)
+-    firstPure: { l: 0.2, c: 0.95 },
+-    firstMuted: { l: 0.35, c: 0.7 },
+-    secondPure: { l: 0.15, c: 0.95 },
+-    secondMuted: { l: 0.3, c: 0.7 }
+-  },
+-  mid: {
+-    baseDark: { l: -0.2, c: 1.1 },
+-    firstPure: { l: 0.1, c: 0.95 },
+-    firstMuted: { l: 0.2, c: 0.7 },
+-    secondPure: { l: -0.1, c: 0.95 },
+-    secondMuted: { l: -0.2, c: 0.7 }
+-  },
+-  light: {
+-    baseDark: { l: -0.4, c: 1.1 },
+-    firstPure: { l: -0.2, c: 0.95 },
+-    firstMuted: { l: -0.35, c: 0.7 },
+-    secondPure: { l: -0.25, c: 0.95 },
+-    secondMuted: { l: -0.15, c: 0.7 }
++type TetradicVariations = {
++  first: { pure: Variation; muted: Variation }
++  complement: Variation
++  fourth: { light: Variation; dark: Variation }
++};
++
++type SplitComplementaryVariations = {
++  base: { dark: Variation }
++  complement: {
++    first: { pure: Variation; muted: Variation }
++    second: { pure: Variation; muted: Variation }
+   }
+@@ -326,96 +441,575 @@ const TRIADIC_VARIANTS: VariantSet = {
+ 
+-const COMPLEMENTARY_VARIANTS: VariantSet = {
+-  dark: {
+-    main: { l: -0.05, c: 0.9 },
+-    baseDark: { l: -0.05, c: 1.05 },
+-    baseLight: { l: 0.15, c: 0.85 },
+-    compLight: { l: 0.1, c: 0.8 },
+-    compMuted: { l: 0.2, c: 0.5 }
+-  },
+-  mid: {
+-    main: { l: 0, c: 1 },
+-    baseDark: { l: -0.15, c: 1.1 },
+-    baseLight: { l: 0.15, c: 0.9 },
+-    compLight: { l: 0.08, c: 0.85 },
+-    compMuted: { l: -0.1, c: 0.55 }
+-  },
+-  light: {
+-    main: { l: 0.02, c: 0.95 },
+-    baseDark: { l: -0.4, c: 1.0 },
+-    baseLight: { l: -0.3, c: 0.9 },
+-    compLight: { l: -0.15, c: 0.85 },
+-    compMuted: { l: -0.2, c: 0.5 }
++/** Adaptive lightness and chroma variations for triadic palettes. */
++export const getTriadicVariations = (base: Oklch, style: PaletteStyle, interpolate = false): TriadVariations => {
++  const { l: baseLightness, c: baseChroma, h: baseHue } = base;
++
++  const getDefault = (l: number) => {
++    const targetRange = { min: 0.15, max: 0.9 };
++    let baseVariations: { dark: Variation };
++    let triadVariations: TriadVariations['triad'];
++
++    if (l < 0.3) {
++      baseVariations = { dark: { l: Math.max(-0.1, targetRange.min - l), c: 1.0 } };
++      triadVariations = {
++        first: { pure: { l: 0.2, c: 0.95 }, muted: { l: 0.35, c: 0.7 } },
++        second: { pure: { l: 0.15, c: 0.95 }, muted: { l: 0.3, c: 0.7 } }
++      };
++    } else if (l > 0.7) {
++      baseVariations = { dark: { l: Math.max(-0.4, targetRange.min - l), c: 1.1 } };
++      triadVariations = {
++        first: { pure: { l: -0.2, c: 0.95 }, muted: { l: -0.35, c: 0.7 } },
++        second: { pure: { l: -0.25, c: 0.95 }, muted: { l: -0.15, c: 0.7 } }
++      };
++    } else {
++      baseVariations = { dark: { l: -0.2, c: 1.1 } };
++      triadVariations = {
++        first: { pure: { l: 0.1, c: 0.95 }, muted: { l: 0.2, c: 0.7 } },
++        second: { pure: { l: -0.1, c: 0.95 }, muted: { l: -0.2, c: 0.7 } }
++      };
++    }
++    return { base: baseVariations, triad: triadVariations };
++  };
++
++  if (style === 'triangle') {
++    const getTriangle = (l: number) => {
++      const mod = l < 0.4 ? 0.1 : l > 0.6 ? -0.1 : 0;
++      return {
++        base: { dark: { l: Math.max(-0.18 + mod, -0.3), c: 1.0 } },
++        triad: {
++          first: { pure: { l: 0.05 - mod, c: 0.9 }, muted: { l: 0.12 - mod, c: 0.65 } },
++          second: { pure: { l: -0.02 - mod, c: 0.92 }, muted: { l: -0.08 - mod, c: 0.68 } }
++        }
++      };
++    };
++
++    if (interpolate) {
++      const width = 0.1;
++      if (baseLightness >= 0.4 - width / 2 && baseLightness <= 0.4 + width / 2) {
++        const t = (baseLightness - (0.4 - width / 2)) / width;
++        return interpolateDeep(getTriangle(0.35), getTriangle(0.45), t);
++      }
++      if (baseLightness >= 0.6 - width / 2 && baseLightness <= 0.6 + width / 2) {
++        const t = (baseLightness - (0.6 - width / 2)) / width;
++        return interpolateDeep(getTriangle(0.55), getTriangle(0.65), t);
++      }
++    }
++    return getTriangle(baseLightness);
++  } else if (style === 'circle') {
++    const mod = baseLightness < 0.4 ? 0.15 : baseLightness > 0.6 ? -0.15 : 0;
++    if (baseHue >= 345 || baseHue < 30) {
++      return {
++        base: { dark: { l: Math.max(-0.25 + mod, -0.35), c: 1.2 } },
++        triad: {
++          first: { pure: { l: 0.08 - mod, c: 0.85 }, muted: { l: 0.15 - mod, c: 0.6 } },
++          second: { pure: { l: 0.05 - mod, c: 0.9 }, muted: { l: -0.05 - mod, c: 0.65 } }
++        }
++      };
++    } else if (baseHue >= 150 && baseHue < 210) {
++      return {
++        base: { dark: { l: Math.max(-0.15 + mod, -0.25), c: 0.9 } },
++        triad: {
++          first: { pure: { l: 0.1 - mod, c: 0.9 }, muted: { l: 0.18 - mod, c: 0.7 } },
++          second: { pure: { l: 0.05 - mod, c: 0.85 }, muted: { l: -0.08 - mod, c: 0.6 } }
++        }
++      };
++    }
++  } else if (style === 'diamond') {
++    if (baseLightness > 0.8 && baseChroma < 0.3) {
++      return {
++        base: { dark: { l: Math.max(-0.25, 0.15 - baseLightness), c: 1.0 } },
++        triad: {
++          first: { pure: { l: -0.05, c: 0.85 }, muted: { l: 0.1, c: 0.6 } },
++          second: { pure: { l: -0.15, c: 0.8 }, muted: { l: -0.25, c: 0.5 } }
++        }
++      };
++    } else if (baseChroma > 0.8 && baseLightness < 0.4) {
++      return {
++        base: { dark: { l: Math.max(-0.2, 0.15 - baseLightness), c: 1.3 } },
++        triad: {
++          first: { pure: { l: 0.25, c: 1.0 }, muted: { l: 0.15, c: 0.8 } },
++          second: { pure: { l: 0.35, c: 1.1 }, muted: { l: 0.1, c: 0.75 } }
++        }
++      };
++    }
++  }
++
++  if (interpolate) {
++    const width = 0.1;
++    if (baseLightness >= 0.3 - width / 2 && baseLightness <= 0.3 + width / 2) {
++      const t = (baseLightness - (0.3 - width / 2)) / width;
++      return interpolateDeep(getDefault(0.25), getDefault(0.35), t);
++    }
++    if (baseLightness >= 0.7 - width / 2 && baseLightness <= 0.7 + width / 2) {
++      const t = (baseLightness - (0.7 - width / 2)) / width;
++      return interpolateDeep(getDefault(0.65), getDefault(0.75), t);
++    }
+   }
++
++  return getDefault(baseLightness);
+ };
+ 
+-const ANALOGOUS_VARIANTS: VariantSet = {
+-  dark: {
+-    v0: { l: 0.15, c: 0.85 },
+-    v1: { l: 0.1, c: 0.9 },
+-    v2: { l: 0.2, c: 0.8 },
+-    v3: { l: 0.25, c: 0.75 },
+-    v4: { l: 0.3, c: 0.65 }
+-  },
+-  mid: {
+-    v0: { l: 0.05, c: 0.95 },
+-    v1: { l: -0.05, c: 0.9 },
+-    v2: { l: 0.1, c: 0.85 },
+-    v3: { l: -0.1, c: 0.9 },
+-    v4: { l: 0.15, c: 0.8 }
+-  },
+-  light: {
+-    v0: { l: -0.2, c: 0.9 },
+-    v1: { l: -0.1, c: 0.95 },
+-    v2: { l: -0.25, c: 0.85 },
+-    v3: { l: -0.15, c: 0.9 },
+-    v4: { l: -0.3, c: 0.75 }
++/** Adaptive lightness and chroma variations for complementary palettes. */
++export const getComplementaryVariations = (base: Oklch, style: PaletteStyle, interpolate = false): ComplementaryVariations => {
++  const { l: baseLightness, c: baseChroma, h: baseHue } = base;
++
++  const getDefault = (l: number) => {
++    const targetRange = { min: 0.15, max: 0.9 };
++    if (l < 0.3) {
++      return {
++        base: {
++          dark: { l: Math.max(-0.1, targetRange.min - l), c: 1.0 },
++          light: { l: Math.min(0.4, targetRange.max - l), c: 0.8 }
++        },
++        complement: {
++          main: { l: 0.2, c: 1.0 },
++          light: { l: 0.35, c: 0.7 },
++          muted: { l: 0.1, c: 0.5 }
++        }
++      };
++    } else if (l > 0.7) {
++      return {
++        base: {
++          dark: { l: Math.max(-0.4, targetRange.min - l), c: 1.1 },
++          light: { l: Math.min(0.1, targetRange.max - l), c: 0.8 }
++        },
++        complement: {
++          main: { l: -0.2, c: 1.0 },
++          light: { l: -0.1, c: 0.8 },
++          muted: { l: -0.3, c: 0.6 }
++        }
++      };
++    } else {
++      return {
++        base: {
++          dark: { l: -0.2, c: 1.1 },
++          light: { l: 0.2, c: 0.8 }
++        },
++        complement: {
++          main: { l: 0.05, c: 1.0 },
++          light: { l: 0.25, c: 0.7 },
++          muted: { l: -0.15, c: 0.5 }
++        }
++      };
++    }
++  };
++
++  if (style === 'triangle') {
++    const getTriangle = (l: number) => {
++      const mod = l < 0.4 ? 0.1 : l > 0.6 ? -0.1 : 0;
++      return {
++        base: {
++          dark: { l: Math.max(-0.2 + mod, -0.3), c: 0.9 },
++          light: { l: Math.min(0.15 + mod, 0.3), c: 0.7 }
++        },
++        complement: {
++          main: { l: 0.05 - mod, c: 1.0 },
++          light: { l: 0.2 - mod, c: 0.75 },
++          muted: { l: -0.1 - mod, c: 0.5 }
++        }
++      };
++    };
++
++    if (interpolate) {
++      const width = 0.1;
++      if (baseLightness >= 0.4 - width / 2 && baseLightness <= 0.4 + width / 2) {
++        const t = (baseLightness - (0.4 - width / 2)) / width;
++        return interpolateDeep(getTriangle(0.35), getTriangle(0.45), t);
++      }
++      if (baseLightness >= 0.6 - width / 2 && baseLightness <= 0.6 + width / 2) {
++        const t = (baseLightness - (0.6 - width / 2)) / width;
++        return interpolateDeep(getTriangle(0.55), getTriangle(0.65), t);
++      }
++    }
++    return getTriangle(baseLightness);
++  } else if (style === 'circle') {
++    const mod = baseLightness < 0.4 ? 0.15 : baseLightness > 0.6 ? -0.15 : 0;
++    if (baseHue >= 345 || baseHue < 30) {
++      return {
++        base: {
++          dark: { l: Math.max(-0.25 + mod, -0.4), c: 1.2 },
++          light: { l: Math.min(0.1 + mod, 0.3), c: 0.8 }
++        },
++        complement: {
++          main: { l: 0.15 - mod, c: 0.9 },
++          light: { l: 0.3 - mod, c: 0.6 },
++          muted: { l: -0.05 - mod, c: 0.5 }
++        }
++      };
++    } else if (baseHue >= 150 && baseHue < 210) {
++      return {
++        base: {
++          dark: { l: Math.max(-0.15 + mod, -0.3), c: 0.8 },
++          light: { l: Math.min(0.15 + mod, 0.25), c: 0.5 }
++        },
++        complement: {
++          main: { l: 0.1 - mod, c: 1.0 },
++          light: { l: 0.25 - mod, c: 0.85 },
++          muted: { l: -0.05 - mod, c: 0.6 }
++        }
++      };
++    }
++  } else if (style === 'diamond') {
++    if (baseLightness > 0.8 && baseChroma < 0.3) {
++      return {
++        base: {
++          dark: { l: Math.max(-0.3, 0.15 - baseLightness), c: 1.0 },
++          light: { l: Math.min(0.05, 0.9 - baseLightness), c: 0.7 }
++        },
++        complement: {
++          main: { l: -0.1, c: 0.9 },
++          light: { l: 0.05, c: 0.7 },
++          muted: { l: -0.25, c: 0.4 }
++        }
++      };
++    } else if (baseChroma > 0.8 && baseLightness < 0.4) {
++      return {
++        base: {
++          dark: { l: Math.max(-0.25, 0.15 - baseLightness), c: 1.3 },
++          light: { l: Math.min(0.3, 0.8 - baseLightness), c: 0.9 }
++        },
++        complement: {
++          main: { l: 0.25, c: 1.2 },
++          light: { l: 0.4, c: 0.9 },
++          muted: { l: 0.1, c: 0.6 }
++        }
++      };
++    }
++  }
++
++  if (interpolate) {
++    const width = 0.1;
++    if (baseLightness >= 0.3 - width / 2 && baseLightness <= 0.3 + width / 2) {
++      const t = (baseLightness - (0.3 - width / 2)) / width;
++      return interpolateDeep(getDefault(0.25), getDefault(0.35), t);
++    }
++    if (baseLightness >= 0.7 - width / 2 && baseLightness <= 0.7 + width / 2) {
++      const t = (baseLightness - (0.7 - width / 2)) / width;
++      return interpolateDeep(getDefault(0.65), getDefault(0.75), t);
++    }
+   }
++
++  return getDefault(baseLightness);
+ };
+ 
+-const TETRADIC_VARIANTS: VariantSet = {
+-  dark: {
+-    hue1Pure: { l: 0.2, c: 0.95 },
+-    hue1Muted: { l: 0.35, c: 0.7 },
+-    hue2Complement: { l: 0.15, c: 0.9 },
+-    hue3Light: { l: 0.25, c: 0.8 },
+-    hue3Dark: { l: 0, c: 1.0 }
+-  },
+-  mid: {
+-    hue1Pure: { l: 0.1, c: 0.95 },
+-    hue1Muted: { l: 0.2, c: 0.7 },
+-    hue2Complement: { l: -0.1, c: 0.9 },
+-    hue3Light: { l: 0.15, c: 0.8 },
+-    hue3Dark: { l: -0.2, c: 1.05 }
+-  },
+-  light: {
+-    hue1Pure: { l: -0.2, c: 0.95 },
+-    hue1Muted: { l: -0.3, c: 0.7 },
+-    hue2Complement: { l: -0.15, c: 0.9 },
+-    hue3Light: { l: -0.25, c: 0.85 },
+-    hue3Dark: { l: -0.4, c: 1.0 }
++/** Adaptive lightness and chroma variations for analogous palettes. */
++export const getAnalogousVariations = (base: Oklch, style: PaletteStyle, interpolate = false): AnalogousVariations => {
++  const { l: baseLightness, h: baseHue } = base;
++
++  const getDefault = (l: number) => {
++    if (l < 0.3) {
++      return [
++        { l: 0, c: 1.0 },
++        { l: 0.25, c: 0.8 },
++        { l: 0.1, c: 0.9 },
++        { l: 0.35, c: 0.85 },
++        { l: 0.45, c: 0.7 },
++        { l: 0.55, c: 0.6 }
++      ];
++    } else if (l > 0.7) {
++      return [
++        { l: 0, c: 1.0 },
++        { l: -0.35, c: 0.8 },
++        { l: -0.2, c: 0.9 },
++        { l: -0.45, c: 0.85 },
++        { l: -0.1, c: 0.7 },
++        { l: 0.05, c: 0.6 }
++      ];
++    } else {
++      return [
++        { l: 0, c: 1.0 },
++        { l: -0.2, c: 0.8 },
++        { l: -0.1, c: 0.9 },
++        { l: 0.15, c: 0.85 },
++        { l: 0.25, c: 0.7 },
++        { l: 0.35, c: 0.6 }
++      ];
++    }
++  };
++
++  if (style === 'triangle') {
++    const getTriangle = (l: number) => {
++      const mod = l < 0.4 ? 0.15 : l > 0.6 ? -0.15 : 0;
++      return [
++        { l: 0, c: 1.0 },
++        { l: Math.max(-0.2 + mod, -0.35), c: 0.65 },
++        { l: -0.08 + mod, c: 0.85 },
++        { l: 0.06 + mod, c: 0.95 },
++        { l: Math.min(0.18 + mod, 0.4), c: 0.75 },
++        { l: Math.min(0.32 + mod, 0.5), c: 0.5 }
++      ];
++    };
++
++    if (interpolate) {
++      const width = 0.1;
++      if (baseLightness >= 0.4 - width / 2 && baseLightness <= 0.4 + width / 2) {
++        const t = (baseLightness - (0.4 - width / 2)) / width;
++        return interpolateDeep(getTriangle(0.35), getTriangle(0.45), t);
++      }
++      if (baseLightness >= 0.6 - width / 2 && baseLightness <= 0.6 + width / 2) {
++        const t = (baseLightness - (0.6 - width / 2)) / width;
++        return interpolateDeep(getTriangle(0.55), getTriangle(0.65), t);
++      }
++    }
++    return getTriangle(baseLightness);
++  } else if (style === 'circle') {
++    const mod = baseLightness < 0.4 ? 0.2 : baseLightness > 0.6 ? -0.2 : 0;
++    if (baseHue >= 345 || baseHue < 30) {
++      return [
++        { l: 0, c: 1.0 },
++        { l: Math.max(-0.25 + mod, -0.4), c: 1.1 },
++        { l: -0.08 + mod, c: 1.0 },
++        { l: 0.05 + mod, c: 0.95 },
++        { l: Math.min(0.15 + mod, 0.35), c: 0.85 },
++        { l: Math.min(0.3 + mod, 0.5), c: 0.6 }
++      ];
++    } else if (baseHue >= 150 && baseHue < 210) {
++      return [
++        { l: 0, c: 1.0 },
++        { l: Math.max(-0.18 + mod, -0.35), c: 0.7 },
++        { l: -0.06 + mod, c: 0.85 },
++        { l: 0.08 + mod, c: 0.9 },
++        { l: Math.min(0.2 + mod, 0.4), c: 0.7 },
++        { l: Math.min(0.35 + mod, 0.55), c: 0.45 }
++      ];
++    }
++  } else if (style === 'diamond') {
++    if (baseHue >= 30 && baseHue < 90 && baseLightness > 0.6) {
++      return [
++        { l: 0, c: 1.0 },
++        { l: Math.max(-0.3, 0.15 - baseLightness), c: 0.6 },
++        { l: -0.12, c: 0.8 },
++        { l: Math.min(0.08, 0.85 - baseLightness), c: 1.05 },
++        { l: Math.min(0.22, 0.9 - baseLightness), c: 0.95 },
++        { l: Math.min(0.3, 0.9 - baseLightness), c: 0.75 }
++      ];
++    } else if (baseHue >= 180 && baseHue < 240 && baseLightness < 0.5) {
++      return [
++        { l: 0, c: 1.0 },
++        { l: Math.max(-0.2, 0.15 - baseLightness), c: 0.5 },
++        { l: -0.08, c: 0.7 },
++        { l: 0.1, c: 0.85 },
++        { l: 0.25, c: 0.65 },
++        { l: 0.35, c: 0.45 }
++      ];
++    }
++  }
++
++  if (interpolate) {
++    const width = 0.1;
++    if (baseLightness >= 0.3 - width / 2 && baseLightness <= 0.3 + width / 2) {
++      const t = (baseLightness - (0.3 - width / 2)) / width;
++      return interpolateDeep(getDefault(0.25), getDefault(0.35), t);
++    }
++    if (baseLightness >= 0.7 - width / 2 && baseLightness <= 0.7 + width / 2) {
++      const t = (baseLightness - (0.7 - width / 2)) / width;
++      return interpolateDeep(getDefault(0.65), getDefault(0.75), t);
++    }
++  }
++
++  return getDefault(baseLightness);
++};
++
++/** Adaptive lightness and chroma variations for tetradic palettes. */
++export const getTetradicVariations = (base: Oklch, style: PaletteStyle, interpolate = false): TetradicVariations => {
++  const { l: baseLightness, c: baseChroma, h: baseHue } = base;
++
++  const getDefault = (l: number) => {
++    if (l < 0.3) {
++      return {
++        first: { pure: { l: 0.25, c: 0.9 }, muted: { l: 0.1, c: 0.6 } },
++        complement: { l: 0.35, c: 0.95 },
++        fourth: { light: { l: 0.45, c: 0.8 }, dark: { l: 0.15, c: 1.1 } }
++      };
++    } else if (l > 0.7) {
++      return {
++        first: { pure: { l: -0.25, c: 0.9 }, muted: { l: -0.4, c: 0.6 } },
++        complement: { l: -0.35, c: 0.95 },
++        fourth: { light: { l: -0.15, c: 0.8 }, dark: { l: -0.45, c: 1.1 } }
++      };
++    } else {
++      return {
++        first: { pure: { l: 0.1, c: 0.9 }, muted: { l: -0.15, c: 0.6 } },
++        complement: { l: 0.05, c: 0.95 },
++        fourth: { light: { l: 0.2, c: 0.8 }, dark: { l: -0.25, c: 1.1 } }
++      };
++    }
++  };
++
++  if (style === 'triangle') {
++    const getTriangle = (l: number) => {
++      const mod = l < 0.4 ? 0.1 : l > 0.6 ? -0.1 : 0;
++      return {
++        first: { pure: { l: 0.08 - mod, c: 0.85 }, muted: { l: -0.08 - mod, c: 0.65 } },
++        complement: { l: 0.02 - mod, c: 0.9 },
++        fourth: { light: { l: 0.12 - mod, c: 0.75 }, dark: { l: -0.12 - mod, c: 0.95 } }
++      };
++    };
++
++    if (interpolate) {
++      const width = 0.1;
++      if (baseLightness >= 0.4 - width / 2 && baseLightness <= 0.4 + width / 2) {
++        const t = (baseLightness - (0.4 - width / 2)) / width;
++        return interpolateDeep(getTriangle(0.35), getTriangle(0.45), t);
++      }
++      if (baseLightness >= 0.6 - width / 2 && baseLightness <= 0.6 + width / 2) {
++        const t = (baseLightness - (0.6 - width / 2)) / width;
++        return interpolateDeep(getTriangle(0.55), getTriangle(0.65), t);
++      }
++    }
++    return getTriangle(baseLightness);
++  } else if (style === 'circle') {
++    const mod = baseLightness < 0.4 ? 0.15 : baseLightness > 0.6 ? -0.15 : 0;
++    if (baseHue >= 345 || baseHue < 30) {
++      return {
++        first: { pure: { l: 0.1 - mod, c: 1.0 }, muted: { l: -0.05 - mod, c: 0.8 } },
++        complement: { l: 0.15 - mod, c: 0.8 },
++        fourth: { light: { l: 0.2 - mod, c: 0.7 }, dark: { l: -0.2 - mod, c: 1.2 } }
++      };
++    } else if (baseHue >= 150 && baseHue < 210) {
++      return {
++        first: { pure: { l: 0.06 - mod, c: 0.8 }, muted: { l: -0.12 - mod, c: 0.5 } },
++        complement: { l: 0.08 - mod, c: 0.85 },
++        fourth: { light: { l: 0.15 - mod, c: 0.75 }, dark: { l: -0.1 - mod, c: 0.9 } }
++      };
++    }
++  } else if (style === 'diamond') {
++    if (baseLightness > 0.8 && baseChroma < 0.3) {
++      return {
++        first: { pure: { l: -0.05, c: 0.8 }, muted: { l: -0.2, c: 0.5 } },
++        complement: { l: -0.15, c: 0.85 },
++        fourth: { light: { l: 0.05, c: 0.7 }, dark: { l: Math.max(-0.3, 0.15 - baseLightness), c: 0.9 } }
++      };
++    } else if (baseChroma > 0.8 && baseLightness < 0.4) {
++      return {
++        first: { pure: { l: 0.25, c: 1.1 }, muted: { l: 0.1, c: 0.8 } },
++        complement: { l: 0.35, c: 1.0 },
++        fourth: { light: { l: 0.4, c: 0.9 }, dark: { l: Math.max(-0.15, 0.15 - baseLightness), c: 1.3 } }
++      };
++    }
++  }
++
++  if (interpolate) {
++    const width = 0.1;
++    if (baseLightness >= 0.3 - width / 2 && baseLightness <= 0.3 + width / 2) {
++      const t = (baseLightness - (0.3 - width / 2)) / width;
++      return interpolateDeep(getDefault(0.25), getDefault(0.35), t);
++    }
++    if (baseLightness >= 0.7 - width / 2 && baseLightness <= 0.7 + width / 2) {
++      const t = (baseLightness - (0.7 - width / 2)) / width;
++      return interpolateDeep(getDefault(0.65), getDefault(0.75), t);
++    }
+   }
++
++  return getDefault(baseLightness);
+ };
+ 
+-const SPLIT_VARIANTS: VariantSet = {
+-  dark: {
+-    baseDark: { l: -0.05, c: 1.0 },
+-    split1Pure: { l: 0.2, c: 0.95 },
+-    split1Muted: { l: 0.35, c: 0.7 },
+-    split2Pure: { l: 0.15, c: 0.95 },
+-    split2Muted: { l: 0.3, c: 0.7 }
+-  },
+-  mid: {
+-    baseDark: { l: -0.2, c: 1.1 },
+-    split1Pure: { l: 0.1, c: 0.95 },
+-    split1Muted: { l: 0.2, c: 0.7 },
+-    split2Pure: { l: -0.1, c: 0.95 },
+-    split2Muted: { l: -0.2, c: 0.7 }
+-  },
+-  light: {
+-    baseDark: { l: -0.4, c: 1.1 },
+-    split1Pure: { l: -0.2, c: 0.95 },
+-    split1Muted: { l: -0.35, c: 0.7 },
+-    split2Pure: { l: -0.25, c: 0.95 },
+-    split2Muted: { l: -0.15, c: 0.7 }
++/** Adaptive lightness and chroma variations for split-complementary palettes. */
++export const getSplitComplementaryVariations = (base: Oklch, style: PaletteStyle, interpolate = false): SplitComplementaryVariations => {
++  const { l: baseLightness, c: baseChroma, h: baseHue } = base;
++
++  const getDefault = (l: number) => {
++    const targetRange = { min: 0.15, max: 0.9 };
++    if (l < 0.3) {
++      return {
++        base: { dark: { l: Math.max(-0.1, targetRange.min - l), c: 1.0 } },
++        complement: {
++          first: { pure: { l: 0.3, c: 0.9 }, muted: { l: 0.15, c: 0.7 } },
++          second: { pure: { l: 0.2, c: 0.9 }, muted: { l: 0.4, c: 0.6 } }
++        }
++      };
++    } else if (l > 0.7) {
++      return {
++        base: { dark: { l: Math.max(-0.4, targetRange.min - l), c: 1.1 } },
++        complement: {
++          first: { pure: { l: -0.2, c: 0.9 }, muted: { l: -0.35, c: 0.7 } },
++          second: { pure: { l: -0.3, c: 0.9 }, muted: { l: -0.15, c: 0.7 } }
++        }
++      };
++    } else {
++      return {
++        base: { dark: { l: -0.2, c: 1.1 } },
++        complement: {
++          first: { pure: { l: 0.15, c: 0.9 }, muted: { l: -0.15, c: 0.7 } },
++          second: { pure: { l: -0.1, c: 0.9 }, muted: { l: 0.2, c: 0.7 } }
++        }
++      };
++    }
++  };
++
++  if (style === 'triangle') {
++    const getTriangle = (l: number) => {
++      const mod = l < 0.4 ? 0.1 : l > 0.6 ? -0.1 : 0;
++      return {
++        base: { dark: { l: Math.max(-0.18 + mod, -0.3), c: 0.95 } },
++        complement: {
++          first: { pure: { l: 0.08 - mod, c: 0.85 }, muted: { l: -0.08 - mod, c: 0.65 } },
++          second: { pure: { l: -0.02 - mod, c: 0.88 }, muted: { l: 0.12 - mod, c: 0.68 } }
++        }
++      };
++    };
++
++    if (interpolate) {
++      const width = 0.1;
++      if (baseLightness >= 0.4 - width / 2 && baseLightness <= 0.4 + width / 2) {
++        const t = (baseLightness - (0.4 - width / 2)) / width;
++        return interpolateDeep(getTriangle(0.35), getTriangle(0.45), t);
++      }
++      if (baseLightness >= 0.6 - width / 2 && baseLightness <= 0.6 + width / 2) {
++        const t = (baseLightness - (0.6 - width / 2)) / width;
++        return interpolateDeep(getTriangle(0.55), getTriangle(0.65), t);
++      }
++    }
++    return getTriangle(baseLightness);
++  } else if (style === 'circle') {
++    const mod = baseLightness < 0.4 ? 0.15 : baseLightness > 0.6 ? -0.15 : 0;
++    if (baseHue >= 345 || baseHue < 30) {
++      return {
++        base: { dark: { l: Math.max(-0.2 + mod, -0.35), c: 1.2 } },
++        complement: {
++          first: { pure: { l: 0.15 - mod, c: 0.8 }, muted: { l: -0.05 - mod, c: 0.6 } },
++          second: { pure: { l: 0.1 - mod, c: 0.85 }, muted: { l: 0.2 - mod, c: 0.65 } }
++        }
++      };
++    } else if (baseHue >= 150 && baseHue < 210) {
++      return {
++        base: { dark: { l: Math.max(-0.15 + mod, -0.25), c: 0.9 } },
++        complement: {
++          first: { pure: { l: 0.12 - mod, c: 0.95 }, muted: { l: -0.08 - mod, c: 0.75 } },
++          second: { pure: { l: 0.08 - mod, c: 0.9 }, muted: { l: 0.18 - mod, c: 0.7 } }
++        }
++      };
++    }
++  } else if (style === 'diamond') {
++    if (baseLightness > 0.8 && baseChroma < 0.3) {
++      return {
++        base: { dark: { l: Math.max(-0.25, 0.15 - baseLightness), c: 1.0 } },
++        complement: {
++          first: { pure: { l: -0.05, c: 0.8 }, muted: { l: -0.2, c: 0.5 } },
++          second: { pure: { l: -0.08, c: 0.75 }, muted: { l: 0.05, c: 0.55 } }
++        }
++      };
++    } else if (baseChroma > 0.8 && baseLightness < 0.4) {
++      return {
++        base: { dark: { l: Math.max(-0.2, 0.15 - baseLightness), c: 1.3 } },
++        complement: {
++          first: { pure: { l: 0.25, c: 1.1 }, muted: { l: 0.1, c: 0.8 } },
++          second: { pure: { l: 0.35, c: 1.0 }, muted: { l: 0.15, c: 0.75 } }
++        }
++      };
++    }
++  }
++
++  if (interpolate) {
++    const width = 0.1;
++    if (baseLightness >= 0.3 - width / 2 && baseLightness <= 0.3 + width / 2) {
++      const t = (baseLightness - (0.3 - width / 2)) / width;
++      return interpolateDeep(getDefault(0.25), getDefault(0.35), t);
++    }
++    if (baseLightness >= 0.7 - width / 2 && baseLightness <= 0.7 + width / 2) {
++      const t = (baseLightness - (0.7 - width / 2)) / width;
++      return interpolateDeep(getDefault(0.65), getDefault(0.75), t);
++    }
+   }
++
++  return getDefault(baseLightness);
+ };
+@@ -423,160 +1017,177 @@ const SPLIT_VARIANTS: VariantSet = {
+ // ---------------------------------------------------------------------------
+-// Los 5 ensambladores (estructuras del informe §8)
++// src/utils/enhancer.ts — ChromaNarrative + ColorHierarchy + polish
+ // ---------------------------------------------------------------------------
+ 
+-function generateComplementary(base: Oklch, style: PaletteStyle, enhanced: boolean, interpolate: boolean): Oklch[] {
+-  const compHue = getComplementaryHue(base, style);
+-  const v = blendVariations(COMPLEMENTARY_VARIANTS, base.l, interpolate);
+-  const CA = 0.9; // amortiguador de chroma (solo complementary y analogous)
+-  return [
+-    { l: base.l, c: base.c, h: base.h },
+-    safeColor(compHue, base.l + v.main.l, base.c * v.main.c * CA, enhanced),
+-    safeColor(base.h, base.l + v.baseDark.l, base.c * v.baseDark.c * CA, enhanced),
+-    safeColor(base.h, base.l + v.baseLight.l, base.c * v.baseLight.c * CA, enhanced),
+-    safeColor(compHue, base.l + v.compLight.l, base.c * v.compLight.c * CA, enhanced),
+-    safeColor(compHue, base.l + v.compMuted.l, base.c * v.compMuted.c * CA, enhanced)
+-  ];
++interface ChromaNarrative {
++  pattern: number[]
++  description: string
++  breathingRoom: boolean
+ }
+ 
+-function generateAnalogous(base: Oklch, style: PaletteStyle, enhanced: boolean, interpolate: boolean): Oklch[] {
+-  const hues = getAnalogousHues(base, style);
+-  const v = blendVariations(ANALOGOUS_VARIANTS, base.l, interpolate);
+-  const CA = 0.9;
+-  return [
+-    { l: base.l, c: base.c, h: base.h },
+-    ...hues.slice(1).map((hue, i) => {
+-      const role = v[`v${i}`] as Variant;
+-      return safeColor(hue, base.l + role.l, base.c * role.c * CA, enhanced);
+-    })
+-  ];
++interface ColorRole {
++  name: 'protagonist' | 'deuteragonist' | 'supporting' | 'accent' | 'background' | 'neutral'
++  chromaMultiplier: number
++  lightnessShift: number
++  presence: number
+ }
+ 
+-function generateTriadic(base: Oklch, style: PaletteStyle, enhanced: boolean, interpolate: boolean): Oklch[] {
+-  const hues = getTriadicHues(base, style);
+-  const v = blendVariations(TRIADIC_VARIANTS, base.l, interpolate);
+-  return [
+-    { l: base.l, c: base.c, h: base.h },
+-    safeColor(hues[0], base.l + v.baseDark.l, base.c * v.baseDark.c, enhanced),
+-    safeColor(hues[1], base.l + v.firstPure.l, base.c * v.firstPure.c, enhanced),
+-    safeColor(hues[1], base.l + v.firstMuted.l, base.c * v.firstMuted.c, enhanced),
+-    safeColor(hues[2], base.l + v.secondPure.l, base.c * v.secondPure.c, enhanced),
+-    safeColor(hues[2], base.l + v.secondMuted.l, base.c * v.secondMuted.c, enhanced)
+-  ];
+-}
++function getChromaNarrative(paletteType: HarmonyType, style: PaletteStyle, _baseChroma: number): ChromaNarrative {
++  if (paletteType === 'analogous') {
++    switch (style) {
++      case 'square':
++        return { pattern: [0.8, 0.9, 1.0, 1.0, 0.9, 0.8], description: 'Mathematical harmony', breathingRoom: true };
++      case 'triangle':
++        return { pattern: [0.7, 1.0, 0.85, 1.0, 0.75, 0.6], description: 'Natural visual rhythm', breathingRoom: true };
++      case 'circle':
++        return { pattern: [0.6, 0.9, 1.0, 1.0, 1.1, 0.8], description: 'Emotional journey', breathingRoom: false };
++      case 'diamond':
++        return { pattern: [0.8, 0.7, 1.0, 0.9, 1.1, 0.6], description: 'Luminosity dance', breathingRoom: true };
++    }
++  }
+ 
+-function generateTetradic(base: Oklch, style: PaletteStyle, enhanced: boolean, interpolate: boolean): Oklch[] {
+-  const hues = getTetradicHues(base, style);
+-  const v = blendVariations(TETRADIC_VARIANTS, base.l, interpolate);
+-  return [
+-    { l: base.l, c: base.c, h: base.h },
+-    safeColor(hues[1], base.l + v.hue1Pure.l, base.c * v.hue1Pure.c, enhanced),
+-    safeColor(hues[1], base.l + v.hue1Muted.l, base.c * v.hue1Muted.c, enhanced),
+-    safeColor(hues[2], base.l + v.hue2Complement.l, base.c * v.hue2Complement.c, enhanced),
+-    safeColor(hues[3], base.l + v.hue3Light.l, base.c * v.hue3Light.c, enhanced),
+-    safeColor(hues[3], base.l + v.hue3Dark.l, base.c * v.hue3Dark.c, enhanced)
+-  ];
+-}
++  if (paletteType === 'complementary') {
++    switch (style) {
++      case 'square':
++        return { pattern: [1.0, 0.9, 0.7, 0.6, 0.8, 0.5], description: 'Clear hierarchy', breathingRoom: true };
++      case 'triangle':
++        return { pattern: [1.0, 0.85, 0.6, 0.5, 0.75, 0.4], description: 'Visual weight distribution', breathingRoom: true };
++      case 'circle':
++        return { pattern: [1.0, 1.1, 0.8, 0.6, 0.9, 0.5], description: 'Emotional contrast', breathingRoom: false };
++      case 'diamond':
++        return { pattern: [1.0, 0.9, 0.7, 0.5, 0.8, 0.4], description: 'Light temperature narrative', breathingRoom: true };
++    }
++  }
+ 
+-function generateSplitComplementary(base: Oklch, style: PaletteStyle, enhanced: boolean, interpolate: boolean): Oklch[] {
+-  const hues = getSplitComplementaryHues(base, style);
+-  const v = blendVariations(SPLIT_VARIANTS, base.l, interpolate);
+-  return [
+-    { l: base.l, c: base.c, h: base.h },
+-    safeColor(hues[0], base.l + v.baseDark.l, base.c * v.baseDark.c, enhanced),
+-    safeColor(hues[1], base.l + v.split1Pure.l, base.c * v.split1Pure.c, enhanced),
+-    safeColor(hues[1], base.l + v.split1Muted.l, base.c * v.split1Muted.c, enhanced),
+-    safeColor(hues[2], base.l + v.split2Pure.l, base.c * v.split2Pure.c, enhanced),
+-    safeColor(hues[2], base.l + v.split2Muted.l, base.c * v.split2Muted.c, enhanced)
+-  ];
+-}
++  if (paletteType === 'splitComplementary') {
++    switch (style) {
++      case 'square':
++        return { pattern: [1.0, 0.8, 0.9, 0.7, 0.85, 0.6], description: 'Balanced triad', breathingRoom: true };
++      case 'triangle':
++        return { pattern: [1.0, 0.7, 0.95, 0.6, 0.8, 0.5], description: 'Perceptual triangle', breathingRoom: true };
++      case 'circle':
++        return { pattern: [1.0, 0.9, 1.1, 0.8, 0.9, 0.7], description: 'Three-part emotional narrative', breathingRoom: false };
++      case 'diamond':
++        return { pattern: [1.0, 0.8, 0.9, 0.7, 0.85, 0.65], description: 'Three-point lighting', breathingRoom: true };
++    }
++  }
+ 
+-// ---------------------------------------------------------------------------
+-// Enhance + Polish (se aplican juntos, siempre, para estilos no-square)
+-// ---------------------------------------------------------------------------
++  if (paletteType === 'triadic') {
++    switch (style) {
++      case 'square':
++        return { pattern: [1.0, 0.8, 0.9, 0.85, 0.9, 0.7], description: 'Triangular harmony', breathingRoom: true };
++      case 'triangle':
++        return { pattern: [1.0, 0.75, 0.95, 0.7, 0.85, 0.6], description: 'Perceptual triangle', breathingRoom: true };
++      case 'circle':
++        return { pattern: [1.0, 0.9, 1.1, 0.8, 0.95, 0.75], description: 'Three-part emotional story', breathingRoom: false };
++      case 'diamond':
++        return { pattern: [1.0, 0.8, 0.9, 0.7, 0.85, 0.65], description: 'Three-source illumination', breathingRoom: true };
++    }
++  }
+ 
+-interface Narrative {
+-  pattern: number[]
+-  breathingRoom: boolean
++  if (paletteType === 'tetradic') {
++    switch (style) {
++      case 'square':
++        return { pattern: [1.0, 0.8, 0.7, 0.9, 0.75, 0.6], description: 'Quadratic harmony', breathingRoom: true };
++      case 'triangle':
++        return { pattern: [1.0, 0.7, 0.6, 0.85, 0.65, 0.5], description: 'Perceptual quadrangle', breathingRoom: true };
++      case 'circle':
++        return { pattern: [1.0, 0.9, 0.8, 1.0, 0.85, 0.7], description: 'Four-part epic', breathingRoom: false };
++      case 'diamond':
++        return { pattern: [1.0, 0.8, 0.6, 0.9, 0.7, 0.5], description: 'Four-point lighting', breathingRoom: true };
++    }
++  }
++
++  // Default fallback
++  return { pattern: [1.0, 0.9, 0.8, 0.7, 0.6, 0.5], description: 'Standard decay', breathingRoom: true };
+ }
+ 
+-const NARRATIVES: Record<HarmonyType, Record<string, Narrative>> = {
+-  analogous: {
+-    square: { pattern: [0.8, 0.9, 1, 1, 0.9, 0.8], breathingRoom: true },
+-    triangle: { pattern: [0.7, 1, 0.85, 1, 0.75, 0.6], breathingRoom: true },
+-    circle: { pattern: [0.6, 0.9, 1, 1, 1.1, 0.8], breathingRoom: false },
+-    diamond: { pattern: [0.8, 0.7, 1, 0.9, 1.1, 0.6], breathingRoom: true }
+-  },
+-  complementary: {
+-    square: { pattern: [1, 0.9, 0.7, 0.6, 0.8, 0.5], breathingRoom: true },
+-    triangle: { pattern: [1, 0.85, 0.6, 0.5, 0.75, 0.4], breathingRoom: true },
+-    circle: { pattern: [1, 1.1, 0.8, 0.6, 0.9, 0.5], breathingRoom: false },
+-    diamond: { pattern: [1, 0.9, 0.7, 0.5, 0.8, 0.4], breathingRoom: true }
+-  },
+-  splitComplementary: {
+-    square: { pattern: [1, 0.8, 0.9, 0.7, 0.85, 0.6], breathingRoom: true },
+-    triangle: { pattern: [1, 0.7, 0.95, 0.6, 0.8, 0.5], breathingRoom: true },
+-    circle: { pattern: [1, 0.9, 1.1, 0.8, 0.9, 0.7], breathingRoom: false },
+-    diamond: { pattern: [1, 0.8, 0.9, 0.7, 0.85, 0.65], breathingRoom: true }
+-  },
+-  triadic: {
+-    square: { pattern: [1, 0.8, 0.9, 0.85, 0.9, 0.7], breathingRoom: true },
+-    triangle: { pattern: [1, 0.75, 0.95, 0.7, 0.85, 0.6], breathingRoom: true },
+-    circle: { pattern: [1, 0.9, 1.1, 0.8, 0.95, 0.75], breathingRoom: false },
+-    diamond: { pattern: [1, 0.8, 0.9, 0.7, 0.85, 0.65], breathingRoom: true }
+-  },
+-  tetradic: {
+-    square: { pattern: [1, 0.8, 0.7, 0.9, 0.75, 0.6], breathingRoom: true },
+-    triangle: { pattern: [1, 0.7, 0.6, 0.85, 0.65, 0.5], breathingRoom: true },
+-    circle: { pattern: [1, 0.9, 0.8, 1, 0.85, 0.7], breathingRoom: false },
+-    diamond: { pattern: [1, 0.8, 0.6, 0.9, 0.7, 0.5], breathingRoom: true }
++function getColorHierarchy(paletteType: HarmonyType, _style: PaletteStyle): ColorRole[] {
++  if (paletteType === 'analogous') {
++    return [
++      { name: 'supporting', chromaMultiplier: 0.8, lightnessShift: -0.05, presence: 0.15 },
++      { name: 'accent', chromaMultiplier: 1.0, lightnessShift: 0.02, presence: 0.1 },
++      { name: 'protagonist', chromaMultiplier: 1.0, lightnessShift: 0, presence: 0.4 },
++      { name: 'protagonist', chromaMultiplier: 0.95, lightnessShift: 0, presence: 0.4 },
++      { name: 'deuteragonist', chromaMultiplier: 0.9, lightnessShift: 0.03, presence: 0.2 },
++      { name: 'background', chromaMultiplier: 0.6, lightnessShift: 0.08, presence: 0.25 }
++    ];
+   }
+-};
+ 
+-const NARRATIVE_STYLE_KEY: Record<PaletteStyle, string> = {
+-  default: 'square',
+-  square: 'square',
+-  triangle: 'triangle',
+-  circle: 'circle',
+-  diamond: 'diamond'
+-};
++  if (paletteType === 'complementary') {
++    return [
++      { name: 'protagonist', chromaMultiplier: 1.0, lightnessShift: 0, presence: 0.6 },
++      { name: 'deuteragonist', chromaMultiplier: 0.95, lightnessShift: 0.05, presence: 0.3 },
++      { name: 'supporting', chromaMultiplier: 0.8, lightnessShift: -0.1, presence: 0.15 },
++      { name: 'neutral', chromaMultiplier: 0.5, lightnessShift: -0.05, presence: 0.2 },
++      { name: 'supporting', chromaMultiplier: 0.7, lightnessShift: 0.08, presence: 0.12 },
++      { name: 'background', chromaMultiplier: 0.4, lightnessShift: -0.08, presence: 0.18 }
++    ];
++  }
+ 
+-const HIERARCHIES: Record<HarmonyType, Array<{ c: number, l: number }>> = {
+-  analogous: [
+-    { c: 0.8, l: -0.05 }, { c: 1, l: 0.02 }, { c: 1, l: 0 },
+-    { c: 0.95, l: 0 }, { c: 0.9, l: 0.03 }, { c: 0.6, l: 0.08 }
+-  ],
+-  complementary: [
+-    { c: 1, l: 0 }, { c: 0.95, l: 0.05 }, { c: 0.8, l: -0.1 },
+-    { c: 0.5, l: -0.05 }, { c: 0.7, l: 0.08 }, { c: 0.4, l: -0.08 }
+-  ],
+-  splitComplementary: [
+-    { c: 1, l: 0 }, { c: 0.9, l: -0.08 }, { c: 0.85, l: 0.03 },
+-    { c: 0.6, l: -0.05 }, { c: 0.8, l: 0.05 }, { c: 0.5, l: 0.08 }
+-  ],
+-  triadic: [
+-    { c: 1, l: 0 }, { c: 0.9, l: -0.1 }, { c: 0.85, l: 0.05 },
+-    { c: 0.65, l: 0.08 }, { c: 0.8, l: 0.02 }, { c: 0.6, l: -0.05 }
+-  ],
+-  tetradic: [
+-    { c: 1, l: 0 }, { c: 0.85, l: 0.02 }, { c: 0.6, l: -0.05 },
+-    { c: 0.8, l: 0 }, { c: 0.75, l: 0.05 }, { c: 0.7, l: -0.08 }
+-  ]
+-};
++  if (paletteType === 'splitComplementary') {
++    return [
++      { name: 'protagonist', chromaMultiplier: 1.0, lightnessShift: 0, presence: 0.5 },
++      { name: 'supporting', chromaMultiplier: 0.9, lightnessShift: -0.08, presence: 0.2 },
++      { name: 'deuteragonist', chromaMultiplier: 0.85, lightnessShift: 0.03, presence: 0.25 },
++      { name: 'neutral', chromaMultiplier: 0.6, lightnessShift: -0.05, presence: 0.15 },
++      { name: 'accent', chromaMultiplier: 0.8, lightnessShift: 0.05, presence: 0.15 },
++      { name: 'background', chromaMultiplier: 0.5, lightnessShift: 0.08, presence: 0.12 }
++    ];
++  }
++
++  if (paletteType === 'triadic') {
++    return [
++      { name: 'protagonist', chromaMultiplier: 1.0, lightnessShift: 0, presence: 0.5 },
++      { name: 'supporting', chromaMultiplier: 0.9, lightnessShift: -0.1, presence: 0.2 },
++      { name: 'deuteragonist', chromaMultiplier: 0.85, lightnessShift: 0.05, presence: 0.3 },
++      { name: 'neutral', chromaMultiplier: 0.65, lightnessShift: 0.08, presence: 0.15 },
++      { name: 'accent', chromaMultiplier: 0.8, lightnessShift: 0.02, presence: 0.25 },
++      { name: 'background', chromaMultiplier: 0.6, lightnessShift: -0.05, presence: 0.12 }
++    ];
++  }
++
++  if (paletteType === 'tetradic') {
++    return [
++      { name: 'protagonist', chromaMultiplier: 1.0, lightnessShift: 0, presence: 0.4 },
++      { name: 'deuteragonist', chromaMultiplier: 0.85, lightnessShift: 0.02, presence: 0.25 },
++      { name: 'neutral', chromaMultiplier: 0.6, lightnessShift: -0.05, presence: 0.15 },
++      { name: 'supporting', chromaMultiplier: 0.8, lightnessShift: 0, presence: 0.2 },
++      { name: 'accent', chromaMultiplier: 0.75, lightnessShift: 0.05, presence: 0.12 },
++      { name: 'background', chromaMultiplier: 0.7, lightnessShift: -0.08, presence: 0.18 }
++    ];
++  }
++
++  // Default fallback
++  return Array(6).fill({
++    name: 'neutral',
++    chromaMultiplier: 1.0,
++    lightnessShift: 0,
++    presence: 0.16
++  });
++}
+ 
+ /**
+- * Chroma Narratives (por posicion) x Color Hierarchy (roles) — siempre juntos.
+- * El color base (indice 0) queda siempre intacto.
++ * Enhances a raw palette by applying chroma narratives and color hierarchy
++ * roles. El color base (indice 0) queda siempre intacto.
+  */
+ export function enhancePalette(colors: Oklch[], paletteType: HarmonyType, style: PaletteStyle): Oklch[] {
+-  const narrative = NARRATIVES[paletteType][NARRATIVE_STYLE_KEY[style]] ?? NARRATIVES[paletteType].square;
+-  const roles = HIERARCHIES[paletteType];
+-  return colors.map((color, i) => {
+-    if (i === 0) return color;
+-    const role = roles[i];
+-    const factor = narrative.pattern[i];
+-    let newL = color.l + role.l;
+-    const newC = color.c * role.c * factor;
+-    if (narrative.breathingRoom && i % 2 !== 0) {
++  const baseColor = colors[0];
++  const baseChroma = baseColor.c;
++
++  const narrative = getChromaNarrative(paletteType, style, baseChroma);
++  const hierarchy = getColorHierarchy(paletteType, style);
++
++  return colors.map((color, index) => {
++    if (index === 0) return color;
++
++    const role = hierarchy[index] || hierarchy[0];
++    const narrativeFactor = narrative.pattern[index] || 1.0;
++
++    let newL = color.l + role.lightnessShift;
++    const newC = color.c * role.chromaMultiplier * narrativeFactor;
++
++    if (narrative.breathingRoom && index % 2 !== 0) {
+       newL += newL > 0.5 ? -0.05 : 0.05;
+     }
++
+     return clampOKLCH(newL, newC, color.h);
+@@ -585,10 +1196,20 @@ export function enhancePalette(colors: Oklch[], paletteType: HarmonyType, style:
+ 
+-/** Anti-gris-muerto: pisos absolutos de chroma (saltea el color base). */
+-export function polishPalette(colors: Oklch[]): Oklch[] {
+-  return colors.map((color, i) => {
+-    if (i === 0) return color;
+-    let { l, c, h } = color;
+-    if (c < 0.05 && l > 0.2 && l < 0.8) c = Math.max(0.08, c * 2);
+-    if (l > 0.85 && c < 0.04) c = 0.04;
+-    return { l, c, h };
++/** Polishes the palette: previene grises muertos y aclara tonos muy claros. */
++export function polishPalette(colors: Oklch[], baseColorIndex: number = 0): Oklch[] {
++  return colors.map((color, index) => {
++    if (index === baseColorIndex) return color;
++
++    const polished = { ...color };
++
++    // 1. Prevent "dead" grays in mid-tones
++    if (polished.c < 0.05 && polished.l > 0.2 && polished.l < 0.8) {
++      polished.c = Math.max(0.08, polished.c * 2); // Minimum life
++    }
++
++    // 2. Make very light colors more interesting
++    if (polished.l > 0.85 && polished.c < 0.04) {
++      polished.c = 0.04; // Minimum tint
++    }
++
++    return clampOKLCH(polished.l, polished.c, polished.h);
+   });
+@@ -597,19 +1218,21 @@ export function polishPalette(colors: Oklch[]): Oklch[] {
+ // ---------------------------------------------------------------------------
+-// Modifiers — formulas exactas (§11). Se aplican en orden fijo:
+-// sine -> wave -> zap -> block, solo si el valor es truthy (0 = off).
++// src/utils/modifiers.ts
+ // ---------------------------------------------------------------------------
+ 
+-function applySine(palette: Oklch[], modifier: number): Oklch[] {
++/** Applies a sine wave modulation to the palette. */
++export function sineModifier(palette: Oklch[], modifier: number): Oklch[] {
+   const hueIntensity = modifier * 45;
+   const lightnessIntensity = modifier * 0.15;
++
+   return palette.map((color, idx, arr) => {
+-    const wavePosition = (idx / (arr.length - 1)) * 2 * Math.PI;
+-    const fundamental = Math.sin(wavePosition + modifier);
++    const wavePosition = (idx / Math.max(1, arr.length - 1)) * Math.PI * 2;
++    const fundamental = Math.sin(wavePosition + modifier * 1);
+     const harmonic = Math.sin(wavePosition * 2 + modifier * 0.5) * 0.3;
+     const sineValue = fundamental + harmonic;
+-    return {
+-      l: color.l + Math.sin(wavePosition * 1.5 + modifier * 0.8) * lightnessIntensity,
+-      c: color.c,
+-      h: normalizeHue(color.h + sineValue * hueIntensity)
+-    };
++
++    const hueShift = sineValue * hueIntensity;
++    const lightnessShift = Math.sin(wavePosition * 1.5 + modifier * 0.8) * lightnessIntensity;
++
++    const { l, c, h } = color;
++    return clampOKLCH(l + lightnessShift, c, normalizeHue(h + hueShift));
+   });
+@@ -617,3 +1240,4 @@ function applySine(palette: Oklch[], modifier: number): Oklch[] {
+ 
+-function applyWave(palette: Oklch[], modifier: number): Oklch[] {
++/** Applies a chaotic wave modulation using a logistic map. */
++export function waveModifier(palette: Oklch[], modifier: number): Oklch[] {
+   const chaosLevel = 2.0 + modifier * 1.2;
+@@ -621,11 +1245,18 @@ function applyWave(palette: Oklch[], modifier: number): Oklch[] {
+   const lightnessRange = modifier * 0.35;
++
+   return palette.map((color, idx, arr) => {
+-    let x = 0.2 + (idx / arr.length) * 0.6 + Math.sin(idx * 0.7) * 0.15;
+-    for (let i = 0; i < 8; i++) x = chaosLevel * x * (1 - x);
++    let x = 0.2 + (idx / Math.max(1, arr.length)) * 0.6 + Math.sin(idx * 0.7) * 0.15;
++
++    for (let i = 0; i < 8; i++) {
++      x = chaosLevel * x * (1 - x);
++    }
++
+     const smoothedX = x * 0.85 + 0.5 * 0.15;
+-    return {
+-      l: color.l + (smoothedX - 0.5) * lightnessRange,
+-      c: color.c * (0.4 + smoothedX * 1.2),
+-      h: normalizeHue(color.h + (smoothedX - 0.5) * hueRange)
+-    };
++
++    const hueShift = (smoothedX - 0.5) * hueRange;
++    const lightnessShift = (smoothedX - 0.5) * lightnessRange;
++    const chromaMultiplier = 0.4 + smoothedX * 1.2;
++
++    const { l, c, h } = color;
++    return clampOKLCH(l + lightnessShift, c * chromaMultiplier, normalizeHue(h + hueShift));
+   });
+@@ -633,14 +1264,21 @@ function applyWave(palette: Oklch[], modifier: number): Oklch[] {
+ 
+-function applyZap(palette: Oklch[], modifier: number): Oklch[] {
++/** Applies a spiral-like modulation. */
++export function zapModifier(palette: Oklch[], modifier: number): Oklch[] {
+   const spiralTightness = 0.2 + Math.abs(modifier) * 1.0;
+   const maxHueShift = modifier * 90;
++
+   return palette.map((color, idx, arr) => {
+-    const normalizedPos = idx / (arr.length - 1);
+-    const angle = normalizedPos * spiralTightness * 2 * Math.PI;
++    const normalizedPos = idx / Math.max(1, arr.length - 1);
++    const angle = normalizedPos * spiralTightness * Math.PI * 2;
+     const radius = Math.sqrt(normalizedPos) * 2;
+-    return {
+-      l: color.l + Math.sin(angle) * radius * 0.12 * modifier,
+-      c: color.c + Math.sin(angle * 1.5) * 0.08 * modifier,
+-      h: normalizeHue(color.h + Math.cos(angle) * radius * maxHueShift)
+-    };
++
++    const spiralX = Math.cos(angle) * radius;
++    const spiralY = Math.sin(angle) * radius;
++
++    const hueShift = spiralX * maxHueShift;
++    const lightnessShift = spiralY * 0.12 * modifier;
++    const chromaShift = Math.sin(angle * 1.5) * 0.08 * modifier;
++
++    const { l, c, h } = color;
++    return clampOKLCH(l + lightnessShift, c + chromaShift, normalizeHue(h + hueShift));
+   });
+@@ -648,3 +1286,4 @@ function applyZap(palette: Oklch[], modifier: number): Oklch[] {
+ 
+-function applyBlock(palette: Oklch[], modifier: number): Oklch[] {
++/** Applies a triangular wave pattern. */
++export function blockModifier(palette: Oklch[], modifier: number): Oklch[] {
+   const lightnessAmplitude = modifier * 0.25;
+@@ -652,12 +1291,16 @@ function applyBlock(palette: Oklch[], modifier: number): Oklch[] {
+   const chromaAmplitude = modifier * 0.1;
+-  const frequency = Math.max(1, Math.floor(palette.length / 8));
++
+   return palette.map((color, idx, arr) => {
+-    const wavePosition = (idx / (arr.length - 1)) * Math.PI * frequency;
++    const frequency = Math.max(1, Math.floor(arr.length / 8));
++    const wavePosition = (idx / Math.max(1, arr.length - 1)) * Math.PI * frequency;
++
+     const rawTriangle = (2 / Math.PI) * Math.asin(Math.sin(wavePosition));
+     const softTriangle = rawTriangle * (1 - Math.abs(rawTriangle) * 0.3);
+-    return {
+-      l: color.l + softTriangle * lightnessAmplitude,
+-      c: color.c + Math.cos(wavePosition + Math.PI / 2) * rawTriangle * chromaAmplitude,
+-      h: normalizeHue(color.h + Math.sin(wavePosition + Math.PI / 4) * rawTriangle * hueAmplitude)
+-    };
++
++    const lightnessShift = softTriangle * lightnessAmplitude;
++    const hueShift = Math.sin(wavePosition + Math.PI * 0.25) * rawTriangle * hueAmplitude;
++    const chromaShift = Math.cos(wavePosition + Math.PI * 0.5) * rawTriangle * chromaAmplitude;
++
++    const { l, c, h } = color;
++    return clampOKLCH(l + lightnessShift, c + chromaShift, normalizeHue(h + hueShift));
+   });
+@@ -665,9 +1308,16 @@ function applyBlock(palette: Oklch[], modifier: number): Oklch[] {
+ 
++/**
++ * Apply a series of modifiers to a palette in sequence.
++ * Orden fijo: sine -> wave -> zap -> block, solo si el valor es truthy (0 off).
++ */
+ export function applyModifiers(palette: Oklch[], modifiers?: PaletteModifiers): Oklch[] {
+   if (!modifiers) return palette;
+-  let result = palette;
+-  if (modifiers.sine) result = applySine(result, modifiers.sine);
+-  if (modifiers.wave) result = applyWave(result, modifiers.wave);
+-  if (modifiers.zap) result = applyZap(result, modifiers.zap);
+-  if (modifiers.block) result = applyBlock(result, modifiers.block);
++
++  let result = [...palette];
++
++  if (modifiers.sine) result = sineModifier(result, modifiers.sine);
++  if (modifiers.wave) result = waveModifier(result, modifiers.wave);
++  if (modifiers.zap) result = zapModifier(result, modifiers.zap);
++  if (modifiers.block) result = blockModifier(result, modifiers.block);
++
+   return result;
+@@ -676,58 +1326,85 @@ export function applyModifiers(palette: Oklch[], modifiers?: PaletteModifiers):
+ // ---------------------------------------------------------------------------
+-// tintsShades — 100% autonomo (§7). Escala de 6 pasos con el base insertado
+-// en su slot mas cercano. Fisica perceptual por estilo.
++// src/utils/tintsShades.ts — 100% autonomo (no pasa por el pipeline general)
+ // ---------------------------------------------------------------------------
+ 
+-const LIGHTNESS_PROGRESSION = [0.02, 0.25, 0.38, 0.62, 0.84, 0.98];
+-
+-function nearestSlot(l: number, ramp: number[]): number {
+-  let slot = 0;
+-  let minDiff = Infinity;
+-  ramp.forEach((v, i) => {
+-    const d = Math.abs(v - l);
+-    if (d < minDiff) { minDiff = d; slot = i; }
+-  });
+-  return slot;
++/** Clamps a hue shift to ±maxDegrees. */
++function clampShift(shift: number, maxDegrees: number): number {
++  return Math.max(-maxDegrees, Math.min(maxDegrees, shift));
+ }
+ 
+-function generateTintsAndShades(base: Oklch, style: PaletteStyle): Oklch[] {
+-  const slot = nearestSlot(base.l, LIGHTNESS_PROGRESSION);
+-  const out: Oklch[] = [];
+-  for (let i = 0; i < 6; i++) {
+-    if (i === slot) {
+-      const lower = i > 0 ? LIGHTNESS_PROGRESSION[i - 1] : 0;
+-      const upper = i < 5 ? LIGHTNESS_PROGRESSION[i + 1] : 1;
+-      out.push({ l: Math.min(Math.max(base.l, lower), upper), c: base.c, h: base.h });
++/**
++ * Generates a 6-step lightness scale (tints and shades) for a single color.
++ * Aplica estrategias perceptuales distintas segun el estilo. El base se
++ * inserta en su slot mas cercano (clampeado entre vecinos para mantener la
++ * rampa monotona).
++ */
++export function generateTintsAndShades(base: Oklch, style: PaletteStyle): Oklch[] {
++  const resolvedStyle = resolvePaletteStyle(style);
++  const { h: hue, c: chroma, l: lightness } = base;
++
++  const steps = 6;
++  const results: Oklch[] = [];
++
++  const lightnessProgression = [0.02, 0.25, 0.38, 0.62, 0.84, 0.98];
++
++  const baseSlotIndex = lightnessProgression.reduce(
++    (best, l, i) => (Math.abs(l - lightness) < Math.abs(lightnessProgression[best] - lightness) ? i : best),
++    0
++  );
++
++  for (let i = 0; i < steps; i++) {
++    if (i === baseSlotIndex) {
++      const lower = lightnessProgression[i - 1] ?? OKLCH_LIMITS.l.min;
++      const upper = lightnessProgression[i + 1] ?? OKLCH_LIMITS.l.max;
++      const snappedL = Math.min(Math.max(lightness, lower), upper);
++      results.push(clampOKLCH(snappedL, chroma, hue));
+       continue;
+     }
+-    const targetL = LIGHTNESS_PROGRESSION[i];
+-    const darker = targetL < base.l;
+-    let chroma = base.c;
+-    let hue = base.h;
+-    switch (style) {
++
++    const targetL = lightnessProgression[i];
++    let newColor: Oklch = { l: targetL, c: chroma, h: hue };
++
++    switch (resolvedStyle) {
+       case 'square':
++        // Pure numerical consistency — sin ajustes extra
+         break;
++
+       case 'triangle': {
+-        const dl = Math.abs(targetL - base.l);
+-        const chromaMult = darker ? 1 + dl * 0.4 : Math.max(0.2, 1 - dl * 0.8);
+-        chroma = base.c * chromaMult;
+-        const bezold = Math.min(4, Math.max(-4, Math.cos(((hue - 90) * Math.PI) / 180) * dl * 4));
+-        const abney = Math.min(2, Math.max(-2, Math.sin(((hue - 30) * Math.PI) / 180) * (1 - chromaMult) * 15));
+-        hue = normalizeHue(hue + bezold + abney);
++        const lDelta = targetL - lightness;
++
++        let chromaMult = 1.0;
++        if (targetL < lightness) {
++          chromaMult = 1.0 + Math.abs(lDelta) * 0.4;
++        } else {
++          chromaMult = Math.max(0.2, 1.0 - Math.abs(lDelta) * 0.8);
++        }
++
++        const bezoldBrucke = clampShift(lDelta * Math.cos(((hue - 90) * Math.PI) / 180) * 4, 4);
++        const chromaReduction = Math.max(0, 1 - chromaMult);
++        const abney = clampShift(chromaReduction * Math.sin(((hue - 30) * Math.PI) / 180) * 15, 2);
++
++        newColor.h = normalizeHue(hue + bezoldBrucke + abney);
++        newColor.c = chroma * chromaMult;
+         break;
+       }
++
+       case 'circle': {
+         const darkness = 1 - targetL;
+-        const boost = Math.pow(darkness, 1.5) * 0.8 + 0.2;
+-        chroma = base.c * boost * 1.2;
+-        hue = normalizeHue(hue + (targetL - 0.5) * 10);
++        const chromaBoost = Math.pow(darkness, 1.5) * 0.8 + 0.2;
++        const targetChroma = chroma * chromaBoost * 1.2;
++
++        newColor.c = Math.max(0, Math.min(0.37, targetChroma));
++
++        const circleHueShift = (targetL - 0.5) * 10;
++        newColor.h = normalizeHue(hue + circleHueShift);
+         break;
+       }
++
+       case 'diamond': {
+-        if (darker) {
+-          const shadeFactor = (base.l - targetL) / base.l;
+-          chroma = lerp(shadeFactor, base.c, base.c * 0.5);
++        if (targetL < lightness) {
++          const shadeFactor = (lightness - targetL) / lightness; // 0 to 1
++          newColor.c = lerp(shadeFactor, chroma, chroma * 0.5);
+         } else {
+-          const tintFactor = (targetL - base.l) / (1 - base.l);
+-          chroma = lerp(tintFactor, base.c, 0);
++          const tintFactor = (targetL - lightness) / (1 - lightness); // 0 to 1
++          newColor.c = lerp(tintFactor, chroma, 0);
+         }
+@@ -735,8 +1412,8 @@ function generateTintsAndShades(base: Oklch, style: PaletteStyle): Oklch[] {
+       }
+-      default:
+-        break;
+     }
+-    out.push({ l: targetL, c: chroma, h: hue });
++
++    results.push(clampOKLCH(newColor.l, newColor.c, newColor.h));
+   }
+-  return out;
++
++  return results;
+ }
+@@ -744,19 +1421,152 @@ function generateTintsAndShades(base: Oklch, style: PaletteStyle): Oklch[] {
+ // ---------------------------------------------------------------------------
+-// Neutrals — atajo para colores acromaticos (grises puros) (§15)
++// src/index.ts — los 5 ensambladores + ColorPaletteGenerator
+ // ---------------------------------------------------------------------------
+ 
+-const NEUTRAL_RAMP = [0.2, 0.35, 0.5, 0.65, 0.8, 0.95];
++/** Creates a palette generator function with common boilerplate. */
++function createPaletteGenerator(
++  paletteType: HarmonyType,
++  generatorFn: (base: Oklch, options: GeneratorOptions, enhanced: boolean) => Oklch[]
++): (baseColor: Oklch, options: GeneratorOptions) => Oklch[] {
++  return (baseColor: Oklch, options: GeneratorOptions): Oklch[] => {
++    const base = { l: baseColor.l, c: baseColor.c, h: baseColor.h || 0 };
++
++    if (isAchromatic(base)) {
++      return generateNeutralPalette(base);
++    }
++
++    const style = resolvePaletteStyle(options.style);
++    const enhanced = style !== 'square';
++    const colors = generatorFn(base, { ...options, style }, enhanced);
++
++    if (enhanced) {
++      const enhancedColors = enhancePalette(colors, paletteType, style);
++      return polishPalette(enhancedColors);
++    }
+ 
+-function generateNeutralPalette(base: Oklch): Oklch[] {
+-  const slot = nearestSlot(base.l, NEUTRAL_RAMP);
+-  return NEUTRAL_RAMP.map((l, i) => (i === slot ? { l: base.l, c: base.c, h: base.h } : { l, c: base.c, h: base.h }));
++    return colors;
++  };
+ }
+ 
+-// ---------------------------------------------------------------------------
+-// Generador orquestador
+-// ---------------------------------------------------------------------------
++/** Complementary: base + hue opuesto. chromaAdjust 0.9 (solo aca y analogous). */
++export const generateComplementary = createPaletteGenerator('complementary', (base, options, enhanced) => {
++  const { l: baseLightness, c: baseChroma, h: baseHue } = base;
++  const chromaAdjust = 0.9;
++
++  const complementHue = getComplementaryHue(base, options.style);
++  const { base: baseVars, complement: compVars } = getComplementaryVariations(base, options.style, options.interpolation);
++
++  const createColor = (hue: number, v: Variation) =>
++    safeColor(hue, baseLightness + v.l, baseChroma * v.c * chromaAdjust, enhanced);
++
++  return [
++    { l: baseLightness, c: baseChroma, h: baseHue },
++    createColor(complementHue, compVars.main),
++    createColor(baseHue, baseVars.dark),
++    createColor(baseHue, baseVars.light),
++    createColor(complementHue, compVars.light),
++    createColor(complementHue, compVars.muted)
++  ];
++});
++
++/** Analogous: colores adyacentes en la rueda. chromaAdjust 0.9. */
++export const generateAnalogous = createPaletteGenerator('analogous', (base, options, enhanced) => {
++  const { l: baseLightness, c: baseChroma, h: baseHue } = base;
++  const chromaAdjust = 0.9;
++
++  const analogousHues = getAnalogousHues(base, options.style);
++  const variations = getAnalogousVariations(base, options.style, options.interpolation);
++
++  return analogousHues.map((hue, index) => {
++    if (index === 0) return { l: baseLightness, c: baseChroma, h: baseHue };
++
++    const v = variations[index];
++    return safeColor(hue, baseLightness + v.l, baseChroma * v.c * chromaAdjust, enhanced);
++  });
++});
++
++/** Triadic: tres colores equiespaciados. El "baseDark" (idx 1) va sin safeColor. */
++export const generateTriadic = createPaletteGenerator('triadic', (base, options, enhanced) => {
++  const { l: baseLightness, c: baseChroma, h: baseHue } = base;
++  const triadicHues = getTriadicHues(base, options.style);
++  const { base: baseVariations, triad: triadVariations } = getTriadicVariations(base, options.style, options.interpolation);
++
++  const colors: Oklch[] = [];
++  triadicHues.forEach((hue, idx) => {
++    if (idx === 0) {
++      colors.push({ l: baseLightness, c: baseChroma, h: baseHue });
++      colors.push({ l: baseLightness + baseVariations.dark.l, c: baseChroma * baseVariations.dark.c, h: hue });
++    } else {
++      const v = idx === 1 ? triadVariations.first : triadVariations.second;
++      colors.push(safeColor(hue, baseLightness + v.pure.l, baseChroma * v.pure.c, enhanced));
++      colors.push(safeColor(hue, baseLightness + v.muted.l, baseChroma * v.muted.c, enhanced));
++    }
++  });
++  return colors;
++});
++
++/** Tetradic: dos pares de complementarios. */
++export const generateTetradic = createPaletteGenerator('tetradic', (base, options, enhanced) => {
++  const { l: baseLightness, c: baseChroma, h: baseHue } = base;
++  const tetradicHues = getTetradicHues(base, options.style);
++  const variations = getTetradicVariations(base, options.style, options.interpolation);
+ 
+-type GeneratorFn = (base: Oklch, style: PaletteStyle, enhanced: boolean, interpolate: boolean) => Oklch[];
++  const colors: Oklch[] = [];
+ 
+-const GENERATORS: Record<Exclude<PaletteType, 'tintsShades'>, GeneratorFn> = {
++  colors.push({ l: baseLightness, c: baseChroma, h: baseHue });
++
++  const h1 = tetradicHues[1];
++  const v1Pure = variations.first.pure;
++  colors.push(safeColor(h1, baseLightness + v1Pure.l, baseChroma * v1Pure.c, enhanced));
++
++  const v1Muted = variations.first.muted;
++  colors.push(safeColor(h1, baseLightness + v1Muted.l, baseChroma * v1Muted.c, enhanced));
++
++  const h2 = tetradicHues[2];
++  const vComp = variations.complement;
++  colors.push(safeColor(h2, baseLightness + vComp.l, baseChroma * vComp.c, enhanced));
++
++  const h3 = tetradicHues[3];
++  const v4Light = variations.fourth.light;
++  colors.push(safeColor(h3, baseLightness + v4Light.l, baseChroma * v4Light.c, enhanced));
++
++  const v4Dark = variations.fourth.dark;
++  colors.push(safeColor(h3, baseLightness + v4Dark.l, baseChroma * v4Dark.c, enhanced));
++
++  return colors;
++});
++
++/** Split-complementary: base + dos adyacentes al complemento. El baseDark (idx 1) va sin safeColor. */
++export const generateSplitComplementary = createPaletteGenerator('splitComplementary', (base, options, enhanced) => {
++  const { l: baseLightness, c: baseChroma, h: baseHue } = base;
++  const splitHues = getSplitComplementaryHues(base, options.style);
++  const { base: baseVars, complement: compVars } = getSplitComplementaryVariations(base, options.style, options.interpolation);
++
++  const colors: Oklch[] = [];
++
++  colors.push({ l: baseLightness, c: baseChroma, h: baseHue });
++
++  colors.push({
++    l: baseLightness + baseVars.dark.l,
++    c: baseChroma * baseVars.dark.c,
++    h: baseHue
++  });
++
++  const h1 = splitHues[1];
++  const v1Pure = compVars.first.pure;
++  colors.push(safeColor(h1, baseLightness + v1Pure.l, baseChroma * v1Pure.c, enhanced));
++
++  const v1Muted = compVars.first.muted;
++  colors.push(safeColor(h1, baseLightness + v1Muted.l, baseChroma * v1Muted.c, enhanced));
++
++  const h2 = splitHues[2];
++  const v2Pure = compVars.second.pure;
++  colors.push(safeColor(h2, baseLightness + v2Pure.l, baseChroma * v2Pure.c, enhanced));
++
++  const v2Muted = compVars.second.muted;
++  colors.push(safeColor(h2, baseLightness + v2Muted.l, baseChroma * v2Muted.c, enhanced));
++
++  return colors;
++});
++
++export const generators = {
+   analogous: generateAnalogous,
+@@ -768,35 +1578,40 @@ const GENERATORS: Record<Exclude<PaletteType, 'tintsShades'>, GeneratorFn> = {
+ 
+-export const PALETTE_TYPES: PaletteType[] = [
+-  'analogous',
+-  'complementary',
+-  'triadic',
+-  'tetradic',
+-  'splitComplementary',
+-  'tintsShades'
+-];
++// ---------------------------------------------------------------------------
++// API pública del layer (misma API que antes, ahora fiel al original)
++// ---------------------------------------------------------------------------
+ 
+ /**
+- * generate(baseHex, paletteType, options) -> Oklch[] (siempre 6 colores)
+- * Pipeline real: achromatic -> style -> hue -> variations -> safeColor ->
+- * enhance+polish (si enhanced) -> modifiers -> gamut-clamp.
++ * Genera una paleta (siempre 6 colores OKLCH) a partir de un color base OKLCH.
++ * Pipeline real: achromatic-check -> style-resolve -> hue-strategy ->
++ * variations(+interpolate) -> safeColor(muddy-zones si enhanced) ->
++ * enhance+polish (si enhanced) -> modifiers (orden fijo) -> clampToGamut (opc).
++ * `tintsShades` es autonomo: no pasa por achromatic-check ni enhance/polish.
+  */
+-export function generatePalette(baseHex: string, paletteType: PaletteType, options: GeneratorOptions): Oklch[] {
+-  const opts = { interpolation: true, ...options };
+-  const base = typeof baseHex === 'string' ? hexToOklch(baseHex) : baseHex;
+-  const style: PaletteStyle = options.style === 'default' ? 'square' : options.style;
++export function generateFromOklch(baseColor: Oklch, paletteType: PaletteType, options: GeneratorOptions): Oklch[] {
++  const baseOptions = { interpolation: true, ...options };
++  const modifiers = baseOptions.modifiers;
+ 
+   let palette: Oklch[];
+-  if (paletteType === 'tintsShades') {
+-    palette = generateTintsAndShades(base, style);
+-  } else if (isAchromatic(base)) {
+-    palette = generateNeutralPalette(base);
+-  } else {
+-    const enhanced = style !== 'square';
+-    palette = GENERATORS[paletteType](base, style, enhanced, opts.interpolation);
+-    if (enhanced) palette = polishPalette(enhancePalette(palette, paletteType as HarmonyType, style));
++  switch (paletteType) {
++    case 'analogous': palette = generateAnalogous(baseColor, baseOptions); break;
++    case 'complementary': palette = generateComplementary(baseColor, baseOptions); break;
++    case 'triadic': palette = generateTriadic(baseColor, baseOptions); break;
++    case 'tetradic': palette = generateTetradic(baseColor, baseOptions); break;
++    case 'splitComplementary': palette = generateSplitComplementary(baseColor, baseOptions); break;
++    case 'tintsShades': palette = generateTintsAndShades(baseColor, baseOptions.style); break;
++    default: throw new Error(`Unknown palette type: ${paletteType}`);
++  }
++
++  const result = applyModifiers(palette, modifiers);
++
++  if (baseOptions.clampToGamut) {
++    return result.map(clampChroma);
+   }
+ 
+-  palette = applyModifiers(palette, options.modifiers);
+-  if (options.clampToGamut) palette = palette.map(clampChroma);
+-  return palette.map((c) => clampOKLCH(c.l, c.c, c.h));
++  return result;
++}
++
++/** generatePalette a partir de un hex (entrada de la UI). */
++export function generatePalette(baseHex: string, paletteType: PaletteType, options: GeneratorOptions): Oklch[] {
++  return generateFromOklch(hexToOklch(baseHex), paletteType, options);
+ }
+@@ -805,5 +1620,6 @@ export function generatePalette(baseHex: string, paletteType: PaletteType, optio
+ export function generateAllPalettes(baseHex: string, options: GeneratorOptions): Record<PaletteType, Oklch[]> {
++  const base = hexToOklch(baseHex);
+   const out = {} as Record<PaletteType, Oklch[]>;
+   for (const type of PALETTE_TYPES) {
+-    out[type] = generatePalette(baseHex, type, options);
++    out[type] = generateFromOklch(base, type, options);
+   }
+@@ -813,23 +1629,44 @@ export function generateAllPalettes(baseHex: string, options: GeneratorOptions):
+ // ---------------------------------------------------------------------------
+-// Expansion a N colores (demo §14): down-sampling por indice o up-sampling
+-// por interpolacion multi-stop en OKLAB.
++// src/utils/demo-palette.ts — extendPalette (expandir/reducir de 6 a N)
+ // ---------------------------------------------------------------------------
+ 
+-export function expandPalette(palette: Oklch[], targetCount: number): Oklch[] {
+-  if (targetCount <= 1) return [palette[0]];
+-  if (targetCount <= palette.length) {
+-    const step = palette.length / targetCount;
+-    return Array.from({ length: targetCount }, (_, i) => palette[Math.min(Math.floor(i * step), palette.length - 1)]);
+-  }
+-  const oklab = palette.map(oklchToOklab);
+-  return Array.from({ length: targetCount }, (_, i) => {
+-    const t = i / (targetCount - 1);
+-    const pos = t * (palette.length - 1);
+-    const i0 = Math.floor(pos);
+-    const i1 = Math.min(i0 + 1, palette.length - 1);
++/**
++ * Extiende/reduce una paleta al conteo deseado (port de extendPalette).
++ * - N <= largo: down-sampling por indice con step = largo/N (Math.floor).
++ * - N > largo: interpola en OKLAB sobre TODOS los stops (lineal por tramos,
++ *   equivalente a culori.interpolate(colors, 'oklab')).
++ * El hue resultante queda normalizado a [0,360) y `h || 0` para grises.
++ */
++export function expandPalette(basePalette: Oklch[], targetCount: number): Oklch[] {
++  if (targetCount <= basePalette.length) {
++    const step = basePalette.length / targetCount;
++    return Array.from({ length: targetCount }, (_, i) => {
++      const index = Math.min(Math.floor(i * step), basePalette.length - 1);
++      return basePalette[index];
++    });
++  }
++
++  // Upsampling: interpolacion en OKLAB via oklch.util (equivalente a culori)
++  const baseColors = basePalette.map((p) => oklchToOklab(p));
++
++  const result: Oklch[] = [];
++  for (let i = 0; i < targetCount; i++) {
++    const t = targetCount === 1 ? 0 : i / (targetCount - 1);
++    const pos = t * (baseColors.length - 1);
++    const i0 = Math.min(Math.floor(pos), baseColors.length - 2);
+     const f = pos - i0;
+-    const a = oklab[i0];
+-    const b = oklab[i1];
+-    return oklabToOklch({ l: lerp(f, a.l, b.l), a: lerp(f, a.a, b.a), b: lerp(f, a.b, b.b) });
+-  });
++
++    const from = baseColors[i0];
++    const to = baseColors[i0 + 1];
++
++    const l = lerp(f, from.l, to.l);
++    const a = lerp(f, from.a, to.a);
++    const b = lerp(f, from.b, to.b);
++
++    const c = Math.sqrt(a * a + b * b);
++    const h = ((Math.atan2(b, a) * 180) / Math.PI + 360) % 360;
++    result.push({ l, c, h: h || 0 });
++  }
++
++  return result;
+ }
