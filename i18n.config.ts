@@ -358,7 +358,15 @@ export default defineI18nConfig(() => ({
         groupByPrefix: 'Group by prefix',
         groupOther: 'Other',
         examplesLabel: 'Or try one of these sites:',
-        examplesPlaceholder: 'Pick an example site…'
+        examplesPlaceholder: 'Pick an example site…',
+        runtimeButton: 'Analyze rendered colors',
+        runtimeRunning: 'Analyzing…',
+        runtimeTitle: 'Rendered Colors',
+        runtimeCount: '{count} colors used',
+        runtimeShare: '{count} uses · {share}%',
+        runtimeDuration: 'Took {seconds}s',
+        runtimeCached: 'Cached result',
+        runtimeError: 'Rendered analysis unavailable. The renderer worker is offline.'
       }
     },
     ja: {
@@ -717,7 +725,15 @@ export default defineI18nConfig(() => ({
         groupByPrefix: 'プレフィックスでグループ化',
         groupOther: 'その他',
         examplesLabel: 'または、サイト例から選ぶ:',
-        examplesPlaceholder: 'サイト例を選択…'
+        examplesPlaceholder: 'サイト例を選択…',
+        runtimeButton: 'レンダリングされた色を分析',
+        runtimeRunning: '分析中…',
+        runtimeTitle: 'レンダリングされた色',
+        runtimeCount: '{count}色が使用中',
+        runtimeShare: '{count}回使用 · {share}%',
+        runtimeDuration: '{seconds}秒かかりました',
+        runtimeCached: 'キャッシュ済み',
+        runtimeError: 'レンダリング分析は利用できません。レンダラーワーカーがオフラインです。'
       }
     },
     it: {
@@ -1076,7 +1092,15 @@ export default defineI18nConfig(() => ({
         groupByPrefix: 'Raggruppa per prefisso',
         groupOther: 'Altri',
         examplesLabel: 'Oppure prova uno di questi siti:',
-        examplesPlaceholder: 'Scegli un sito di esempio…'
+        examplesPlaceholder: 'Scegli un sito di esempio…',
+        runtimeButton: 'Analizza i colori renderizzati',
+        runtimeRunning: 'Analisi in corso…',
+        runtimeTitle: 'Colori Renderizzati',
+        runtimeCount: '{count} colori in uso',
+        runtimeShare: '{count} usi · {share}%',
+        runtimeDuration: 'Impiegato {seconds}s',
+        runtimeCached: 'Risultato in cache',
+        runtimeError: 'Analisi renderizzata non disponibile. Il worker di rendering è offline.'
       }
     },
     es: {
@@ -1435,7 +1459,15 @@ export default defineI18nConfig(() => ({
         groupByPrefix: 'Agrupar por prefijo',
         groupOther: 'Otros',
         examplesLabel: 'O prueba uno de estos sitios:',
-        examplesPlaceholder: 'Elegí un sitio de ejemplo…'
+        examplesPlaceholder: 'Elegí un sitio de ejemplo…',
+        runtimeButton: 'Analizar colores renderizados',
+        runtimeRunning: 'Analizando…',
+        runtimeTitle: 'Colores Renderizados',
+        runtimeCount: '{count} colores en uso',
+        runtimeShare: '{count} usos · {share}%',
+        runtimeDuration: 'Tardó {seconds}s',
+        runtimeCached: 'Resultado en caché',
+        runtimeError: 'Análisis renderizado no disponible. El worker de render está offline.'
       }
     },
     fr: {
@@ -1794,7 +1826,15 @@ export default defineI18nConfig(() => ({
         groupByPrefix: 'Grouper par préfixe',
         groupOther: 'Autres',
         examplesLabel: 'Ou essayez l’un de ces sites :',
-        examplesPlaceholder: 'Choisissez un site d’exemple…'
+        examplesPlaceholder: 'Choisissez un site d’exemple…',
+        runtimeButton: 'Analyser les couleurs rendues',
+        runtimeRunning: 'Analyse en cours…',
+        runtimeTitle: 'Couleurs Rendues',
+        runtimeCount: '{count} couleurs utilisées',
+        runtimeShare: '{count} usages · {share}%',
+        runtimeDuration: 'Durée : {seconds}s',
+        runtimeCached: 'Résultat en cache',
+        runtimeError: 'Analyse rendue indisponible. Le worker de rendu est hors ligne.'
       }
     }
   }

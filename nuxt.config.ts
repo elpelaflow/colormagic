@@ -48,6 +48,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     nodeEnv: process.env.NODE_ENV,
     logLevel: process.env.LOG_LEVEL ?? 'debug',
+    rendererUrl: process.env.RENDERER_URL ?? 'http://localhost:3100',
     public: {
       nodeEnv: process.env.NODE_ENV,
       siteUrl: process.env.SITE_URL ?? 'http://localhost:3005',

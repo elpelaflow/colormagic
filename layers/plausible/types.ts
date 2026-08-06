@@ -39,6 +39,7 @@ export enum PlausibleEventName {
 
   TOKEN_EXTRACTOR_EXTRACTED = 'token-extractor:extracted',
   TOKEN_EXTRACTOR_EXAMPLE_SELECTED = 'token-extractor:example:selected',
+  TOKEN_EXTRACTOR_RUNTIME_RUN = 'token-extractor:runtime:run',
   TOKEN_EXTRACTOR_TOKEN_COPIED = 'token-extractor:token:copied',
   TOKEN_EXTRACTOR_CSS_COPIED = 'token-extractor:copied:css',
   TOKEN_EXTRACTOR_TAILWIND_COPIED = 'token-extractor:copied:tailwind',

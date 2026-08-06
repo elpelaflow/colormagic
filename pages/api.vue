@@ -110,6 +110,15 @@
       <pre class="border bg-gray-50 rounded-sm px-1 text-sm">body: { "url": "https://example.com" }</pre>
     </div>
 
+    <!-- color token extractor runtime -->
+    <div class="mb-4 space-y-2">
+      <p class="font-semibold">
+        [POST] color token extractor — rendered colors (runtime):
+      </p>
+      <pre class="border bg-gray-50 rounded-sm px-1">{{ colorTokenRuntimeUrl }}</pre>
+      <pre class="border bg-gray-50 rounded-sm px-1 text-sm">body: { "url": "https://example.com" } — requiere el worker color-renderer (Playwright)</pre>
+    </div>
+
     <!-- feedback -->
     <div class="mb-4 space-y-2">
       <p class="font-semibold">
@@ -147,6 +156,7 @@ const contrastCheckerUrl = `${apiUrl}/contrast-checker?primary=%23ffffff&seconda
 const colorMixerUrl = `${apiUrl}/color-mixer?a=%23ff0000&b=%230000ff&ratio=0.5`;
 const imageColorPickerUrl = `${apiUrl}/image-color-picker`;
 const colorTokenExtractorUrl = `${apiUrl}/color-token-extractor`;
+const colorTokenRuntimeUrl = `${apiUrl}/color-token-extractor/runtime`;
 const feedbackUrl = `${apiUrl}/feedback`;
 
 useSeoMeta({

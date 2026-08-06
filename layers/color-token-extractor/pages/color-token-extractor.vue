@@ -107,6 +107,14 @@
           :label="t('tokenExtractor.downloadTailwind')"
           @click="onDownloadTailwind"
         />
+        <UButton
+          icon="i-heroicons-sparkles"
+          variant="soft"
+          color="primary"
+          :loading="isRuntimeRunning"
+          :label="isRuntimeRunning ? t('tokenExtractor.runtimeRunning') : t('tokenExtractor.runtimeButton')"
+          @click="onRunRuntime"
+        />
       </div>
 
       <!-- tokens -->
@@ -246,6 +254,59 @@
         </template>
       </div>
 
+      <!-- rendered colors (runtime, Fase 2a) -->
+      <div v-if="runtimeResult" class="mb-10">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+          <div class="flex items-center gap-3">
+            <p class="text-lg font-bold">
+              {{ t('tokenExtractor.runtimeTitle') }}
+            </p>
+            <UBadge variant="soft" color="primary" size="sm">
+              beta
+            </UBadge>
+            <UBadge variant="soft">
+              {{ t('tokenExtractor.runtimeCount', { count: runtimeResult.unique }) }}
+            </UBadge>
+          </div>
+          <p class="text-sm text-gray-500">
+            <template v-if="runtimeResult.cached">
+              {{ t('tokenExtractor.runtimeCached') }}
+            </template>
+            <template v-else>
+              {{ t('tokenExtractor.runtimeDuration', { seconds: (runtimeResult.durationMs / 1000).toFixed(1) }) }}
+            </template>
+          </p>
+        </div>
+
+        <p v-if="runtimeResult.usagePalette.length === 0" class="text-gray-500">
+          {{ t('tokenExtractor.noTokens') }}
+        </p>
+
+        <div
+          v-else
+          class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3"
+        >
+          <div
+            v-for="entry in runtimeResult.usagePalette"
+            :key="entry.hex"
+            class="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow"
+          >
+            <div
+              class="h-14"
+              :style="{ backgroundColor: entry.hex }"
+            />
+            <div class="p-2">
+              <p class="font-mono text-xs font-semibold">
+                {{ entry.hex }}
+              </p>
+              <p class="text-xs text-gray-500">
+                {{ t('tokenExtractor.runtimeShare', { count: entry.count, share: entry.share }) }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- derived palette -->
       <div v-if="result.palette.length > 0">
         <p class="text-lg font-bold mb-4">
@@ -320,6 +381,8 @@ const url = ref('');
 const exampleUrl = ref<string | undefined>();
 const isExtracting = ref(false);
 const result = ref<TokenExtractorResult | null>(null);
+const isRuntimeRunning = ref(false);
+const runtimeResult = ref<RuntimeResult | null>(null);
 const filterType = ref<'all' | TokenType>('all');
 const searchQuery = ref('');
 const sortMode = ref<'default' | 'name' | 'hue'>('default');
@@ -380,6 +443,35 @@ const tokenGroups = computed(() => {
 const cssExport = computed(() => result.value ? buildCssExport(result.value.tokens) : '');
 const tailwindExport = computed(() => result.value ? buildTailwindExport(result.value.tokens) : '');
 
+interface RuntimeResult {
+  url: string;
+  title: string | null;
+  durationMs: number;
+  viewport: string;
+  sampled: number;
+  unique: number;
+  usagePalette: { hex: string; count: number; share: number }[];
+  cached?: boolean;
+}
+
+async function onRunRuntime(): Promise<void> {
+  if (!result.value || isRuntimeRunning.value) return;
+  isRuntimeRunning.value = true;
+  try {
+    runtimeResult.value = await $fetch<RuntimeResult>('/api/color-token-extractor/runtime', {
+      method: 'POST',
+      body: { url: result.value.url }
+    });
+    sendPlausibleEvent(PlausibleEventName.TOKEN_EXTRACTOR_RUNTIME_RUN);
+  } catch (error: any) {
+    runtimeResult.value = null;
+    const statusMessage = error?.data?.statusMessage;
+    notifications.addError(statusMessage || t('tokenExtractor.runtimeError'));
+  } finally {
+    isRuntimeRunning.value = false;
+  }
+}
+
 function onSortChange(value: unknown): void {
   if (value === 'default' || value === 'name' || value === 'hue') {
     sortMode.value = value;
@@ -427,6 +519,7 @@ async function onExtract(): Promise<void> {
     sortMode.value = 'default';
     groupByPrefix.value = false;
     collapsedGroups.value = new Set();
+    runtimeResult.value = null;
     sendPlausibleEvent(PlausibleEventName.TOKEN_EXTRACTOR_EXTRACTED);
   } catch (error: any) {
     result.value = null;
