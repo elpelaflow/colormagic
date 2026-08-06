@@ -8,7 +8,7 @@ Magicolor gets around ~500k pageview per month, with 12K palettes generated dail
 
 Most of the tools run with the assistance of AI using [openai](https://openai.com).
 
-The site has translations for [english](https://magicolor.app), [japanese](https://magicolor.app/ja), [italian](https://magicolor.app/it) and [spanish](https://magicolor.app/es) using [nuxtjs/i18n](https://i18n.nuxtjs.org/).
+The site has translations for [english](https://magicolor.app), [japanese](https://magicolor.app/ja), [italian](https://magicolor.app/it), [spanish](https://magicolor.app/es) and [french](https://magicolor.app/fr) using [nuxtjs/i18n](https://i18n.nuxtjs.org/).
 
 ## <a name="layers">🏗️ Layers</a>
 

@@ -1,4 +1,4 @@
-export function getLocale(locale: string): 'en' | 'ja' | 'it' | 'es' {
+export function getLocale(locale: string): 'en' | 'ja' | 'it' | 'es' | 'fr' {
   if (locale === 'ja') {
     return 'ja';
   }
@@ -7,6 +7,9 @@ export function getLocale(locale: string): 'en' | 'ja' | 'it' | 'es' {
   }
   if (locale === 'es') {
     return 'es';
+  }
+  if (locale === 'fr') {
+    return 'fr';
   }
   return 'en';
 }

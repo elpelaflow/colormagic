@@ -6,6 +6,7 @@ interface SamplePalette {
     en: string
     it: string
     es: string
+    fr: string
   }
 }
 
@@ -17,7 +18,8 @@ export const samplePalettes: SamplePalette[] = [
       ja: '野菜',
       en: 'Vegetables',
       it: 'Verdure',
-      es: 'Verduras'
+      es: 'Verduras',
+      fr: 'Légumes'
     }
   },
   {
@@ -27,7 +29,8 @@ export const samplePalettes: SamplePalette[] = [
       ja: 'お花畑',
       en: 'Flower Field',
       it: 'Campo di fiori',
-      es: 'Campo de flores'
+      es: 'Campo de flores',
+      fr: 'Champ de fleurs'
     }
   },
   {
@@ -37,7 +40,8 @@ export const samplePalettes: SamplePalette[] = [
       ja: '水族館',
       en: 'Aquarium',
       it: 'Acquario',
-      es: 'Acuario'
+      es: 'Acuario',
+      fr: 'Aquarium'
     }
   },
   {
@@ -47,7 +51,8 @@ export const samplePalettes: SamplePalette[] = [
       ja: '夕暮れ',
       en: 'Sunset',
       it: 'Tramonto',
-      es: 'Atardecer'
+      es: 'Atardecer',
+      fr: 'Crépuscule'
     }
   },
   {
@@ -57,7 +62,8 @@ export const samplePalettes: SamplePalette[] = [
       ja: '紅葉',
       en: 'Autumn Leaves',
       it: 'Foglie autunnali',
-      es: 'Hojas de otoño'
+      es: 'Hojas de otoño',
+      fr: 'Feuilles d\'automne'
     }
   },
   {
@@ -67,7 +73,8 @@ export const samplePalettes: SamplePalette[] = [
       ja: 'フルーツ',
       en: 'Fruits',
       it: 'Frutti',
-      es: 'Frutas'
+      es: 'Frutas',
+      fr: 'Fruits'
     }
   },
   {
@@ -77,7 +84,8 @@ export const samplePalettes: SamplePalette[] = [
       ja: 'キュート',
       en: 'Cute',
       it: 'Carino',
-      es: 'Lindo'
+      es: 'Lindo',
+      fr: 'Mignon'
     }
   },
   {
@@ -87,7 +95,8 @@ export const samplePalettes: SamplePalette[] = [
       ja: '森林',
       en: 'Forest',
       it: 'Foresta',
-      es: 'Bosque'
+      es: 'Bosque',
+      fr: 'Forêt'
     }
   },
   {
@@ -97,7 +106,8 @@ export const samplePalettes: SamplePalette[] = [
       ja: 'ひまわり',
       en: 'Sunflower',
       it: 'Girasole',
-      es: 'Girasol'
+      es: 'Girasol',
+      fr: 'Tournesol'
     }
   },
   {
@@ -107,7 +117,8 @@ export const samplePalettes: SamplePalette[] = [
       ja: 'ロマンティック',
       en: 'Romantic',
       it: 'Romantico',
-      es: 'Romántico'
+      es: 'Romántico',
+      fr: 'Romantique'
     }
   },
   {
@@ -117,7 +128,8 @@ export const samplePalettes: SamplePalette[] = [
       ja: 'キャンプファイヤー',
       en: 'Campfire',
       it: 'Falò',
-      es: 'Fogata'
+      es: 'Fogata',
+      fr: 'Feu de camp'
     }
   },
   {
@@ -127,7 +139,8 @@ export const samplePalettes: SamplePalette[] = [
       ja: '海辺',
       en: 'Beach',
       it: 'Spiaggia',
-      es: 'Playa'
+      es: 'Playa',
+      fr: 'Plage'
     }
   },
   {
@@ -137,7 +150,8 @@ export const samplePalettes: SamplePalette[] = [
       ja: '夕焼け',
       en: 'Sunset',
       it: 'Tramonto',
-      es: 'Atardecer'
+      es: 'Atardecer',
+      fr: 'Coucher de soleil'
     }
   },
   {
@@ -147,7 +161,8 @@ export const samplePalettes: SamplePalette[] = [
       ja: '春',
       en: 'Spring',
       it: 'Primavera',
-      es: 'Primavera'
+      es: 'Primavera',
+      fr: 'Printemps'
     }
   },
   {
@@ -157,7 +172,8 @@ export const samplePalettes: SamplePalette[] = [
       ja: '若々しい',
       en: 'Youthful',
       it: 'Giovanile',
-      es: 'Joven'
+      es: 'Joven',
+      fr: 'Jeune'
     }
   },
   {
@@ -167,7 +183,8 @@ export const samplePalettes: SamplePalette[] = [
       ja: 'スノーボード',
       en: 'Snowboarding',
       it: 'Snowboard',
-      es: 'Snowboard'
+      es: 'Snowboard',
+      fr: 'Snowboard'
     }
   },
   {
@@ -177,7 +194,8 @@ export const samplePalettes: SamplePalette[] = [
       ja: '赤レンガ',
       en: 'Red Brick',
       it: 'Mattone Rosso',
-      es: 'Ladrillo rojo'
+      es: 'Ladrillo rojo',
+      fr: 'Brique rouge'
     }
   },
   {
@@ -187,7 +205,8 @@ export const samplePalettes: SamplePalette[] = [
       ja: '水族館',
       en: 'Aquarium',
       it: 'Acquario',
-      es: 'Acuario'
+      es: 'Acuario',
+      fr: 'Aquarium'
     }
   },
   {
@@ -197,7 +216,8 @@ export const samplePalettes: SamplePalette[] = [
       ja: '冬',
       en: 'Winter',
       it: 'Inverno',
-      es: 'Invierno'
+      es: 'Invierno',
+      fr: 'Hiver'
     }
   },
   {
@@ -207,7 +227,8 @@ export const samplePalettes: SamplePalette[] = [
       ja: 'ユニコーン',
       en: 'Unicorn',
       it: 'Unicorno',
-      es: 'Unicornio'
+      es: 'Unicornio',
+      fr: 'Licorne'
     }
   },
   {
@@ -217,7 +238,8 @@ export const samplePalettes: SamplePalette[] = [
       ja: 'チョコレート',
       en: 'Chocolate',
       it: 'Cioccolato',
-      es: 'Chocolate'
+      es: 'Chocolate',
+      fr: 'Chocolat'
     }
   },
   {
@@ -227,7 +249,8 @@ export const samplePalettes: SamplePalette[] = [
       ja: '海',
       en: 'Sea',
       it: 'Mare',
-      es: 'Mar'
+      es: 'Mar',
+      fr: 'Mer'
     }
   },
   {
@@ -237,7 +260,8 @@ export const samplePalettes: SamplePalette[] = [
       ja: 'エネルギッシュ',
       en: 'Energetic',
       it: 'Energico',
-      es: 'Enérgico'
+      es: 'Enérgico',
+      fr: 'Énergique'
     }
   }
 ];

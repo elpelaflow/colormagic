@@ -91,6 +91,12 @@ export default defineNuxtConfig({
         language: 'es-ES',
         name: 'Spanish',
         flag: '🇪🇸'
+      },
+      {
+        code: 'fr',
+        language: 'fr-FR',
+        name: 'French',
+        flag: '🇫🇷'
       }
     ]
   }

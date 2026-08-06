@@ -67,12 +67,38 @@ const es = [
   'Adolescente'
 ];
 
+const fr = [
+  'Forêt',
+  'Océan',
+  'Plage',
+  'Été',
+  'Mignon',
+  'Romantique',
+  'Élégant',
+  'Sportif',
+  'Joyeux',
+  'Printemps',
+  'Café',
+  'Aquarium',
+  'Tournesol',
+  'Feu de camp',
+  'Fleur',
+  'Hiver',
+  'Néon',
+  'Automne',
+  'Noël',
+  'Adolescent'
+];
+
 export function getSamplePrompt(lang: string): string[] {
   if (lang === 'ja') {
     return ja;
   }
   if (lang === 'es') {
     return es;
+  }
+  if (lang === 'fr') {
+    return fr;
   }
   return en;
 };
