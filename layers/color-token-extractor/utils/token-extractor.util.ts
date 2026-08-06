@@ -210,6 +210,8 @@ function isColorValue(value: string): boolean {
   if (v.includes('calc(') || v.includes('clamp(')) {
     return /#[0-9a-f]{3,8}|rgba?\(|hsla?\(/i.test(v);
   }
+  // Colores por nombre (--color-primary: crimson).
+  if (NAMED_COLORS[v]) return true;
   return /^(#|rgb|hsl|hwb|lab|lch|oklab|oklch|color\(|var\(--)/i.test(v);
 }
 
@@ -662,20 +664,32 @@ export function extractColorTokens(cssSources: { text: string; source: string }[
     collectDeclarations(rules, false, declarations);
   }
 
-  // Dedupe por nombre (gana root scope), con filtros de ruido.
-  const byName = new Map<string, { value: string; scope: TokenScope }>();
+  // Dedupe por nombre (gana root scope) con filtros de ruido, sobre TODAS las
+  // declaraciones: la resolución de var() necesita ver también los no-colores
+  // (ej. --font: var(--font-stack) resuelve a una font, no a un color).
+  const allByName = new Map<string, { value: string; scope: TokenScope }>();
   for (const d of declarations) {
     if (!isNoiseName(d.name)) continue;
-    if (!isColorValue(d.value)) continue;
-    const existing = byName.get(d.name);
+    const existing = allByName.get(d.name);
     if (!existing || (d.scope === 'root' && existing.scope !== 'root')) {
-      byName.set(d.name, { value: d.value, scope: d.scope });
+      allByName.set(d.name, { value: d.value, scope: d.scope });
     }
+  }
+
+  // Solo los que parecen color forman parte del resultado.
+  const byName = new Map<string, { value: string; scope: TokenScope }>();
+  for (const [name, entry] of allByName) {
+    if (isColorValue(entry.value)) byName.set(name, entry);
   }
 
   const tokens: ColorToken[] = [];
   for (const [name, { value, scope }] of byName) {
-    const resolved = resolveVarChain(value, byName, 0);
+    const resolved = resolveVarChain(value, allByName, 0);
+    if (resolved !== null && !isColorValue(resolved)) {
+      // var() encadenada resolvió a un valor no-color (font stack, spacing,
+      // etc.): no es un token de color aunque su nombre parezca serlo.
+      continue;
+    }
     tokens.push({
       name,
       value,

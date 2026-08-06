@@ -47,6 +47,9 @@ const css = `
   --error-color: #dc2626;
   --spacing-md: 1rem;
   --bg-gradient-from: #0000;
+  --font-stack: var(--fallback-font);
+  --fallback-font: 'Inter', sans-serif;
+  --brand-red: crimson;
 }
 @media (prefers-color-scheme: dark) { :root { --color-primary: #ffffff; } }
 .card { --card-bg: oklch(0.5 0.1 250); }
@@ -73,6 +76,10 @@ assert.ok(!names.includes('--spacing-md'), 'no-color descartado');
 assert.ok(!names.includes('--bg-gradient-from'), 'utilidad tailwind filtrada');
 assert.ok(names.includes('--card-bg'), 'scoped conservado');
 assert.ok(!names.includes('--x'), 'keyframes descartado');
+assert.ok(!names.includes('--font-stack'), 'var() que resuelve a no-color descartado');
+assert.ok(!names.includes('--fallback-font'), 'font stack no-color descartado');
+assert.ok(names.includes('--brand-red'), 'color por nombre conservado');
+assert.strictEqual(byName('--brand-red').hex, '#dc143c', 'named color resuelto a hex');
 assert.ok(names.includes('--custom-prop'), '@property conservado');
 assert.strictEqual(byName('--custom-prop').hex, '#663399', '@property initial-value');
 console.log('[2] extractColorTokens: filtros + var() + @property + scoped + keyframes OK');
