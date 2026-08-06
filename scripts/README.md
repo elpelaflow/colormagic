@@ -59,6 +59,31 @@ Tags nuevos que no estaban en el repo (`trending`, `neon`, `corporate`) se agreg
 
 El tag `all` (1102 paletas en el JSON original) queda en la DB pero no se filtra (no esta en `palette-filters.util.ts`); las paletas se listan normalmente en `/palette/explore` sin filtro.
 
+## rename-db.mjs
+
+Migra la base local `colormagic` -> `magicolor` tras el rebrand a Magicolor.
+
+```powershell
+# Primero: ver que haria (no escribe nada)
+node scripts/rename-db.mjs --dry-run
+
+# Despues: ejecutar la migracion
+node scripts/rename-db.mjs
+
+# Opcional: borrar tambien el user viejo colormagic de admin
+node scripts/rename-db.mjs --drop-old-user
+```
+
+Que hace:
+1. Conecta a Mongo local (prueba credenciales nuevas `magicolor:secret` y si falla, las viejas `colormagic:secret`).
+2. Renombra todas las collections de `colormagic.*` a `magicolor.*` (`renameCollection`).
+3. Crea (o actualiza) el user root `magicolor` en `admin`.
+4. Con `--drop-old-user`, borra el user viejo `colormagic`.
+
+Idempotente: si ya migraste, la segunda corrida no rompe nada (reporta que `magicolor` ya existe).
+
+> **Por que hace falta**: al recrear el container (`docker compose up -d` con el compose nuevo) Docker preserva el volumen y los datos, pero el init de Mongo NO vuelve a correr — el user `magicolor` lo crea este script. Si arrancas de cero (volumen nuevo), no hace falta: la db ya nace como `magicolor`.
+
 ## Notas
 
 - Los scripts son idempotentes: si los corren dos veces no rompen nada (la segunda iteracion no encuentra nada que migrar).
