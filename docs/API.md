@@ -27,6 +27,8 @@ Todos los endpoints devuelven JSON, excepto los marcados como binarios. La valid
 | `GET` | `/harmonies` | nuevo | Genera paletas de armonía con el generador OKLCH (pro-color-harmonies) |
 | `GET` | `/pantone` | nuevo | Busca en el dataset Pantone (3.219 muestras): por hex, código o nombre |
 | `GET` | `/color-name` | nuevo | Nombre del color más cercano del diccionario (14.394 nombres) |
+| `POST` | `/color-token-extractor` | nuevo | Extrae los CSS custom properties de color de una URL (Fase 1) |
+| `POST` | `/color-token-extractor/runtime` | nuevo | Analiza la página renderizada en Chromium: paleta de uso + contraste WCAG + screenshot (Fase 2, requiere worker Docker) |
 
 ---
 
@@ -328,6 +330,105 @@ Extrae los N colores dominantes de una imagen pasada como data URL base64. Usa `
 - **Archivo:** `layers/image-color-picker/server/api/image-color-picker/index.post.ts`
 - **Dependencias:** `sharp` (procesamiento de imagen nativo en Node).
 
+### `POST /color-token-extractor`
+
+Extrae los **CSS custom properties de color** (design tokens) de una página web. El navegador no
+puede fetchear URLs arbitrarias por CORS, así que el HTML y las hojas CSS se descargan
+server-side (con los mismos guards anti-SSRF del proxy de imágenes) y se parsean en busca de
+tokens de color declarados (`--color-primary`, `--bg-*`, etc.).
+
+Portado conceptualmente del mecanismo de [dembrandt](https://github.com/dembrandt/dembrandt)
+(MIT): filtros de ruido de frameworks, parser CSS Color Level 4 completo
+(hex, rgb/hsl/hwb, lab/lch D50, oklab/oklch, `color()` display-p3/xyz, nombres CSS), resolución
+de `var()` encadenadas (hasta 6 niveles) y clasificación en `brand` / `semantic` / `custom`.
+
+- **Body:**
+  ```json
+  { "url": "https://picocss.com" }
+  ```
+  - `url`: obligatorio — URL `http(s)` del sitio a analizar. Hosts privados/locales bloqueados (SSRF).
+- **Response 200:**
+  ```json
+  {
+    "url": "https://picocss.com/",
+    "title": "Pico CSS • Minimal CSS Framework...",
+    "themeColor": "#0172ad",
+    "themeColorHex": "#0172ad",
+    "favicon": "https://picocss.com/favicon.ico",
+    "tokens": [
+      { "name": "--pico-primary", "value": "#0172ad", "hex": "#0172ad", "type": "brand", "scope": "root" }
+    ],
+    "palette": [
+      { "hex": "#0172ad", "count": 3, "names": ["--pico-primary", "--pico-primary-hover"] }
+    ],
+    "cssSources": 2
+  }
+  ```
+  - `tokens`: cada token con su nombre (`--x`), valor declarado, `hex` resuelto (o `null` si no
+    se pudo resolver), `type` (`brand` | `semantic` | `custom`) y `scope` (`root` si está en
+    `:root`/`html`, `scoped` si está en un selector). Los namespaces de frameworks completos
+    (`--wp--preset`, `--el-`, `--chakra-`, `--ant-`, `--bs-`...) y las utilidades no-color de
+    Tailwind (`--tw-shadow`, `--tw-blur`...) se filtran a propósito.
+  - `palette`: colores únicos con su frecuencia entre tokens y hasta 3 nombres por hex.
+  - `cssSources`: cantidad de fuentes CSS analizadas (inline + hojas externas, máx 15).
+- **Response 400:**
+  - URL faltante/inválida: `"Missing or invalid \"url\". Expected an http(s) URL."`
+  - Host privado/local: `"URL not allowed."`
+  - No se pudo fetchear la página (timeout 12s, >5MB HTML, >2MB CSS): `"Could not fetch the page."`
+  - La URL no apunta a una página web (imagen, PDF...): `"The URL does not point to a web page."`
+- **Archivo:** `layers/color-token-extractor/server/api/color-token-extractor/index.post.ts`
+- **Dependencias:** ninguna (fetch nativo de Node + parser propio, sin librerías).
+
+### `POST /color-token-extractor/runtime`
+
+Analiza la página **realmente renderizada** en un Chromium headless (worker Docker `color-renderer`,
+ver `docs/color-renderer-worker.md`): espera a que corra el JS y devuelve la paleta de colores
+efectivamente usados, el contraste WCAG de texto real y (opcional) un screenshot. Soporta
+detección de **dark mode** con dos renders (light + dark).
+
+- **Body:**
+  ```json
+  { "url": "https://picocss.com", "screenshot": true, "darkMode": true }
+  ```
+  - `url`: obligatorio — URL `http(s)`. Mismos guards anti-SSRF.
+  - `screenshot`: opcional — `true` para incluir un JPEG del sitio (~56 KB base64, clip ≤9000px).
+  - `darkMode`: opcional — `true` para hacer un segundo render con `prefers-color-scheme: dark`
+    y detectar dark mode automáticamente.
+- **Response 200:**
+  ```json
+  {
+    "url": "https://picocss.com/",
+    "title": "Pico CSS • Minimal CSS Framework...",
+    "durationMs": 3106,
+    "viewport": "1440x900",
+    "sampled": 880,
+    "unique": 23,
+    "usagePalette": [
+      { "hex": "#0172ad", "count": 73, "share": 8.3 }
+    ],
+    "contrast": [
+      { "fg": "#5c6370", "bg": "#ffffff", "count": 47, "ratio": 6.05, "passesAA": true, "passesAAA": false }
+    ],
+    "hasDarkMode": true,
+    "dark": {
+      "usagePalette": [ { "hex": "#000000", "count": 339, "share": 12.4 } ],
+      "contrast": [ /* pares del render dark */ ]
+    },
+    "screenshot": "data:image/jpeg;base64,...",
+    "cached": false
+  }
+  ```
+  - `usagePalette`: colores renderizados (`getComputedStyle`) con count y share (%) — top 40.
+  - `contrast`: pares texto/fondo con ratio WCAG (1-21), conteo de uso y pases AA/AAA — top 20.
+    Umbrales: normal 4.5/7, large text (≥24px o ≥18.66px bold) 3/4.5.
+  - `hasDarkMode` / `dark`: solo con `darkMode: true`. `hasDarkMode: true` si el sitio reacciona a
+    `prefers-color-scheme`; `dark` contiene el mismo shape que el resultado raíz para el render dark.
+  - `cached`: `true` si vino de la caché del worker (LRU 200 URLs / TTL 1h) — en ese caso `durationMs: 0`.
+- **Response 400/413/504:** errores útiles del worker propagados tal cual (URL inválida/SSRF, body grande, timeout de render).
+- **Response 502:** `"Rendered analysis unavailable. The renderer worker is offline."` si el worker no está levantado.
+- **Archivo:** `layers/color-token-extractor/server/api/color-token-extractor/runtime/index.post.ts`
+- **Dependencias:** worker Docker `magicolor-renderer` (Playwright, puerto 3100 por default, env `RENDERER_URL`). Sin el worker, este endpoint responde 502 — la Fase 1 sigue funcionando sola.
+
 ---
 
 ## Esquemas de validación (typebox)
@@ -428,4 +529,10 @@ Invoke-WebRequest -Uri "http://localhost:3011/api/palette/count" -Method GET
 
 # Crear paleta (requiere OPENAI_API_KEY)
 Invoke-WebRequest -Uri "http://localhost:3011/api/palette/create" -Method POST -Body '{"prompt":"green forest"}' -ContentType "application/json"
+
+# Extraer tokens de color de una web (Fase 1)
+Invoke-WebRequest -Uri "http://localhost:3011/api/color-token-extractor" -Method POST -Body '{"url":"https://picocss.com"}' -ContentType "application/json"
+
+# Analizar colores renderizados + contraste + dark mode (Fase 2, requiere worker Docker)
+Invoke-WebRequest -Uri "http://localhost:3011/api/color-token-extractor/runtime" -Method POST -Body '{"url":"https://picocss.com","screenshot":true,"darkMode":true}' -ContentType "application/json"
 ```
