@@ -19,6 +19,7 @@ services:
       MAX_CONCURRENCY: "3"
       JOB_TIMEOUT_MS: "20000"
       CACHE_TTL_MS: "3600000"
+      SCREENSHOT_CACHE_MAX: "50"
     ports:
       - "3100:3100"
     mem_limit: 1536m

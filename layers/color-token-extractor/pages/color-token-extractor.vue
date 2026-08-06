@@ -278,6 +278,13 @@
           </p>
         </div>
 
+        <img
+          v-if="runtimeResult.screenshot"
+          :src="runtimeResult.screenshot"
+          alt=""
+          class="w-full max-h-96 object-cover object-top rounded-lg border border-gray-200 mb-4 shadow-sm"
+        >
+
         <p v-if="runtimeResult.usagePalette.length === 0" class="text-gray-500">
           {{ t('tokenExtractor.noTokens') }}
         </p>
@@ -521,6 +528,7 @@ interface RuntimeResult {
   unique: number;
   usagePalette: { hex: string; count: number; share: number }[];
   contrast: RuntimeContrastEntry[];
+  screenshot?: string;
   cached?: boolean;
 }
 
@@ -532,7 +540,7 @@ async function onRunRuntime(): Promise<void> {
   try {
     runtimeResult.value = await $fetch<RuntimeResult>('/api/color-token-extractor/runtime', {
       method: 'POST',
-      body: { url: result.value.url }
+      body: { url: result.value.url, screenshot: true }
     });
     sendPlausibleEvent(PlausibleEventName.TOKEN_EXTRACTOR_RUNTIME_RUN);
   } catch (error: any) {

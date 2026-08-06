@@ -14,11 +14,12 @@
 const RENDER_TIMEOUT_MS = 30_000;
 
 export default defineEventHandler(async (event) => {
-  const body = await readBody<{ url?: unknown }>(event).catch((): { url?: unknown } => ({}));
+  const body = await readBody<{ url?: unknown; screenshot?: unknown }>(event).catch((): { url?: unknown; screenshot?: unknown } => ({}));
   const url = typeof body?.url === 'string' ? body.url.trim() : '';
   if (!url) {
     throw createError({ statusCode: 400, statusMessage: 'Missing or invalid "url". Expected an http(s) URL.' });
   }
+  const wantScreenshot = body?.screenshot === true;
 
   const { rendererUrl } = useRuntimeConfig(event);
   const controller = new AbortController();
@@ -27,7 +28,7 @@ export default defineEventHandler(async (event) => {
     const response = await fetch(`${rendererUrl}/render`, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ url }),
+      body: JSON.stringify({ url, screenshot: wantScreenshot }),
       signal: controller.signal
     });
     if (!response.ok) {

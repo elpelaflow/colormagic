@@ -1,3 +1,6 @@
+/** Viewport compartido entre el pool (contextos) y el screenshot (clip). */
+export const VIEWPORT = { width: 1440, height: 900 };
+
 /**
  * color-renderer — funciones puras (testeables sin Playwright).
  * 'rgb(r, g, b)' / 'rgba(...)' -> '#rrggbb' | null (null si transparente o inválido).

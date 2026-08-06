@@ -4,13 +4,15 @@
  * (getComputedStyle) de los elementos visibles para armar la paleta de uso
  * y el contraste WCAG de los textos (fg sobre fondo efectivo).
  *
- * Limitaciones conocidas (Fase 2b):
+ * Limitaciones conocidas:
  * - Colores devueltos por getComputedStyle en `color(srgb ...)` (espacios de
  *   color modernos) no se parsean y se descartan silenciosamente.
  * - La `opacity` del elemento se aplica al color de texto, pero no a los
  *   backgrounds de la cadena de ancestros.
+ * - El screenshot se captura milisegundos después del muestreo: en páginas
+ *   animadas/lazy puede no coincidir al 100% con el estado muestreado.
  */
-import { aggregateContrast, aggregateUsage } from './lib.mjs';
+import { aggregateContrast, aggregateUsage, VIEWPORT } from './lib.mjs';
 
 function timeoutError() {
   const error = new Error('Render timed out.');
@@ -19,12 +21,15 @@ function timeoutError() {
   return error;
 }
 
+/** Alto máximo de screenshot (evita respuestas gigantes en páginas muy largas). */
+const SCREENSHOT_MAX_HEIGHT = 9000;
+
 /**
  * @param {import('playwright').BrowserContext} context
  * @param {string} url
- * @param {{ signal?: AbortSignal, maxElements?: number, settleMs?: number }} opts
+ * @param {{ signal?: AbortSignal, maxElements?: number, settleMs?: number, screenshot?: boolean }} opts
  */
-export async function renderSite(context, url, { signal, maxElements = 5000, settleMs = 2000 } = {}) {
+export async function renderSite(context, url, { signal, maxElements = 5000, settleMs = 2000, screenshot: wantScreenshot = false } = {}) {
   const page = await context.newPage();
   const started = Date.now();
 
@@ -120,6 +125,20 @@ export async function renderSite(context, url, { signal, maxElements = 5000, set
       return { title: document.title, samples, contrastSamples };
     }, maxElements);
 
+    let screenshot = null;
+    if (wantScreenshot) {
+      if (signal?.aborted) throw timeoutError();
+      const height = await page.evaluate(() =>
+        Math.max(document.body.scrollHeight, document.documentElement.scrollHeight, window.innerHeight)
+      );
+      const buffer = await page.screenshot({
+        type: 'jpeg',
+        quality: 60,
+        clip: { x: 0, y: 0, width: VIEWPORT.width, height: Math.max(1, Math.min(height, SCREENSHOT_MAX_HEIGHT)) }
+      });
+      screenshot = `data:image/jpeg;base64,${buffer.toString('base64')}`;
+    }
+
     const usagePalette = aggregateUsage(data.samples);
     const contrast = aggregateContrast(data.contrastSamples);
     return {
@@ -130,7 +149,8 @@ export async function renderSite(context, url, { signal, maxElements = 5000, set
       sampled: data.samples.length,
       unique: usagePalette.length,
       usagePalette,
-      contrast
+      contrast,
+      screenshot
     };
   } finally {
     signal?.removeEventListener('abort', onAbort);

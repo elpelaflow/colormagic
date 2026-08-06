@@ -17,9 +17,13 @@ const MAX_CONCURRENCY = Number(process.env.MAX_CONCURRENCY || 3);
 const JOB_TIMEOUT_MS = Number(process.env.JOB_TIMEOUT_MS || 20000);
 const CACHE_TTL_MS = Number(process.env.CACHE_TTL_MS || 3_600_000);
 const CACHE_MAX = Number(process.env.CACHE_MAX || 200);
+const SCREENSHOT_CACHE_MAX = Number(process.env.SCREENSHOT_CACHE_MAX || 50);
 const SETTLE_MS = Number(process.env.SETTLE_MS || 2000);
 
 const cache = createLruCache(CACHE_MAX, CACHE_TTL_MS);
+// Los screenshots (~200-600KB de base64) NO entran a la caché principal de
+// resultados: viven en un LRU aparte y chico para no comerse la memoria.
+const screenshotCache = createLruCache(SCREENSHOT_CACHE_MAX, CACHE_TTL_MS);
 const pool = new BrowserPool({ maxConcurrency: MAX_CONCURRENCY });
 
 /** Mismos guards anti-SSRF que el endpoint de la app: solo http/https, sin hosts privados. */
@@ -59,31 +63,52 @@ function withTimeout(promise, ms) {
   });
 }
 
-async function handleRender(body) {
-  const url = assertSafeUrl(typeof body?.url === 'string' ? body.url.trim() : '');
-  const key = url.toString();
-
-  const hit = cache.get(key);
-  if (hit) {
-    // durationMs del hit reflejaría el render original: se limpia y la UI
-    // muestra "cached" en su lugar.
-    return { ...hit, durationMs: 0, cached: true };
-  }
-
+async function runRender(url, key, { screenshot }) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), JOB_TIMEOUT_MS);
   try {
     // Si el job expiró mientras esperaba slot en la cola, ni arrancar.
     if (controller.signal.aborted) throw httpError(504, 'Render timed out.');
-    const result = await withTimeout(
-      pool.run((context) => renderSite(context, url.toString(), { signal: controller.signal, settleMs: SETTLE_MS })),
+    return await withTimeout(
+      pool.run((context) => renderSite(context, url.toString(), { signal: controller.signal, settleMs: SETTLE_MS, screenshot })),
       JOB_TIMEOUT_MS + 3000
     );
-    cache.set(key, result);
-    return { ...result, cached: false };
   } finally {
     clearTimeout(timer);
   }
+}
+
+async function handleRender(body, wantScreenshot) {
+  const url = assertSafeUrl(typeof body?.url === 'string' ? body.url.trim() : '');
+  const key = url.toString();
+
+  if (!wantScreenshot) {
+    const hit = cache.get(key);
+    if (hit) {
+      // durationMs del hit reflejaría el render original: se limpia y la UI
+      // muestra "cached" en su lugar.
+      return { ...hit, durationMs: 0, cached: true };
+    }
+    const result = await runRender(url, key, { screenshot: false });
+    delete result.screenshot; // normaliza: el path cacheado también omite el campo
+    cache.set(key, result);
+    return { ...result, cached: false };
+  }
+
+  // Con screenshot: si ambos caches están calientes, respuesta instantánea.
+  const shot = screenshotCache.get(key);
+  const hit = cache.get(key);
+  if (shot && hit) {
+    return { ...hit, durationMs: 0, cached: true, screenshot: shot };
+  }
+
+  const result = await runRender(url, key, { screenshot: true });
+  const { screenshot, ...rest } = result;
+  if (screenshot) {
+    screenshotCache.set(key, screenshot);
+  }
+  cache.set(key, rest);
+  return { ...result, cached: false };
 }
 
 function readJson(req, limit) {
@@ -124,14 +149,15 @@ const server = http.createServer((req, res) => {
       ok: true,
       ...pool.status(),
       memMB: Math.round(process.memoryUsage().rss / 1048576),
-      cacheEntries: cache.size()
+      cacheEntries: cache.size(),
+      screenshotEntries: screenshotCache.size()
     });
     return;
   }
 
   if (url === '/render' && method === 'POST') {
     readJson(req, 100_000)
-      .then(handleRender)
+      .then((body) => handleRender(body, body?.screenshot === true))
       .then((data) => sendJson(res, 200, data))
       .catch((error) => {
         sendJson(res, error.statusCode || 500, { error: error.statusMessage || error.message });

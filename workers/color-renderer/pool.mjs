@@ -6,6 +6,7 @@
  * limita cuántos contextos conviven; los excedentes esperan en cola.
  */
 import { chromium } from 'playwright';
+import { VIEWPORT } from './lib.mjs';
 
 export class BrowserPool {
   /**
@@ -49,7 +50,7 @@ export class BrowserPool {
     this.active++;
     let context;
     try {
-      context = await (await this._browser()).newContext({ viewport: { width: 1440, height: 900 } });
+      context = await (await this._browser()).newContext({ viewport: VIEWPORT });
       return await fn(context);
     } finally {
       if (context) await context.close().catch(() => {});
