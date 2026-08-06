@@ -2,7 +2,7 @@
  * Test del Color Token Extractor: parser CSS Color 4 + extractor de tokens.
  * Corre con: node --experimental-strip-types scripts/test-token-extractor.mjs
  */
-import { parseCssColor, colorToHex, extractColorTokens, buildCssExport, buildTailwindExport } from '../layers/color-token-extractor/utils/token-extractor.util.ts';
+import { parseCssColor, colorToHex, extractColorTokens, buildCssExport, buildTailwindExport, tokenPrefix, hexToHue } from '../layers/color-token-extractor/utils/token-extractor.util.ts';
 import assert from 'node:assert';
 
 // 1) parser de colores CSS Color 4
@@ -91,5 +91,16 @@ assert.ok(cssOut.includes('--color-primary: #1a2b3c;'), 'css export con hex resu
 const tw = buildTailwindExport(tokens);
 assert.ok(tw.includes("'color-primary': '#1a2b3c',"), 'tailwind export con key sanitizada');
 console.log('[3] buildCssExport + buildTailwindExport OK');
+
+// 4) helpers de presentación: agrupación por prefijo + hue para ordenar por matiz
+assert.strictEqual(tokenPrefix('--cds-ai-aura-hover-background'), '--cds-', 'prefijo multi-segmento');
+assert.strictEqual(tokenPrefix('--color-primary'), '--color-', 'prefijo corto');
+assert.strictEqual(tokenPrefix('--primary'), '', 'sin prefijo (un solo segmento)');
+assert.strictEqual(hexToHue('#ff0000'), 0, 'hue del rojo');
+assert.strictEqual(hexToHue('#00ff00'), 120, 'hue del verde');
+assert.strictEqual(hexToHue('#0000ff'), 240, 'hue del azul');
+assert.strictEqual(hexToHue('#ffffff'), 0, 'acromatico hue 0');
+assert.strictEqual(hexToHue('#ffff00'), 60, 'hue del amarillo');
+console.log('[4] tokenPrefix + hexToHue OK');
 
 console.log('\nTODO OK ✔');

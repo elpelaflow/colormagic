@@ -346,7 +346,19 @@ export default defineI18nConfig(() => ({
         copiedCss: 'CSS copied to clipboard',
         copiedTailwind: 'Tailwind config copied to clipboard',
         tokenCopied: 'Token copied',
-        copyValue: 'Copy value'
+        copyValue: 'Copy value',
+        copyName: 'Copy var() reference',
+        varCopied: 'var() reference copied',
+        searchPlaceholder: 'Search tokens…',
+        noMatches: 'No tokens match your search or filters.',
+        sortLabel: 'Sort',
+        sortDefault: 'Default',
+        sortName: 'Name',
+        sortHue: 'Hue',
+        groupByPrefix: 'Group by prefix',
+        groupOther: 'Other',
+        examplesLabel: 'Or try one of these sites:',
+        examplesPlaceholder: 'Pick an example site…'
       }
     },
     ja: {
@@ -693,7 +705,19 @@ export default defineI18nConfig(() => ({
         copiedCss: 'CSSをクリップボードにコピーしました',
         copiedTailwind: 'Tailwind設定をコピーしました',
         tokenCopied: 'トークンをコピーしました',
-        copyValue: '値をコピー'
+        copyValue: '値をコピー',
+        copyName: 'var() 参照をコピー',
+        varCopied: 'var() 参照をコピーしました',
+        searchPlaceholder: 'トークンを検索…',
+        noMatches: '検索やフィルターに一致するトークンがありません。',
+        sortLabel: '並び替え',
+        sortDefault: 'デフォルト',
+        sortName: '名前',
+        sortHue: '色相',
+        groupByPrefix: 'プレフィックスでグループ化',
+        groupOther: 'その他',
+        examplesLabel: 'または、サイト例から選ぶ:',
+        examplesPlaceholder: 'サイト例を選択…'
       }
     },
     it: {
@@ -1040,7 +1064,19 @@ export default defineI18nConfig(() => ({
         copiedCss: 'CSS copiato negli appunti',
         copiedTailwind: 'Config Tailwind copiata',
         tokenCopied: 'Token copiato',
-        copyValue: 'Copia valore'
+        copyValue: 'Copia valore',
+        copyName: 'Copia riferimento var()',
+        varCopied: 'Riferimento var() copiato',
+        searchPlaceholder: 'Cerca token…',
+        noMatches: 'Nessun token corrisponde alla ricerca o ai filtri.',
+        sortLabel: 'Ordina',
+        sortDefault: 'Predefinito',
+        sortName: 'Nome',
+        sortHue: 'Tonalità',
+        groupByPrefix: 'Raggruppa per prefisso',
+        groupOther: 'Altri',
+        examplesLabel: 'Oppure prova uno di questi siti:',
+        examplesPlaceholder: 'Scegli un sito di esempio…'
       }
     },
     es: {
@@ -1387,7 +1423,19 @@ export default defineI18nConfig(() => ({
         copiedCss: 'CSS copiado al portapapeles',
         copiedTailwind: 'Config Tailwind copiada',
         tokenCopied: 'Token copiado',
-        copyValue: 'Copiar valor'
+        copyValue: 'Copiar valor',
+        copyName: 'Copiar referencia var()',
+        varCopied: 'Referencia var() copiada',
+        searchPlaceholder: 'Buscar tokens…',
+        noMatches: 'Ningún token coincide con tu búsqueda o filtros.',
+        sortLabel: 'Ordenar',
+        sortDefault: 'Predeterminado',
+        sortName: 'Nombre',
+        sortHue: 'Tono',
+        groupByPrefix: 'Agrupar por prefijo',
+        groupOther: 'Otros',
+        examplesLabel: 'O prueba uno de estos sitios:',
+        examplesPlaceholder: 'Elegí un sitio de ejemplo…'
       }
     },
     fr: {
@@ -1734,7 +1782,19 @@ export default defineI18nConfig(() => ({
         copiedCss: 'CSS copié dans le presse-papiers',
         copiedTailwind: 'Config Tailwind copiée',
         tokenCopied: 'Token copié',
-        copyValue: 'Copier la valeur'
+        copyValue: 'Copier la valeur',
+        copyName: 'Copier la référence var()',
+        varCopied: 'Référence var() copiée',
+        searchPlaceholder: 'Rechercher des tokens…',
+        noMatches: 'Aucun token ne correspond à votre recherche ou à vos filtres.',
+        sortLabel: 'Trier',
+        sortDefault: 'Par défaut',
+        sortName: 'Nom',
+        sortHue: 'Teinte',
+        groupByPrefix: 'Grouper par préfixe',
+        groupOther: 'Autres',
+        examplesLabel: 'Ou essayez l’un de ces sites :',
+        examplesPlaceholder: 'Choisissez un site d’exemple…'
       }
     }
   }

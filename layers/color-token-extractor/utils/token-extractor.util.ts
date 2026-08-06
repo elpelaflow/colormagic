@@ -232,6 +232,40 @@ function classifyToken(name: string): TokenType {
 }
 
 // ---------------------------------------------------------------------------
+// Helpers de presentación (agrupar y ordenar la tabla de tokens)
+// ---------------------------------------------------------------------------
+
+/**
+ * Prefijo de agrupación de un token: --cds-ai-aura-hover → --cds-,
+ * --color-primary → --color-. Los tokens de un solo segmento (--primary)
+ * no tienen prefijo → '' (grupo "otros").
+ */
+export function tokenPrefix(name: string): string {
+  const segments = name.slice(2).split('-');
+  if (segments.length <= 1) return '';
+  return `--${segments[0]}-`;
+}
+
+/** Hue (0-360) de un hex #rrggbb, para ordenar la paleta por matiz. */
+export function hexToHue(hex: string): number {
+  const m = hex.match(/^#?([0-9a-f]{6})$/i);
+  if (!m) return 0;
+  const n = parseInt(m[1], 16);
+  const r = ((n >> 16) & 255) / 255;
+  const g = ((n >> 8) & 255) / 255;
+  const b = (n & 255) / 255;
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  if (max === min) return 0;
+  const d = max - min;
+  let h: number;
+  if (max === r) h = ((g - b) / d) % 6;
+  else if (max === g) h = (b - r) / d + 2;
+  else h = (r - g) / d + 4;
+  return Math.round((h * 60 + 360) % 360);
+}
+
+// ---------------------------------------------------------------------------
 // Parser de colores (CSS Color Level 4, port compacto de dembrandt lib/color-parse.ts)
 // ---------------------------------------------------------------------------
 

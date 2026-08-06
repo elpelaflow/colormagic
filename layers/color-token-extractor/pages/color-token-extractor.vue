@@ -11,7 +11,7 @@
     </div>
 
     <!-- url input -->
-    <div class="flex flex-col sm:flex-row gap-2 mb-10">
+    <div class="flex flex-col sm:flex-row gap-2 mb-3">
       <UInput
         v-model="url"
         size="xl"
@@ -27,6 +27,22 @@
         icon="i-heroicons-magnifying-glass"
         :disabled="!url.trim()"
         @click="onExtract"
+      />
+    </div>
+
+    <!-- example sites -->
+    <div class="flex flex-wrap items-center gap-2 mb-10">
+      <span class="text-sm text-gray-500">
+        {{ t('tokenExtractor.examplesLabel') }}
+      </span>
+      <USelect
+        size="sm"
+        class="w-56"
+        :model-value="exampleUrl"
+        :options="exampleOptions"
+        :placeholder="t('tokenExtractor.examplesPlaceholder')"
+        :aria-label="t('tokenExtractor.examplesPlaceholder')"
+        @update:model-value="onExampleSelect"
       />
     </div>
 
@@ -101,92 +117,133 @@
               {{ t('tokenExtractor.tokensTitle') }}
             </p>
             <UBadge variant="soft">
-              {{ t('tokenExtractor.tokensCount', { count: result.tokens.length }) }}
+              {{ t('tokenExtractor.tokensCount', { count: visibleCount }) }}
             </UBadge>
           </div>
 
-          <UButtonGroup size="sm">
+          <div class="flex flex-wrap items-center gap-2">
             <UButton
-              :variant="filterType === 'all' ? 'solid' : 'soft'"
-              :label="t('tokenExtractor.filterAll')"
-              @click="filterType = 'all'"
+              size="sm"
+              variant="soft"
+              :color="groupByPrefix ? 'primary' : 'gray'"
+              :icon="groupByPrefix ? 'i-heroicons-folder-open' : 'i-heroicons-folder'"
+              :label="t('tokenExtractor.groupByPrefix')"
+              @click="groupByPrefix = !groupByPrefix"
             />
-            <UButton
-              :variant="filterType === 'brand' ? 'solid' : 'soft'"
-              :label="t('tokenExtractor.typeBrand')"
-              @click="filterType = 'brand'"
+            <USelect
+              size="sm"
+              class="w-40"
+              :model-value="sortMode"
+              :options="sortOptions"
+              :aria-label="t('tokenExtractor.sortLabel')"
+              @update:model-value="onSortChange"
             />
-            <UButton
-              :variant="filterType === 'semantic' ? 'solid' : 'soft'"
-              :label="t('tokenExtractor.typeSemantic')"
-              @click="filterType = 'semantic'"
-            />
-            <UButton
-              :variant="filterType === 'custom' ? 'solid' : 'soft'"
-              :label="t('tokenExtractor.typeCustom')"
-              @click="filterType = 'custom'"
-            />
-          </UButtonGroup>
+            <UButtonGroup size="sm">
+              <UButton
+                :variant="filterType === 'all' ? 'solid' : 'soft'"
+                :label="t('tokenExtractor.filterAll')"
+                @click="filterType = 'all'"
+              />
+              <UButton
+                :variant="filterType === 'brand' ? 'solid' : 'soft'"
+                :label="t('tokenExtractor.typeBrand')"
+                @click="filterType = 'brand'"
+              />
+              <UButton
+                :variant="filterType === 'semantic' ? 'solid' : 'soft'"
+                :label="t('tokenExtractor.typeSemantic')"
+                @click="filterType = 'semantic'"
+              />
+              <UButton
+                :variant="filterType === 'custom' ? 'solid' : 'soft'"
+                :label="t('tokenExtractor.typeCustom')"
+                @click="filterType = 'custom'"
+              />
+            </UButtonGroup>
+          </div>
         </div>
+
+        <UInput
+          v-model="searchQuery"
+          size="md"
+          icon="i-heroicons-magnifying-glass"
+          class="mb-4"
+          :placeholder="t('tokenExtractor.searchPlaceholder')"
+        />
 
         <p v-if="result.tokens.length === 0" class="text-gray-500">
           {{ t('tokenExtractor.noTokens') }}
         </p>
 
-        <ul
-          v-else
-          class="border border-gray-200 rounded-lg divide-y divide-gray-200"
-        >
-          <li
-            v-for="token in filteredTokens"
-            :key="token.name"
-            class="flex items-center gap-3 p-3 hover:bg-gray-50 transition-colors"
+        <template v-else>
+          <p v-if="filteredTokens.length === 0" class="text-gray-500">
+            {{ t('tokenExtractor.noMatches') }}
+          </p>
+
+          <!-- grouped by prefix -->
+          <div
+            v-else-if="groupByPrefix"
+            class="space-y-3"
           >
-            <!-- swatch -->
             <div
-              class="w-9 h-9 rounded-md border border-gray-200 shrink-0 shadow-sm"
-              :style="{ backgroundColor: token.hex ?? '#e5e7eb' }"
-            />
-
-            <!-- name -->
-            <div class="min-w-0 flex-1">
-              <p class="font-mono text-sm font-semibold truncate">
-                {{ token.name }}
-              </p>
-              <p class="font-mono text-xs text-gray-500 truncate">
-                {{ token.value }}
-              </p>
-            </div>
-
-            <!-- hex -->
-            <p class="font-mono text-sm hidden md:block text-gray-600 w-24 text-right">
-              {{ token.hex ?? '—' }}
-            </p>
-
-            <!-- badges -->
-            <div class="hidden sm:flex items-center gap-1">
-              <UBadge
-                size="sm"
-                variant="soft"
-                :color="typeBadgeColor(token.type)"
+              v-for="group in tokenGroups"
+              :key="group.prefix"
+              class="border border-gray-200 rounded-lg overflow-hidden"
+            >
+              <button
+                class="w-full flex items-center justify-between gap-2 px-4 py-2 bg-gray-50 hover:bg-gray-100 transition-colors text-left"
+                @click="toggleGroup(group.prefix)"
               >
-                {{ typeLabel(token.type) }}
-              </UBadge>
-              <UBadge size="sm" variant="soft" color="gray">
-                {{ scopeLabel(token.scope) }}
-              </UBadge>
+                <div class="flex items-center gap-2 min-w-0">
+                  <UIcon
+                    :name="isGroupCollapsed(group.prefix) ? 'i-heroicons-chevron-right' : 'i-heroicons-chevron-down'"
+                    class="w-4 h-4 text-gray-500 shrink-0"
+                  />
+                  <span class="font-mono text-sm font-semibold truncate">
+                    {{ group.prefix || t('tokenExtractor.groupOther') }}
+                  </span>
+                </div>
+                <UBadge variant="soft" size="sm">
+                  {{ group.tokens.length }}
+                </UBadge>
+              </button>
+              <ul
+                v-if="!isGroupCollapsed(group.prefix)"
+                class="divide-y divide-gray-200"
+              >
+                <li
+                  v-for="token in group.tokens"
+                  :key="token.name"
+                  class="flex items-center gap-3 p-3 hover:bg-gray-50 transition-colors"
+                >
+                  <TokenRow
+                    :token="token"
+                    @copy-value="onCopyToken"
+                    @copy-var="onCopyVar"
+                  />
+                </li>
+              </ul>
             </div>
+          </div>
 
-            <!-- copy -->
-            <UButton
-              icon="i-heroicons-clipboard"
-              size="sm"
-              variant="ghost"
-              :aria-label="t('tokenExtractor.copyValue')"
-              @click="onCopyToken(token)"
-            />
-          </li>
-        </ul>
+          <!-- flat list -->
+          <ul
+            v-else
+            class="border border-gray-200 rounded-lg divide-y divide-gray-200"
+          >
+            <li
+              v-for="token in filteredTokens"
+              :key="token.name"
+              class="flex items-center gap-3 p-3 hover:bg-gray-50 transition-colors"
+            >
+              <TokenRow
+                :token="token"
+                @copy-value="onCopyToken"
+                @copy-var="onCopyVar"
+              />
+            </li>
+          </ul>
+        </template>
       </div>
 
       <!-- derived palette -->
@@ -229,12 +286,24 @@
 <script setup lang="ts">
 import { useClipboard } from '@vueuse/core';
 import type { ColorToken, TokenExtractorResult, TokenType } from '~/layers/color-token-extractor/utils/token-extractor.util';
-import { buildCssExport, buildTailwindExport } from '~/layers/color-token-extractor/utils/token-extractor.util';
+import { buildCssExport, buildTailwindExport, hexToHue, tokenPrefix } from '~/layers/color-token-extractor/utils/token-extractor.util';
 import { PlausibleEventName } from '~/layers/plausible/types';
 
 const { t } = useI18n();
 const notifications = useNotifications();
 const { copy } = useClipboard();
+
+/** Sitios con sistemas de tokens grandes y bien nombrados, verificados contra el endpoint. */
+const EXAMPLE_SITES = [
+  { label: 'GitHub Primer — primer.style', url: 'https://primer.style' },
+  { label: 'IBM Carbon — carbondesignsystem.com', url: 'https://carbondesignsystem.com' },
+  { label: 'Open Props — open-props.style', url: 'https://open-props.style' },
+  { label: 'Pico CSS — picocss.com', url: 'https://picocss.com' },
+  { label: 'shadcn/ui — ui.shadcn.com', url: 'https://ui.shadcn.com' },
+  { label: 'Tailwind CSS — tailwindcss.com', url: 'https://tailwindcss.com' }
+];
+
+const exampleOptions = EXAMPLE_SITES.map(site => ({ label: site.label, value: site.url }));
 
 const title = t('tokenExtractor.seoTitle');
 const description = t('tokenExtractor.seoDescription');
@@ -248,35 +317,99 @@ useSeoMeta({
 });
 
 const url = ref('');
+const exampleUrl = ref<string | undefined>();
 const isExtracting = ref(false);
 const result = ref<TokenExtractorResult | null>(null);
 const filterType = ref<'all' | TokenType>('all');
+const searchQuery = ref('');
+const sortMode = ref<'default' | 'name' | 'hue'>('default');
+const groupByPrefix = ref(false);
+const collapsedGroups = ref(new Set<string>());
+
+const sortOptions = computed(() => [
+  { label: t('tokenExtractor.sortDefault'), value: 'default' },
+  { label: t('tokenExtractor.sortName'), value: 'name' },
+  { label: t('tokenExtractor.sortHue'), value: 'hue' }
+]);
 
 const filteredTokens = computed(() => {
-  if (filterType.value === 'all') return result.value?.tokens ?? [];
-  return (result.value?.tokens ?? []).filter(token => token.type === filterType.value);
+  let list = result.value?.tokens ?? [];
+  if (filterType.value !== 'all') {
+    list = list.filter(token => token.type === filterType.value);
+  }
+  const query = searchQuery.value.trim().toLowerCase();
+  if (query) {
+    list = list.filter(token =>
+      token.name.toLowerCase().includes(query)
+      || (token.value || '').toLowerCase().includes(query)
+      || (token.hex || '').toLowerCase().includes(query)
+    );
+  }
+  if (sortMode.value === 'name') {
+    list = [...list].sort((a, b) => a.name.localeCompare(b.name));
+  } else if (sortMode.value === 'hue') {
+    list = [...list].sort((a, b) => hueSortKey(a.hex) - hueSortKey(b.hex));
+  }
+  return list;
+});
+
+/** Clave de orden por matiz: acromáticos (grises/negro/blanco) y sin hex al final. */
+function hueSortKey(hex: string | null): number {
+  if (!hex) return 361;
+  const hue = hexToHue(hex);
+  const n = parseInt(hex.slice(1), 16);
+  const r = (n >> 16) & 255;
+  const g = (n >> 8) & 255;
+  const b = n & 255;
+  return Math.max(r, g, b) - Math.min(r, g, b) < 12 ? 361 : hue;
+}
+
+const visibleCount = computed(() => filteredTokens.value.length);
+
+const tokenGroups = computed(() => {
+  const groups = new Map<string, ColorToken[]>();
+  for (const token of filteredTokens.value) {
+    const prefix = tokenPrefix(token.name);
+    const group = groups.get(prefix) ?? [];
+    group.push(token);
+    groups.set(prefix, group);
+  }
+  return Array.from(groups.entries()).map(([prefix, tokens]) => ({ prefix, tokens }));
 });
 
 const cssExport = computed(() => result.value ? buildCssExport(result.value.tokens) : '');
 const tailwindExport = computed(() => result.value ? buildTailwindExport(result.value.tokens) : '');
 
-function typeBadgeColor(type: TokenType): 'primary' | 'yellow' | 'gray' {
-  switch (type) {
-    case 'brand': return 'primary';
-    case 'semantic': return 'yellow';
-    default: return 'gray';
+function onSortChange(value: unknown): void {
+  if (value === 'default' || value === 'name' || value === 'hue') {
+    sortMode.value = value;
   }
 }
 
-function typeLabel(type: TokenType): string {
-  return t(`tokenExtractor.type${type.charAt(0).toUpperCase()}${type.slice(1)}`);
+function toggleGroup(prefix: string): void {
+  const next = new Set(collapsedGroups.value);
+  if (next.has(prefix)) {
+    next.delete(prefix);
+  } else {
+    next.add(prefix);
+  }
+  collapsedGroups.value = next;
 }
 
-function scopeLabel(scope: 'root' | 'scoped'): string {
-  return t(`tokenExtractor.scope${scope.charAt(0).toUpperCase()}${scope.slice(1)}`);
+function isGroupCollapsed(prefix: string): boolean {
+  return collapsedGroups.value.has(prefix);
+}
+
+async function onExampleSelect(value: unknown): Promise<void> {
+  const target = typeof value === 'string' ? value : undefined;
+  if (!target) return;
+  url.value = target;
+  sendPlausibleEvent(PlausibleEventName.TOKEN_EXTRACTOR_EXAMPLE_SELECTED);
+  await onExtract();
 }
 
 async function onExtract(): Promise<void> {
+  if (isExtracting.value) return; // evita extracciones concurrentes
   const target = url.value.trim();
   if (!target) {
     notifications.addWarning(t('tokenExtractor.urlMissing'));
@@ -290,6 +423,10 @@ async function onExtract(): Promise<void> {
       body: { url: target }
     });
     filterType.value = 'all';
+    searchQuery.value = '';
+    sortMode.value = 'default';
+    groupByPrefix.value = false;
+    collapsedGroups.value = new Set();
     sendPlausibleEvent(PlausibleEventName.TOKEN_EXTRACTOR_EXTRACTED);
   } catch (error: any) {
     result.value = null;
@@ -301,6 +438,8 @@ async function onExtract(): Promise<void> {
     }
   } finally {
     isExtracting.value = false;
+    // el select de ejemplos vuelve al placeholder al terminar (permite re-elegir)
+    exampleUrl.value = undefined;
   }
 }
 
@@ -330,6 +469,12 @@ function onDownloadTailwind(): void {
 async function onCopyToken(token: ColorToken): Promise<void> {
   await copy(token.value);
   notifications.addSuccess(t('tokenExtractor.tokenCopied'));
+  sendPlausibleEvent(PlausibleEventName.TOKEN_EXTRACTOR_TOKEN_COPIED);
+}
+
+async function onCopyVar(token: ColorToken): Promise<void> {
+  await copy(`var(${token.name})`);
+  notifications.addSuccess(t('tokenExtractor.varCopied'));
   sendPlausibleEvent(PlausibleEventName.TOKEN_EXTRACTOR_TOKEN_COPIED);
 }
 
