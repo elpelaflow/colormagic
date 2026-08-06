@@ -1,0 +1,3941 @@
+{
+  "title": "tmpF2B3.tmp.acb",
+  "version": 1,
+  "identifier": 3056,
+  "colorSpace": "LAB",
+  "pageSize": 7,
+  "isSpot": true,
+  "count": 655,
+  "colors": [
+    {
+      "code": "0",
+      "name": "PANTONE 10101 C",
+      "hex": "#d3d5d4",
+      "category": "Metallics"
+    },
+    {
+      "code": "1",
+      "name": "PANTONE 10102 C",
+      "hex": "#c2c5c6",
+      "category": "Metallics"
+    },
+    {
+      "code": "2",
+      "name": "PANTONE 10103 C",
+      "hex": "#b7babb",
+      "category": "Metallics"
+    },
+    {
+      "code": "3",
+      "name": "PANTONE 10104 C",
+      "hex": "#acafb2",
+      "category": "Metallics"
+    },
+    {
+      "code": "4",
+      "name": "PANTONE 10105 C",
+      "hex": "#a8acaf",
+      "category": "Metallics"
+    },
+    {
+      "code": "5",
+      "name": "PANTONE Silver 10077 C",
+      "hex": "#a4a8ab",
+      "category": "Metallics"
+    },
+    {
+      "code": "6",
+      "name": "PANTONE 10106 C",
+      "hex": "#abaa74",
+      "category": "Metallics"
+    },
+    {
+      "code": "7",
+      "name": "PANTONE 10107 C",
+      "hex": "#aba962",
+      "category": "Metallics"
+    },
+    {
+      "code": "8",
+      "name": "PANTONE 10108 C",
+      "hex": "#afaa50",
+      "category": "Metallics"
+    },
+    {
+      "code": "9",
+      "name": "PANTONE 10109 C",
+      "hex": "#b1aa3f",
+      "category": "Metallics"
+    },
+    {
+      "code": "10",
+      "name": "PANTONE 10110 C",
+      "hex": "#b7ab28",
+      "category": "Metallics"
+    },
+    {
+      "code": "11",
+      "name": "PANTONE 10111 C",
+      "hex": "#c0b000",
+      "category": "Metallics"
+    },
+    {
+      "code": "12",
+      "name": "PANTONE 10112 C",
+      "hex": "#a8aa88",
+      "category": "Metallics"
+    },
+    {
+      "code": "13",
+      "name": "PANTONE 10113 C",
+      "hex": "#aca871",
+      "category": "Metallics"
+    },
+    {
+      "code": "14",
+      "name": "PANTONE 10114 C",
+      "hex": "#ada65c",
+      "category": "Metallics"
+    },
+    {
+      "code": "15",
+      "name": "PANTONE 10115 C",
+      "hex": "#aea54b",
+      "category": "Metallics"
+    },
+    {
+      "code": "16",
+      "name": "PANTONE 10116 C",
+      "hex": "#b5a437",
+      "category": "Metallics"
+    },
+    {
+      "code": "17",
+      "name": "PANTONE 10117 C",
+      "hex": "#b9a320",
+      "category": "Metallics"
+    },
+    {
+      "code": "18",
+      "name": "PANTONE 10118 C",
+      "hex": "#aca470",
+      "category": "Metallics"
+    },
+    {
+      "code": "19",
+      "name": "PANTONE 10119 C",
+      "hex": "#b1a15c",
+      "category": "Metallics"
+    },
+    {
+      "code": "20",
+      "name": "PANTONE 10120 C",
+      "hex": "#b59e4a",
+      "category": "Metallics"
+    },
+    {
+      "code": "21",
+      "name": "PANTONE 10121 C",
+      "hex": "#ba9b38",
+      "category": "Metallics"
+    },
+    {
+      "code": "22",
+      "name": "PANTONE 10122 C",
+      "hex": "#c09725",
+      "category": "Metallics"
+    },
+    {
+      "code": "23",
+      "name": "PANTONE 10123 C",
+      "hex": "#ca9501",
+      "category": "Metallics"
+    },
+    {
+      "code": "24",
+      "name": "PANTONE 10124 C",
+      "hex": "#aaa176",
+      "category": "Metallics"
+    },
+    {
+      "code": "25",
+      "name": "PANTONE 10125 C",
+      "hex": "#ab9d64",
+      "category": "Metallics"
+    },
+    {
+      "code": "26",
+      "name": "PANTONE 10126 C",
+      "hex": "#ad9652",
+      "category": "Metallics"
+    },
+    {
+      "code": "27",
+      "name": "PANTONE 10127 C",
+      "hex": "#ae9042",
+      "category": "Metallics"
+    },
+    {
+      "code": "28",
+      "name": "PANTONE 10128 C",
+      "hex": "#b48a35",
+      "category": "Metallics"
+    },
+    {
+      "code": "29",
+      "name": "PANTONE 10129 C",
+      "hex": "#bb8425",
+      "category": "Metallics"
+    },
+    {
+      "code": "30",
+      "name": "PANTONE 10130 C",
+      "hex": "#b09070",
+      "category": "Metallics"
+    },
+    {
+      "code": "31",
+      "name": "PANTONE 10131 C",
+      "hex": "#b0855c",
+      "category": "Metallics"
+    },
+    {
+      "code": "32",
+      "name": "PANTONE 10132 C",
+      "hex": "#af7d4b",
+      "category": "Metallics"
+    },
+    {
+      "code": "33",
+      "name": "PANTONE 10133 C",
+      "hex": "#ac733b",
+      "category": "Metallics"
+    },
+    {
+      "code": "34",
+      "name": "PANTONE 10134 C",
+      "hex": "#a96a2e",
+      "category": "Metallics"
+    },
+    {
+      "code": "35",
+      "name": "PANTONE 10135 C",
+      "hex": "#a6631f",
+      "category": "Metallics"
+    },
+    {
+      "code": "36",
+      "name": "PANTONE 10136 C",
+      "hex": "#ac9b89",
+      "category": "Metallics"
+    },
+    {
+      "code": "37",
+      "name": "PANTONE 10137 C",
+      "hex": "#ac8f72",
+      "category": "Metallics"
+    },
+    {
+      "code": "38",
+      "name": "PANTONE 10138 C",
+      "hex": "#ac845e",
+      "category": "Metallics"
+    },
+    {
+      "code": "39",
+      "name": "PANTONE 10139 C",
+      "hex": "#aa794d",
+      "category": "Metallics"
+    },
+    {
+      "code": "40",
+      "name": "PANTONE 10140 C",
+      "hex": "#a6713f",
+      "category": "Metallics"
+    },
+    {
+      "code": "41",
+      "name": "PANTONE 10141 C",
+      "hex": "#a26733",
+      "category": "Metallics"
+    },
+    {
+      "code": "42",
+      "name": "PANTONE 10142 C",
+      "hex": "#b68e6d",
+      "category": "Metallics"
+    },
+    {
+      "code": "43",
+      "name": "PANTONE 10143 C",
+      "hex": "#ba8459",
+      "category": "Metallics"
+    },
+    {
+      "code": "44",
+      "name": "PANTONE 10144 C",
+      "hex": "#be7b47",
+      "category": "Metallics"
+    },
+    {
+      "code": "45",
+      "name": "PANTONE 10145 C",
+      "hex": "#c27237",
+      "category": "Metallics"
+    },
+    {
+      "code": "46",
+      "name": "PANTONE 10146 C",
+      "hex": "#c76b25",
+      "category": "Metallics"
+    },
+    {
+      "code": "47",
+      "name": "PANTONE 10147 C",
+      "hex": "#cb6212",
+      "category": "Metallics"
+    },
+    {
+      "code": "48",
+      "name": "PANTONE 10401 C",
+      "hex": "#cd8b23",
+      "category": "Metallics"
+    },
+    {
+      "code": "49",
+      "name": "PANTONE 10402 C",
+      "hex": "#c1904e",
+      "category": "Metallics"
+    },
+    {
+      "code": "50",
+      "name": "PANTONE 10403 C",
+      "hex": "#ab8856",
+      "category": "Metallics"
+    },
+    {
+      "code": "51",
+      "name": "PANTONE 10404 C",
+      "hex": "#ac906a",
+      "category": "Metallics"
+    },
+    {
+      "code": "52",
+      "name": "PANTONE 10405 C",
+      "hex": "#ae9774",
+      "category": "Metallics"
+    },
+    {
+      "code": "53",
+      "name": "PANTONE 10406 C",
+      "hex": "#b49c7c",
+      "category": "Metallics"
+    },
+    {
+      "code": "54",
+      "name": "PANTONE 10407 C",
+      "hex": "#b3a284",
+      "category": "Metallics"
+    },
+    {
+      "code": "55",
+      "name": "PANTONE 10408 C",
+      "hex": "#b39279",
+      "category": "Metallics"
+    },
+    {
+      "code": "56",
+      "name": "PANTONE 10409 C",
+      "hex": "#a67563",
+      "category": "Metallics"
+    },
+    {
+      "code": "57",
+      "name": "PANTONE 10410 C",
+      "hex": "#9e6b67",
+      "category": "Metallics"
+    },
+    {
+      "code": "58",
+      "name": "PANTONE 10411 C",
+      "hex": "#b6857f",
+      "category": "Metallics"
+    },
+    {
+      "code": "59",
+      "name": "PANTONE Rose Gold 10412 C",
+      "hex": "#b49190",
+      "category": "Metallics"
+    },
+    {
+      "code": "60",
+      "name": "PANTONE 10148 C",
+      "hex": "#b9887a",
+      "category": "Metallics"
+    },
+    {
+      "code": "61",
+      "name": "PANTONE 10149 C",
+      "hex": "#bc7c69",
+      "category": "Metallics"
+    },
+    {
+      "code": "62",
+      "name": "PANTONE 10150 C",
+      "hex": "#be7058",
+      "category": "Metallics"
+    },
+    {
+      "code": "63",
+      "name": "PANTONE 10151 C",
+      "hex": "#c26548",
+      "category": "Metallics"
+    },
+    {
+      "code": "64",
+      "name": "PANTONE 10152 C",
+      "hex": "#c75c39",
+      "category": "Metallics"
+    },
+    {
+      "code": "65",
+      "name": "PANTONE 10153 C",
+      "hex": "#cb5329",
+      "category": "Metallics"
+    },
+    {
+      "code": "66",
+      "name": "PANTONE 10154 C",
+      "hex": "#ac9691",
+      "category": "Metallics"
+    },
+    {
+      "code": "67",
+      "name": "PANTONE 10155 C",
+      "hex": "#ae867d",
+      "category": "Metallics"
+    },
+    {
+      "code": "68",
+      "name": "PANTONE 10156 C",
+      "hex": "#b1776c",
+      "category": "Metallics"
+    },
+    {
+      "code": "69",
+      "name": "PANTONE 10157 C",
+      "hex": "#b16a5b",
+      "category": "Metallics"
+    },
+    {
+      "code": "70",
+      "name": "PANTONE 10158 C",
+      "hex": "#b25b4d",
+      "category": "Metallics"
+    },
+    {
+      "code": "71",
+      "name": "PANTONE 10159 C",
+      "hex": "#b54e40",
+      "category": "Metallics"
+    },
+    {
+      "code": "72",
+      "name": "PANTONE 10413 C",
+      "hex": "#c44c4b",
+      "category": "Metallics"
+    },
+    {
+      "code": "73",
+      "name": "PANTONE 10414 C",
+      "hex": "#be2658",
+      "category": "Metallics"
+    },
+    {
+      "code": "74",
+      "name": "PANTONE 10415 C",
+      "hex": "#b54145",
+      "category": "Metallics"
+    },
+    {
+      "code": "75",
+      "name": "PANTONE 10416 C",
+      "hex": "#ab282e",
+      "category": "Metallics"
+    },
+    {
+      "code": "76",
+      "name": "PANTONE 10417 C",
+      "hex": "#b62d36",
+      "category": "Metallics"
+    },
+    {
+      "code": "77",
+      "name": "PANTONE 10418 C",
+      "hex": "#903337",
+      "category": "Metallics"
+    },
+    {
+      "code": "78",
+      "name": "PANTONE 10160 C",
+      "hex": "#b97f8f",
+      "category": "Metallics"
+    },
+    {
+      "code": "79",
+      "name": "PANTONE 10161 C",
+      "hex": "#bc6f81",
+      "category": "Metallics"
+    },
+    {
+      "code": "80",
+      "name": "PANTONE 10162 C",
+      "hex": "#be6274",
+      "category": "Metallics"
+    },
+    {
+      "code": "81",
+      "name": "PANTONE 10163 C",
+      "hex": "#c05766",
+      "category": "Metallics"
+    },
+    {
+      "code": "82",
+      "name": "PANTONE 10164 C",
+      "hex": "#c34c57",
+      "category": "Metallics"
+    },
+    {
+      "code": "83",
+      "name": "PANTONE 10165 C",
+      "hex": "#c74448",
+      "category": "Metallics"
+    },
+    {
+      "code": "84",
+      "name": "PANTONE 10166 C",
+      "hex": "#b17c93",
+      "category": "Metallics"
+    },
+    {
+      "code": "85",
+      "name": "PANTONE 10167 C",
+      "hex": "#b56b89",
+      "category": "Metallics"
+    },
+    {
+      "code": "86",
+      "name": "PANTONE 10168 C",
+      "hex": "#b65c7d",
+      "category": "Metallics"
+    },
+    {
+      "code": "87",
+      "name": "PANTONE 10169 C",
+      "hex": "#b64d70",
+      "category": "Metallics"
+    },
+    {
+      "code": "88",
+      "name": "PANTONE 10170 C",
+      "hex": "#b73f63",
+      "category": "Metallics"
+    },
+    {
+      "code": "89",
+      "name": "PANTONE 10171 C",
+      "hex": "#ba2f53",
+      "category": "Metallics"
+    },
+    {
+      "code": "90",
+      "name": "PANTONE 10172 C",
+      "hex": "#a77c9d",
+      "category": "Metallics"
+    },
+    {
+      "code": "91",
+      "name": "PANTONE 10173 C",
+      "hex": "#a66d95",
+      "category": "Metallics"
+    },
+    {
+      "code": "92",
+      "name": "PANTONE 10174 C",
+      "hex": "#a75e8c",
+      "category": "Metallics"
+    },
+    {
+      "code": "93",
+      "name": "PANTONE 10175 C",
+      "hex": "#a75083",
+      "category": "Metallics"
+    },
+    {
+      "code": "94",
+      "name": "PANTONE 10176 C",
+      "hex": "#a9437a",
+      "category": "Metallics"
+    },
+    {
+      "code": "95",
+      "name": "PANTONE 10177 C",
+      "hex": "#ae3370",
+      "category": "Metallics"
+    },
+    {
+      "code": "96",
+      "name": "PANTONE 10178 C",
+      "hex": "#af8ba3",
+      "category": "Metallics"
+    },
+    {
+      "code": "97",
+      "name": "PANTONE 10179 C",
+      "hex": "#b07d9d",
+      "category": "Metallics"
+    },
+    {
+      "code": "98",
+      "name": "PANTONE 10180 C",
+      "hex": "#b07097",
+      "category": "Metallics"
+    },
+    {
+      "code": "99",
+      "name": "PANTONE 10181 C",
+      "hex": "#b1628f",
+      "category": "Metallics"
+    },
+    {
+      "code": "100",
+      "name": "PANTONE 10182 C",
+      "hex": "#b35586",
+      "category": "Metallics"
+    },
+    {
+      "code": "101",
+      "name": "PANTONE 10183 C",
+      "hex": "#b74780",
+      "category": "Metallics"
+    },
+    {
+      "code": "102",
+      "name": "PANTONE 10419 C",
+      "hex": "#ba7f84",
+      "category": "Metallics"
+    },
+    {
+      "code": "103",
+      "name": "PANTONE 10420 C",
+      "hex": "#b17a8a",
+      "category": "Metallics"
+    },
+    {
+      "code": "104",
+      "name": "PANTONE 10421 C",
+      "hex": "#a0456f",
+      "category": "Metallics"
+    },
+    {
+      "code": "105",
+      "name": "PANTONE 10422 C",
+      "hex": "#883366",
+      "category": "Metallics"
+    },
+    {
+      "code": "106",
+      "name": "PANTONE 10423 C",
+      "hex": "#904c83",
+      "category": "Metallics"
+    },
+    {
+      "code": "107",
+      "name": "PANTONE 10424 C",
+      "hex": "#722868",
+      "category": "Metallics"
+    },
+    {
+      "code": "108",
+      "name": "PANTONE 10184 C",
+      "hex": "#ac90a9",
+      "category": "Metallics"
+    },
+    {
+      "code": "109",
+      "name": "PANTONE 10185 C",
+      "hex": "#ae84a6",
+      "category": "Metallics"
+    },
+    {
+      "code": "110",
+      "name": "PANTONE 10186 C",
+      "hex": "#ae75a1",
+      "category": "Metallics"
+    },
+    {
+      "code": "111",
+      "name": "PANTONE 10187 C",
+      "hex": "#ae689a",
+      "category": "Metallics"
+    },
+    {
+      "code": "112",
+      "name": "PANTONE 10188 C",
+      "hex": "#b15c96",
+      "category": "Metallics"
+    },
+    {
+      "code": "113",
+      "name": "PANTONE 10189 C",
+      "hex": "#b44e92",
+      "category": "Metallics"
+    },
+    {
+      "code": "114",
+      "name": "PANTONE 10190 C",
+      "hex": "#9d969d",
+      "category": "Metallics"
+    },
+    {
+      "code": "115",
+      "name": "PANTONE 10191 C",
+      "hex": "#938591",
+      "category": "Metallics"
+    },
+    {
+      "code": "116",
+      "name": "PANTONE 10192 C",
+      "hex": "#8c7886",
+      "category": "Metallics"
+    },
+    {
+      "code": "117",
+      "name": "PANTONE 10193 C",
+      "hex": "#836979",
+      "category": "Metallics"
+    },
+    {
+      "code": "118",
+      "name": "PANTONE 10194 C",
+      "hex": "#7a5c6f",
+      "category": "Metallics"
+    },
+    {
+      "code": "119",
+      "name": "PANTONE 10195 C",
+      "hex": "#6f4e60",
+      "category": "Metallics"
+    },
+    {
+      "code": "120",
+      "name": "PANTONE 10196 C",
+      "hex": "#a590a7",
+      "category": "Metallics"
+    },
+    {
+      "code": "121",
+      "name": "PANTONE 10197 C",
+      "hex": "#a27d9e",
+      "category": "Metallics"
+    },
+    {
+      "code": "122",
+      "name": "PANTONE 10198 C",
+      "hex": "#9e6b94",
+      "category": "Metallics"
+    },
+    {
+      "code": "123",
+      "name": "PANTONE 10199 C",
+      "hex": "#9b5c8d",
+      "category": "Metallics"
+    },
+    {
+      "code": "124",
+      "name": "PANTONE 10200 C",
+      "hex": "#984e84",
+      "category": "Metallics"
+    },
+    {
+      "code": "125",
+      "name": "PANTONE 10201 C",
+      "hex": "#953f7b",
+      "category": "Metallics"
+    },
+    {
+      "code": "126",
+      "name": "PANTONE 10202 C",
+      "hex": "#9b7e9f",
+      "category": "Metallics"
+    },
+    {
+      "code": "127",
+      "name": "PANTONE 10203 C",
+      "hex": "#966d95",
+      "category": "Metallics"
+    },
+    {
+      "code": "128",
+      "name": "PANTONE 10204 C",
+      "hex": "#915f8d",
+      "category": "Metallics"
+    },
+    {
+      "code": "129",
+      "name": "PANTONE 10205 C",
+      "hex": "#8b5185",
+      "category": "Metallics"
+    },
+    {
+      "code": "130",
+      "name": "PANTONE 10206 C",
+      "hex": "#85427a",
+      "category": "Metallics"
+    },
+    {
+      "code": "131",
+      "name": "PANTONE 10207 C",
+      "hex": "#7e3570",
+      "category": "Metallics"
+    },
+    {
+      "code": "132",
+      "name": "PANTONE 10208 C",
+      "hex": "#a28ba8",
+      "category": "Metallics"
+    },
+    {
+      "code": "133",
+      "name": "PANTONE 10209 C",
+      "hex": "#9e7ca4",
+      "category": "Metallics"
+    },
+    {
+      "code": "134",
+      "name": "PANTONE 10210 C",
+      "hex": "#996e9e",
+      "category": "Metallics"
+    },
+    {
+      "code": "135",
+      "name": "PANTONE 10211 C",
+      "hex": "#95619b",
+      "category": "Metallics"
+    },
+    {
+      "code": "136",
+      "name": "PANTONE 10212 C",
+      "hex": "#905396",
+      "category": "Metallics"
+    },
+    {
+      "code": "137",
+      "name": "PANTONE 10213 C",
+      "hex": "#8a468f",
+      "category": "Metallics"
+    },
+    {
+      "code": "138",
+      "name": "PANTONE 10214 C",
+      "hex": "#8f7da6",
+      "category": "Metallics"
+    },
+    {
+      "code": "139",
+      "name": "PANTONE 10215 C",
+      "hex": "#846da3",
+      "category": "Metallics"
+    },
+    {
+      "code": "140",
+      "name": "PANTONE 10216 C",
+      "hex": "#7a5e9e",
+      "category": "Metallics"
+    },
+    {
+      "code": "141",
+      "name": "PANTONE 10217 C",
+      "hex": "#6e4e98",
+      "category": "Metallics"
+    },
+    {
+      "code": "142",
+      "name": "PANTONE 10218 C",
+      "hex": "#643f91",
+      "category": "Metallics"
+    },
+    {
+      "code": "143",
+      "name": "PANTONE 10219 C",
+      "hex": "#5a2f8a",
+      "category": "Metallics"
+    },
+    {
+      "code": "144",
+      "name": "PANTONE 10220 C",
+      "hex": "#9b94aa",
+      "category": "Metallics"
+    },
+    {
+      "code": "145",
+      "name": "PANTONE 10221 C",
+      "hex": "#9288a9",
+      "category": "Metallics"
+    },
+    {
+      "code": "146",
+      "name": "PANTONE 10222 C",
+      "hex": "#8b7ca3",
+      "category": "Metallics"
+    },
+    {
+      "code": "147",
+      "name": "PANTONE 10223 C",
+      "hex": "#826f9f",
+      "category": "Metallics"
+    },
+    {
+      "code": "148",
+      "name": "PANTONE 10224 C",
+      "hex": "#78639c",
+      "category": "Metallics"
+    },
+    {
+      "code": "149",
+      "name": "PANTONE 10225 C",
+      "hex": "#715999",
+      "category": "Metallics"
+    },
+    {
+      "code": "150",
+      "name": "PANTONE 10226 C",
+      "hex": "#9493aa",
+      "category": "Metallics"
+    },
+    {
+      "code": "151",
+      "name": "PANTONE 10227 C",
+      "hex": "#8d8aa9",
+      "category": "Metallics"
+    },
+    {
+      "code": "152",
+      "name": "PANTONE 10228 C",
+      "hex": "#837fa5",
+      "category": "Metallics"
+    },
+    {
+      "code": "153",
+      "name": "PANTONE 10229 C",
+      "hex": "#7672a1",
+      "category": "Metallics"
+    },
+    {
+      "code": "154",
+      "name": "PANTONE 10230 C",
+      "hex": "#6d669c",
+      "category": "Metallics"
+    },
+    {
+      "code": "155",
+      "name": "PANTONE 10231 C",
+      "hex": "#645a9a",
+      "category": "Metallics"
+    },
+    {
+      "code": "156",
+      "name": "PANTONE 10232 C",
+      "hex": "#8382a4",
+      "category": "Metallics"
+    },
+    {
+      "code": "157",
+      "name": "PANTONE 10233 C",
+      "hex": "#74739e",
+      "category": "Metallics"
+    },
+    {
+      "code": "158",
+      "name": "PANTONE 10234 C",
+      "hex": "#696496",
+      "category": "Metallics"
+    },
+    {
+      "code": "159",
+      "name": "PANTONE 10235 C",
+      "hex": "#5b568e",
+      "category": "Metallics"
+    },
+    {
+      "code": "160",
+      "name": "PANTONE 10236 C",
+      "hex": "#4d4987",
+      "category": "Metallics"
+    },
+    {
+      "code": "161",
+      "name": "PANTONE 10237 C",
+      "hex": "#554d89",
+      "category": "Metallics"
+    },
+    {
+      "code": "162",
+      "name": "PANTONE 10425 C",
+      "hex": "#345093",
+      "category": "Metallics"
+    },
+    {
+      "code": "163",
+      "name": "PANTONE 10426 C",
+      "hex": "#324476",
+      "category": "Metallics"
+    },
+    {
+      "code": "164",
+      "name": "PANTONE 10427 C",
+      "hex": "#213d80",
+      "category": "Metallics"
+    },
+    {
+      "code": "165",
+      "name": "PANTONE 10428 C",
+      "hex": "#443b85",
+      "category": "Metallics"
+    },
+    {
+      "code": "166",
+      "name": "PANTONE 10429 C",
+      "hex": "#3f2d6d",
+      "category": "Metallics"
+    },
+    {
+      "code": "167",
+      "name": "PANTONE 10430 C",
+      "hex": "#3d2e61",
+      "category": "Metallics"
+    },
+    {
+      "code": "168",
+      "name": "PANTONE 10238 C",
+      "hex": "#8589aa",
+      "category": "Metallics"
+    },
+    {
+      "code": "169",
+      "name": "PANTONE 10239 C",
+      "hex": "#787ca8",
+      "category": "Metallics"
+    },
+    {
+      "code": "170",
+      "name": "PANTONE 10240 C",
+      "hex": "#696fa4",
+      "category": "Metallics"
+    },
+    {
+      "code": "171",
+      "name": "PANTONE 10241 C",
+      "hex": "#5b61a1",
+      "category": "Metallics"
+    },
+    {
+      "code": "172",
+      "name": "PANTONE 10242 C",
+      "hex": "#4e539c",
+      "category": "Metallics"
+    },
+    {
+      "code": "173",
+      "name": "PANTONE 10243 C",
+      "hex": "#424699",
+      "category": "Metallics"
+    },
+    {
+      "code": "174",
+      "name": "PANTONE 10244 C",
+      "hex": "#6d85a8",
+      "category": "Metallics"
+    },
+    {
+      "code": "175",
+      "name": "PANTONE 10245 C",
+      "hex": "#5778a7",
+      "category": "Metallics"
+    },
+    {
+      "code": "176",
+      "name": "PANTONE 10246 C",
+      "hex": "#456aa2",
+      "category": "Metallics"
+    },
+    {
+      "code": "177",
+      "name": "PANTONE 10247 C",
+      "hex": "#345c9e",
+      "category": "Metallics"
+    },
+    {
+      "code": "178",
+      "name": "PANTONE 10248 C",
+      "hex": "#23509a",
+      "category": "Metallics"
+    },
+    {
+      "code": "179",
+      "name": "PANTONE 10249 C",
+      "hex": "#124295",
+      "category": "Metallics"
+    },
+    {
+      "code": "180",
+      "name": "PANTONE 10250 C",
+      "hex": "#8f9bab",
+      "category": "Metallics"
+    },
+    {
+      "code": "181",
+      "name": "PANTONE 10251 C",
+      "hex": "#7d8fab",
+      "category": "Metallics"
+    },
+    {
+      "code": "182",
+      "name": "PANTONE 10252 C",
+      "hex": "#6e84aa",
+      "category": "Metallics"
+    },
+    {
+      "code": "183",
+      "name": "PANTONE 10253 C",
+      "hex": "#5d78a8",
+      "category": "Metallics"
+    },
+    {
+      "code": "184",
+      "name": "PANTONE 10254 C",
+      "hex": "#4f6ba4",
+      "category": "Metallics"
+    },
+    {
+      "code": "185",
+      "name": "PANTONE 10255 C",
+      "hex": "#3f60a2",
+      "category": "Metallics"
+    },
+    {
+      "code": "186",
+      "name": "PANTONE 10256 C",
+      "hex": "#7993ab",
+      "category": "Metallics"
+    },
+    {
+      "code": "187",
+      "name": "PANTONE 10257 C",
+      "hex": "#6a8aac",
+      "category": "Metallics"
+    },
+    {
+      "code": "188",
+      "name": "PANTONE 10258 C",
+      "hex": "#597fa9",
+      "category": "Metallics"
+    },
+    {
+      "code": "189",
+      "name": "PANTONE 10259 C",
+      "hex": "#4774a8",
+      "category": "Metallics"
+    },
+    {
+      "code": "190",
+      "name": "PANTONE 10260 C",
+      "hex": "#316aa7",
+      "category": "Metallics"
+    },
+    {
+      "code": "191",
+      "name": "PANTONE 10261 C",
+      "hex": "#195da4",
+      "category": "Metallics"
+    },
+    {
+      "code": "192",
+      "name": "PANTONE 10262 C",
+      "hex": "#8a99a3",
+      "category": "Metallics"
+    },
+    {
+      "code": "193",
+      "name": "PANTONE 10263 C",
+      "hex": "#748b9a",
+      "category": "Metallics"
+    },
+    {
+      "code": "194",
+      "name": "PANTONE 10264 C",
+      "hex": "#617e91",
+      "category": "Metallics"
+    },
+    {
+      "code": "195",
+      "name": "PANTONE 10265 C",
+      "hex": "#507187",
+      "category": "Metallics"
+    },
+    {
+      "code": "196",
+      "name": "PANTONE 10266 C",
+      "hex": "#3f657c",
+      "category": "Metallics"
+    },
+    {
+      "code": "197",
+      "name": "PANTONE 10267 C",
+      "hex": "#305972",
+      "category": "Metallics"
+    },
+    {
+      "code": "198",
+      "name": "PANTONE 10431 C",
+      "hex": "#829fa8",
+      "category": "Metallics"
+    },
+    {
+      "code": "199",
+      "name": "PANTONE 10432 C",
+      "hex": "#5c7d8b",
+      "category": "Metallics"
+    },
+    {
+      "code": "200",
+      "name": "PANTONE 10433 C",
+      "hex": "#007398",
+      "category": "Metallics"
+    },
+    {
+      "code": "201",
+      "name": "PANTONE 10434 C",
+      "hex": "#005f84",
+      "category": "Metallics"
+    },
+    {
+      "code": "202",
+      "name": "PANTONE 10435 C",
+      "hex": "#727882",
+      "category": "Metallics"
+    },
+    {
+      "code": "203",
+      "name": "PANTONE 10436 C",
+      "hex": "#676e73",
+      "category": "Metallics"
+    },
+    {
+      "code": "204",
+      "name": "PANTONE 10268 C",
+      "hex": "#7199ae",
+      "category": "Metallics"
+    },
+    {
+      "code": "205",
+      "name": "PANTONE 10269 C",
+      "hex": "#5a90ae",
+      "category": "Metallics"
+    },
+    {
+      "code": "206",
+      "name": "PANTONE 10270 C",
+      "hex": "#4587ad",
+      "category": "Metallics"
+    },
+    {
+      "code": "207",
+      "name": "PANTONE 10271 C",
+      "hex": "#287eab",
+      "category": "Metallics"
+    },
+    {
+      "code": "208",
+      "name": "PANTONE 10272 C",
+      "hex": "#0075ab",
+      "category": "Metallics"
+    },
+    {
+      "code": "209",
+      "name": "PANTONE 10273 C",
+      "hex": "#006baa",
+      "category": "Metallics"
+    },
+    {
+      "code": "210",
+      "name": "PANTONE 10274 C",
+      "hex": "#709eaf",
+      "category": "Metallics"
+    },
+    {
+      "code": "211",
+      "name": "PANTONE 10275 C",
+      "hex": "#5898ad",
+      "category": "Metallics"
+    },
+    {
+      "code": "212",
+      "name": "PANTONE 10276 C",
+      "hex": "#3e94b0",
+      "category": "Metallics"
+    },
+    {
+      "code": "213",
+      "name": "PANTONE 10277 C",
+      "hex": "#0d8dae",
+      "category": "Metallics"
+    },
+    {
+      "code": "214",
+      "name": "PANTONE 10278 C",
+      "hex": "#0087af",
+      "category": "Metallics"
+    },
+    {
+      "code": "215",
+      "name": "PANTONE 10279 C",
+      "hex": "#0082b2",
+      "category": "Metallics"
+    },
+    {
+      "code": "216",
+      "name": "PANTONE 10280 C",
+      "hex": "#799fa5",
+      "category": "Metallics"
+    },
+    {
+      "code": "217",
+      "name": "PANTONE 10281 C",
+      "hex": "#6397a1",
+      "category": "Metallics"
+    },
+    {
+      "code": "218",
+      "name": "PANTONE 10282 C",
+      "hex": "#4f909b",
+      "category": "Metallics"
+    },
+    {
+      "code": "219",
+      "name": "PANTONE 10283 C",
+      "hex": "#328897",
+      "category": "Metallics"
+    },
+    {
+      "code": "220",
+      "name": "PANTONE 10284 C",
+      "hex": "#008091",
+      "category": "Metallics"
+    },
+    {
+      "code": "221",
+      "name": "PANTONE 10285 C",
+      "hex": "#00778a",
+      "category": "Metallics"
+    },
+    {
+      "code": "222",
+      "name": "PANTONE 10286 C",
+      "hex": "#75a3a9",
+      "category": "Metallics"
+    },
+    {
+      "code": "223",
+      "name": "PANTONE 10287 C",
+      "hex": "#609fa6",
+      "category": "Metallics"
+    },
+    {
+      "code": "224",
+      "name": "PANTONE 10288 C",
+      "hex": "#479ba3",
+      "category": "Metallics"
+    },
+    {
+      "code": "225",
+      "name": "PANTONE 10289 C",
+      "hex": "#2297a0",
+      "category": "Metallics"
+    },
+    {
+      "code": "226",
+      "name": "PANTONE 10290 C",
+      "hex": "#00929c",
+      "category": "Metallics"
+    },
+    {
+      "code": "227",
+      "name": "PANTONE 10291 C",
+      "hex": "#008e99",
+      "category": "Metallics"
+    },
+    {
+      "code": "228",
+      "name": "PANTONE 10437 C",
+      "hex": "#49735d",
+      "category": "Metallics"
+    },
+    {
+      "code": "229",
+      "name": "PANTONE 10438 C",
+      "hex": "#4a956b",
+      "category": "Metallics"
+    },
+    {
+      "code": "230",
+      "name": "PANTONE 10439 C",
+      "hex": "#3f937c",
+      "category": "Metallics"
+    },
+    {
+      "code": "231",
+      "name": "PANTONE 10440 C",
+      "hex": "#008690",
+      "category": "Metallics"
+    },
+    {
+      "code": "232",
+      "name": "PANTONE 10441 C",
+      "hex": "#006471",
+      "category": "Metallics"
+    },
+    {
+      "code": "233",
+      "name": "PANTONE 10442 C",
+      "hex": "#385a63",
+      "category": "Metallics"
+    },
+    {
+      "code": "234",
+      "name": "PANTONE 10292 C",
+      "hex": "#7ca8a4",
+      "category": "Metallics"
+    },
+    {
+      "code": "235",
+      "name": "PANTONE 10293 C",
+      "hex": "#69a69f",
+      "category": "Metallics"
+    },
+    {
+      "code": "236",
+      "name": "PANTONE 10294 C",
+      "hex": "#50a39b",
+      "category": "Metallics"
+    },
+    {
+      "code": "237",
+      "name": "PANTONE 10295 C",
+      "hex": "#2ea094",
+      "category": "Metallics"
+    },
+    {
+      "code": "238",
+      "name": "PANTONE 10296 C",
+      "hex": "#009f8f",
+      "category": "Metallics"
+    },
+    {
+      "code": "239",
+      "name": "PANTONE 10297 C",
+      "hex": "#009d8b",
+      "category": "Metallics"
+    },
+    {
+      "code": "240",
+      "name": "PANTONE 10298 C",
+      "hex": "#83a38a",
+      "category": "Metallics"
+    },
+    {
+      "code": "241",
+      "name": "PANTONE 10299 C",
+      "hex": "#739e7d",
+      "category": "Metallics"
+    },
+    {
+      "code": "242",
+      "name": "PANTONE 10300 C",
+      "hex": "#639871",
+      "category": "Metallics"
+    },
+    {
+      "code": "243",
+      "name": "PANTONE 10301 C",
+      "hex": "#539465",
+      "category": "Metallics"
+    },
+    {
+      "code": "244",
+      "name": "PANTONE 10302 C",
+      "hex": "#41905a",
+      "category": "Metallics"
+    },
+    {
+      "code": "245",
+      "name": "PANTONE 10303 C",
+      "hex": "#1c8a4d",
+      "category": "Metallics"
+    },
+    {
+      "code": "246",
+      "name": "PANTONE 10304 C",
+      "hex": "#8aa483",
+      "category": "Metallics"
+    },
+    {
+      "code": "247",
+      "name": "PANTONE 10305 C",
+      "hex": "#7fa074",
+      "category": "Metallics"
+    },
+    {
+      "code": "248",
+      "name": "PANTONE 10306 C",
+      "hex": "#719b66",
+      "category": "Metallics"
+    },
+    {
+      "code": "249",
+      "name": "PANTONE 10307 C",
+      "hex": "#629759",
+      "category": "Metallics"
+    },
+    {
+      "code": "250",
+      "name": "PANTONE 10308 C",
+      "hex": "#52944e",
+      "category": "Metallics"
+    },
+    {
+      "code": "251",
+      "name": "PANTONE 10309 C",
+      "hex": "#3c8f41",
+      "category": "Metallics"
+    },
+    {
+      "code": "252",
+      "name": "PANTONE 10310 C",
+      "hex": "#94a096",
+      "category": "Metallics"
+    },
+    {
+      "code": "253",
+      "name": "PANTONE 10311 C",
+      "hex": "#879685",
+      "category": "Metallics"
+    },
+    {
+      "code": "254",
+      "name": "PANTONE 10312 C",
+      "hex": "#788c75",
+      "category": "Metallics"
+    },
+    {
+      "code": "255",
+      "name": "PANTONE 10313 C",
+      "hex": "#6d8267",
+      "category": "Metallics"
+    },
+    {
+      "code": "256",
+      "name": "PANTONE 10314 C",
+      "hex": "#5f785b",
+      "category": "Metallics"
+    },
+    {
+      "code": "257",
+      "name": "PANTONE 10315 C",
+      "hex": "#516e4f",
+      "category": "Metallics"
+    },
+    {
+      "code": "258",
+      "name": "PANTONE 10316 C",
+      "hex": "#94a97f",
+      "category": "Metallics"
+    },
+    {
+      "code": "259",
+      "name": "PANTONE 10317 C",
+      "hex": "#8ba86f",
+      "category": "Metallics"
+    },
+    {
+      "code": "260",
+      "name": "PANTONE 10318 C",
+      "hex": "#80a65f",
+      "category": "Metallics"
+    },
+    {
+      "code": "261",
+      "name": "PANTONE 10319 C",
+      "hex": "#74a552",
+      "category": "Metallics"
+    },
+    {
+      "code": "262",
+      "name": "PANTONE 10320 C",
+      "hex": "#69a442",
+      "category": "Metallics"
+    },
+    {
+      "code": "263",
+      "name": "PANTONE 10321 C",
+      "hex": "#59a331",
+      "category": "Metallics"
+    },
+    {
+      "code": "264",
+      "name": "PANTONE 10322 C",
+      "hex": "#a0aa77",
+      "category": "Metallics"
+    },
+    {
+      "code": "265",
+      "name": "PANTONE 10323 C",
+      "hex": "#9ba863",
+      "category": "Metallics"
+    },
+    {
+      "code": "266",
+      "name": "PANTONE 10324 C",
+      "hex": "#9aa953",
+      "category": "Metallics"
+    },
+    {
+      "code": "267",
+      "name": "PANTONE 10325 C",
+      "hex": "#94a743",
+      "category": "Metallics"
+    },
+    {
+      "code": "268",
+      "name": "PANTONE 10326 C",
+      "hex": "#8da830",
+      "category": "Metallics"
+    },
+    {
+      "code": "269",
+      "name": "PANTONE 10327 C",
+      "hex": "#88ab19",
+      "category": "Metallics"
+    },
+    {
+      "code": "270",
+      "name": "PANTONE 10328 C",
+      "hex": "#959e7b",
+      "category": "Metallics"
+    },
+    {
+      "code": "271",
+      "name": "PANTONE 10329 C",
+      "hex": "#8b966c",
+      "category": "Metallics"
+    },
+    {
+      "code": "272",
+      "name": "PANTONE 10330 C",
+      "hex": "#818f5d",
+      "category": "Metallics"
+    },
+    {
+      "code": "273",
+      "name": "PANTONE 10331 C",
+      "hex": "#77864e",
+      "category": "Metallics"
+    },
+    {
+      "code": "274",
+      "name": "PANTONE 10332 C",
+      "hex": "#6e7f41",
+      "category": "Metallics"
+    },
+    {
+      "code": "275",
+      "name": "PANTONE 10333 C",
+      "hex": "#607535",
+      "category": "Metallics"
+    },
+    {
+      "code": "276",
+      "name": "PANTONE 10334 C",
+      "hex": "#9a9884",
+      "category": "Metallics"
+    },
+    {
+      "code": "277",
+      "name": "PANTONE 10335 C",
+      "hex": "#929072",
+      "category": "Metallics"
+    },
+    {
+      "code": "278",
+      "name": "PANTONE 10336 C",
+      "hex": "#8b8765",
+      "category": "Metallics"
+    },
+    {
+      "code": "279",
+      "name": "PANTONE 10337 C",
+      "hex": "#807e56",
+      "category": "Metallics"
+    },
+    {
+      "code": "280",
+      "name": "PANTONE 10338 C",
+      "hex": "#787548",
+      "category": "Metallics"
+    },
+    {
+      "code": "281",
+      "name": "PANTONE 10339 C",
+      "hex": "#6c6b3b",
+      "category": "Metallics"
+    },
+    {
+      "code": "282",
+      "name": "PANTONE 10340 C",
+      "hex": "#9e967e",
+      "category": "Metallics"
+    },
+    {
+      "code": "283",
+      "name": "PANTONE 10341 C",
+      "hex": "#9a8d6d",
+      "category": "Metallics"
+    },
+    {
+      "code": "284",
+      "name": "PANTONE 10342 C",
+      "hex": "#92845d",
+      "category": "Metallics"
+    },
+    {
+      "code": "285",
+      "name": "PANTONE 10343 C",
+      "hex": "#8a7b4f",
+      "category": "Metallics"
+    },
+    {
+      "code": "286",
+      "name": "PANTONE 10344 C",
+      "hex": "#807141",
+      "category": "Metallics"
+    },
+    {
+      "code": "287",
+      "name": "PANTONE 10345 C",
+      "hex": "#766734",
+      "category": "Metallics"
+    },
+    {
+      "code": "288",
+      "name": "PANTONE 10346 C",
+      "hex": "#a4947c",
+      "category": "Metallics"
+    },
+    {
+      "code": "289",
+      "name": "PANTONE 10347 C",
+      "hex": "#9f8b6b",
+      "category": "Metallics"
+    },
+    {
+      "code": "290",
+      "name": "PANTONE 10348 C",
+      "hex": "#9b845e",
+      "category": "Metallics"
+    },
+    {
+      "code": "291",
+      "name": "PANTONE 10349 C",
+      "hex": "#957b51",
+      "category": "Metallics"
+    },
+    {
+      "code": "292",
+      "name": "PANTONE 10350 C",
+      "hex": "#8c7243",
+      "category": "Metallics"
+    },
+    {
+      "code": "293",
+      "name": "PANTONE 10351 C",
+      "hex": "#866a34",
+      "category": "Metallics"
+    },
+    {
+      "code": "294",
+      "name": "PANTONE 10352 C",
+      "hex": "#a99e8e",
+      "category": "Metallics"
+    },
+    {
+      "code": "295",
+      "name": "PANTONE 10353 C",
+      "hex": "#a69479",
+      "category": "Metallics"
+    },
+    {
+      "code": "296",
+      "name": "PANTONE 10354 C",
+      "hex": "#a38a66",
+      "category": "Metallics"
+    },
+    {
+      "code": "297",
+      "name": "PANTONE 10355 C",
+      "hex": "#9d8055",
+      "category": "Metallics"
+    },
+    {
+      "code": "298",
+      "name": "PANTONE 10356 C",
+      "hex": "#987746",
+      "category": "Metallics"
+    },
+    {
+      "code": "299",
+      "name": "PANTONE 10357 C",
+      "hex": "#906e38",
+      "category": "Metallics"
+    },
+    {
+      "code": "300",
+      "name": "PANTONE 10358 C",
+      "hex": "#a2917b",
+      "category": "Metallics"
+    },
+    {
+      "code": "301",
+      "name": "PANTONE 10359 C",
+      "hex": "#9b8668",
+      "category": "Metallics"
+    },
+    {
+      "code": "302",
+      "name": "PANTONE 10360 C",
+      "hex": "#967b59",
+      "category": "Metallics"
+    },
+    {
+      "code": "303",
+      "name": "PANTONE 10361 C",
+      "hex": "#8e714a",
+      "category": "Metallics"
+    },
+    {
+      "code": "304",
+      "name": "PANTONE 10362 C",
+      "hex": "#86653d",
+      "category": "Metallics"
+    },
+    {
+      "code": "305",
+      "name": "PANTONE 10363 C",
+      "hex": "#7c5b32",
+      "category": "Metallics"
+    },
+    {
+      "code": "306",
+      "name": "PANTONE 10364 C",
+      "hex": "#a89887",
+      "category": "Metallics"
+    },
+    {
+      "code": "307",
+      "name": "PANTONE 10365 C",
+      "hex": "#a68a70",
+      "category": "Metallics"
+    },
+    {
+      "code": "308",
+      "name": "PANTONE 10366 C",
+      "hex": "#a27c5d",
+      "category": "Metallics"
+    },
+    {
+      "code": "309",
+      "name": "PANTONE 10367 C",
+      "hex": "#9b714d",
+      "category": "Metallics"
+    },
+    {
+      "code": "310",
+      "name": "PANTONE 10368 C",
+      "hex": "#93653d",
+      "category": "Metallics"
+    },
+    {
+      "code": "311",
+      "name": "PANTONE 10369 C",
+      "hex": "#8b5a33",
+      "category": "Metallics"
+    },
+    {
+      "code": "312",
+      "name": "PANTONE 10370 C",
+      "hex": "#a0978e",
+      "category": "Metallics"
+    },
+    {
+      "code": "313",
+      "name": "PANTONE 10371 C",
+      "hex": "#97897c",
+      "category": "Metallics"
+    },
+    {
+      "code": "314",
+      "name": "PANTONE 10372 C",
+      "hex": "#8e7c6b",
+      "category": "Metallics"
+    },
+    {
+      "code": "315",
+      "name": "PANTONE 10373 C",
+      "hex": "#866f5c",
+      "category": "Metallics"
+    },
+    {
+      "code": "316",
+      "name": "PANTONE 10374 C",
+      "hex": "#7b624d",
+      "category": "Metallics"
+    },
+    {
+      "code": "317",
+      "name": "PANTONE 10375 C",
+      "hex": "#6f5640",
+      "category": "Metallics"
+    },
+    {
+      "code": "318",
+      "name": "PANTONE 10376 C",
+      "hex": "#958b84",
+      "category": "Metallics"
+    },
+    {
+      "code": "319",
+      "name": "PANTONE 10377 C",
+      "hex": "#8a7d74",
+      "category": "Metallics"
+    },
+    {
+      "code": "320",
+      "name": "PANTONE 10378 C",
+      "hex": "#7f6f64",
+      "category": "Metallics"
+    },
+    {
+      "code": "321",
+      "name": "PANTONE 10379 C",
+      "hex": "#766458",
+      "category": "Metallics"
+    },
+    {
+      "code": "322",
+      "name": "PANTONE 10380 C",
+      "hex": "#6c584b",
+      "category": "Metallics"
+    },
+    {
+      "code": "323",
+      "name": "PANTONE 10381 C",
+      "hex": "#604c3f",
+      "category": "Metallics"
+    },
+    {
+      "code": "324",
+      "name": "PANTONE 10443 C",
+      "hex": "#b4887b",
+      "category": "Metallics"
+    },
+    {
+      "code": "325",
+      "name": "PANTONE 10444 C",
+      "hex": "#977874",
+      "category": "Metallics"
+    },
+    {
+      "code": "326",
+      "name": "PANTONE 10445 C",
+      "hex": "#98807a",
+      "category": "Metallics"
+    },
+    {
+      "code": "327",
+      "name": "PANTONE 10446 C",
+      "hex": "#998986",
+      "category": "Metallics"
+    },
+    {
+      "code": "328",
+      "name": "PANTONE 10447 C",
+      "hex": "#8a7d7d",
+      "category": "Metallics"
+    },
+    {
+      "code": "329",
+      "name": "PANTONE 10448 C",
+      "hex": "#958f8f",
+      "category": "Metallics"
+    },
+    {
+      "code": "330",
+      "name": "PANTONE 10382 C",
+      "hex": "#948f92",
+      "category": "Metallics"
+    },
+    {
+      "code": "331",
+      "name": "PANTONE 10383 C",
+      "hex": "#837d80",
+      "category": "Metallics"
+    },
+    {
+      "code": "332",
+      "name": "PANTONE 10384 C",
+      "hex": "#756c70",
+      "category": "Metallics"
+    },
+    {
+      "code": "333",
+      "name": "PANTONE 10385 C",
+      "hex": "#665d5f",
+      "category": "Metallics"
+    },
+    {
+      "code": "334",
+      "name": "PANTONE 10386 C",
+      "hex": "#585052",
+      "category": "Metallics"
+    },
+    {
+      "code": "335",
+      "name": "PANTONE 10387 C",
+      "hex": "#4c4345",
+      "category": "Metallics"
+    },
+    {
+      "code": "336",
+      "name": "PANTONE 10449 C",
+      "hex": "#b6b9b5",
+      "category": "Metallics"
+    },
+    {
+      "code": "337",
+      "name": "PANTONE 10450 C",
+      "hex": "#a9acad",
+      "category": "Metallics"
+    },
+    {
+      "code": "338",
+      "name": "PANTONE 10451 C",
+      "hex": "#717371",
+      "category": "Metallics"
+    },
+    {
+      "code": "339",
+      "name": "PANTONE 10452 C",
+      "hex": "#616368",
+      "category": "Metallics"
+    },
+    {
+      "code": "340",
+      "name": "PANTONE 10453 C",
+      "hex": "#545b60",
+      "category": "Metallics"
+    },
+    {
+      "code": "341",
+      "name": "PANTONE 10454 C",
+      "hex": "#484a4b",
+      "category": "Metallics"
+    },
+    {
+      "code": "342",
+      "name": "PANTONE 10388 C",
+      "hex": "#8b8f94",
+      "category": "Metallics"
+    },
+    {
+      "code": "343",
+      "name": "PANTONE 10389 C",
+      "hex": "#788085",
+      "category": "Metallics"
+    },
+    {
+      "code": "344",
+      "name": "PANTONE 10390 C",
+      "hex": "#697176",
+      "category": "Metallics"
+    },
+    {
+      "code": "345",
+      "name": "PANTONE 10391 C",
+      "hex": "#596066",
+      "category": "Metallics"
+    },
+    {
+      "code": "346",
+      "name": "PANTONE 10392 C",
+      "hex": "#4c5358",
+      "category": "Metallics"
+    },
+    {
+      "code": "347",
+      "name": "PANTONE 10393 C",
+      "hex": "#40464b",
+      "category": "Metallics"
+    },
+    {
+      "code": "348",
+      "name": "PANTONE 10394 C",
+      "hex": "#7c7b7a",
+      "category": "Metallics"
+    },
+    {
+      "code": "349",
+      "name": "PANTONE 10395 C",
+      "hex": "#6d6c68",
+      "category": "Metallics"
+    },
+    {
+      "code": "350",
+      "name": "PANTONE 10396 C",
+      "hex": "#5c5b58",
+      "category": "Metallics"
+    },
+    {
+      "code": "351",
+      "name": "PANTONE 10397 C",
+      "hex": "#4f4d4a",
+      "category": "Metallics"
+    },
+    {
+      "code": "352",
+      "name": "PANTONE 10398 C",
+      "hex": "#41403d",
+      "category": "Metallics"
+    },
+    {
+      "code": "353",
+      "name": "PANTONE 10399 C",
+      "hex": "#343432",
+      "category": "Metallics"
+    },
+    {
+      "code": "354",
+      "name": "PANTONE 871 C",
+      "hex": "#89764c",
+      "category": "Metallics"
+    },
+    {
+      "code": "355",
+      "name": "PANTONE 872 C",
+      "hex": "#89734c",
+      "category": "Metallics"
+    },
+    {
+      "code": "356",
+      "name": "PANTONE 873 C",
+      "hex": "#8b714d",
+      "category": "Metallics"
+    },
+    {
+      "code": "357",
+      "name": "PANTONE 874 C",
+      "hex": "#886c4d",
+      "category": "Metallics"
+    },
+    {
+      "code": "358",
+      "name": "PANTONE 875 C",
+      "hex": "#8b6a52",
+      "category": "Metallics"
+    },
+    {
+      "code": "359",
+      "name": "PANTONE 876 C",
+      "hex": "#8f664d",
+      "category": "Metallics"
+    },
+    {
+      "code": "360",
+      "name": "PANTONE 877 C",
+      "hex": "#8c9093",
+      "category": "Metallics"
+    },
+    {
+      "code": "361",
+      "name": "PANTONE 8001 C",
+      "hex": "#8b8a89",
+      "category": "Metallics"
+    },
+    {
+      "code": "362",
+      "name": "PANTONE 8002 C",
+      "hex": "#8a857d",
+      "category": "Metallics"
+    },
+    {
+      "code": "363",
+      "name": "PANTONE 8003 C",
+      "hex": "#898075",
+      "category": "Metallics"
+    },
+    {
+      "code": "364",
+      "name": "PANTONE 8004 C",
+      "hex": "#897a6a",
+      "category": "Metallics"
+    },
+    {
+      "code": "365",
+      "name": "PANTONE 8005 C",
+      "hex": "#87715b",
+      "category": "Metallics"
+    },
+    {
+      "code": "366",
+      "name": "PANTONE 8006 C",
+      "hex": "#897157",
+      "category": "Metallics"
+    },
+    {
+      "code": "367",
+      "name": "PANTONE 8020 C",
+      "hex": "#99887a",
+      "category": "Metallics"
+    },
+    {
+      "code": "368",
+      "name": "PANTONE 8021 C",
+      "hex": "#9f8170",
+      "category": "Metallics"
+    },
+    {
+      "code": "369",
+      "name": "PANTONE 8022 C",
+      "hex": "#a87356",
+      "category": "Metallics"
+    },
+    {
+      "code": "370",
+      "name": "PANTONE 8023 C",
+      "hex": "#aa6542",
+      "category": "Metallics"
+    },
+    {
+      "code": "371",
+      "name": "PANTONE 8024 C",
+      "hex": "#af5c2e",
+      "category": "Metallics"
+    },
+    {
+      "code": "372",
+      "name": "PANTONE 8025 C",
+      "hex": "#ab5224",
+      "category": "Metallics"
+    },
+    {
+      "code": "373",
+      "name": "PANTONE 8040 C",
+      "hex": "#94908d",
+      "category": "Metallics"
+    },
+    {
+      "code": "374",
+      "name": "PANTONE 8041 C",
+      "hex": "#9a837b",
+      "category": "Metallics"
+    },
+    {
+      "code": "375",
+      "name": "PANTONE 8042 C",
+      "hex": "#9e7b71",
+      "category": "Metallics"
+    },
+    {
+      "code": "376",
+      "name": "PANTONE 8043 C",
+      "hex": "#a66f60",
+      "category": "Metallics"
+    },
+    {
+      "code": "377",
+      "name": "PANTONE 8044 C",
+      "hex": "#a76049",
+      "category": "Metallics"
+    },
+    {
+      "code": "378",
+      "name": "PANTONE 8045 C",
+      "hex": "#a3583f",
+      "category": "Metallics"
+    },
+    {
+      "code": "379",
+      "name": "PANTONE 8060 C",
+      "hex": "#98868d",
+      "category": "Metallics"
+    },
+    {
+      "code": "380",
+      "name": "PANTONE 8061 C",
+      "hex": "#9b7983",
+      "category": "Metallics"
+    },
+    {
+      "code": "381",
+      "name": "PANTONE 8062 C",
+      "hex": "#a06d79",
+      "category": "Metallics"
+    },
+    {
+      "code": "382",
+      "name": "PANTONE 8063 C",
+      "hex": "#a5606c",
+      "category": "Metallics"
+    },
+    {
+      "code": "383",
+      "name": "PANTONE 8064 C",
+      "hex": "#a25c61",
+      "category": "Metallics"
+    },
+    {
+      "code": "384",
+      "name": "PANTONE 8065 C",
+      "hex": "#9f5455",
+      "category": "Metallics"
+    },
+    {
+      "code": "385",
+      "name": "PANTONE 8080 C",
+      "hex": "#948995",
+      "category": "Metallics"
+    },
+    {
+      "code": "386",
+      "name": "PANTONE 8081 C",
+      "hex": "#99718f",
+      "category": "Metallics"
+    },
+    {
+      "code": "387",
+      "name": "PANTONE 8082 C",
+      "hex": "#9c638b",
+      "category": "Metallics"
+    },
+    {
+      "code": "388",
+      "name": "PANTONE 8083 C",
+      "hex": "#a15085",
+      "category": "Metallics"
+    },
+    {
+      "code": "389",
+      "name": "PANTONE 8084 C",
+      "hex": "#a63c73",
+      "category": "Metallics"
+    },
+    {
+      "code": "390",
+      "name": "PANTONE 8085 C",
+      "hex": "#a32f63",
+      "category": "Metallics"
+    },
+    {
+      "code": "391",
+      "name": "PANTONE 8100 C",
+      "hex": "#927e96",
+      "category": "Metallics"
+    },
+    {
+      "code": "392",
+      "name": "PANTONE 8101 C",
+      "hex": "#926e94",
+      "category": "Metallics"
+    },
+    {
+      "code": "393",
+      "name": "PANTONE 8102 C",
+      "hex": "#926090",
+      "category": "Metallics"
+    },
+    {
+      "code": "394",
+      "name": "PANTONE 8103 C",
+      "hex": "#934c8b",
+      "category": "Metallics"
+    },
+    {
+      "code": "395",
+      "name": "PANTONE 8104 C",
+      "hex": "#973b7d",
+      "category": "Metallics"
+    },
+    {
+      "code": "396",
+      "name": "PANTONE 8105 C",
+      "hex": "#912d6a",
+      "category": "Metallics"
+    },
+    {
+      "code": "397",
+      "name": "PANTONE 8120 C",
+      "hex": "#8e8899",
+      "category": "Metallics"
+    },
+    {
+      "code": "398",
+      "name": "PANTONE 8121 C",
+      "hex": "#8c7d97",
+      "category": "Metallics"
+    },
+    {
+      "code": "399",
+      "name": "PANTONE 8122 C",
+      "hex": "#896b93",
+      "category": "Metallics"
+    },
+    {
+      "code": "400",
+      "name": "PANTONE 8123 C",
+      "hex": "#8b5a95",
+      "category": "Metallics"
+    },
+    {
+      "code": "401",
+      "name": "PANTONE 8124 C",
+      "hex": "#8d4c83",
+      "category": "Metallics"
+    },
+    {
+      "code": "402",
+      "name": "PANTONE 8125 C",
+      "hex": "#884576",
+      "category": "Metallics"
+    },
+    {
+      "code": "403",
+      "name": "PANTONE 8140 C",
+      "hex": "#867c97",
+      "category": "Metallics"
+    },
+    {
+      "code": "404",
+      "name": "PANTONE 8141 C",
+      "hex": "#7f7097",
+      "category": "Metallics"
+    },
+    {
+      "code": "405",
+      "name": "PANTONE 8142 C",
+      "hex": "#785f97",
+      "category": "Metallics"
+    },
+    {
+      "code": "406",
+      "name": "PANTONE 8143 C",
+      "hex": "#704f94",
+      "category": "Metallics"
+    },
+    {
+      "code": "407",
+      "name": "PANTONE 8144 C",
+      "hex": "#745083",
+      "category": "Metallics"
+    },
+    {
+      "code": "408",
+      "name": "PANTONE 8145 C",
+      "hex": "#6f4776",
+      "category": "Metallics"
+    },
+    {
+      "code": "409",
+      "name": "PANTONE 8160 C",
+      "hex": "#888b99",
+      "category": "Metallics"
+    },
+    {
+      "code": "410",
+      "name": "PANTONE 8161 C",
+      "hex": "#7e7f99",
+      "category": "Metallics"
+    },
+    {
+      "code": "411",
+      "name": "PANTONE 8162 C",
+      "hex": "#676499",
+      "category": "Metallics"
+    },
+    {
+      "code": "412",
+      "name": "PANTONE 8163 C",
+      "hex": "#5c549b",
+      "category": "Metallics"
+    },
+    {
+      "code": "413",
+      "name": "PANTONE 8164 C",
+      "hex": "#594c91",
+      "category": "Metallics"
+    },
+    {
+      "code": "414",
+      "name": "PANTONE 8165 C",
+      "hex": "#544288",
+      "category": "Metallics"
+    },
+    {
+      "code": "415",
+      "name": "PANTONE 8180 C",
+      "hex": "#84909b",
+      "category": "Metallics"
+    },
+    {
+      "code": "416",
+      "name": "PANTONE 8181 C",
+      "hex": "#687f9d",
+      "category": "Metallics"
+    },
+    {
+      "code": "417",
+      "name": "PANTONE 8182 C",
+      "hex": "#50719f",
+      "category": "Metallics"
+    },
+    {
+      "code": "418",
+      "name": "PANTONE 8183 C",
+      "hex": "#3663a1",
+      "category": "Metallics"
+    },
+    {
+      "code": "419",
+      "name": "PANTONE 8184 C",
+      "hex": "#245693",
+      "category": "Metallics"
+    },
+    {
+      "code": "420",
+      "name": "PANTONE 8185 C",
+      "hex": "#214e85",
+      "category": "Metallics"
+    },
+    {
+      "code": "421",
+      "name": "PANTONE 8200 C",
+      "hex": "#758f9c",
+      "category": "Metallics"
+    },
+    {
+      "code": "422",
+      "name": "PANTONE 8201 C",
+      "hex": "#64889c",
+      "category": "Metallics"
+    },
+    {
+      "code": "423",
+      "name": "PANTONE 8202 C",
+      "hex": "#4c82a0",
+      "category": "Metallics"
+    },
+    {
+      "code": "424",
+      "name": "PANTONE 8203 C",
+      "hex": "#2078a2",
+      "category": "Metallics"
+    },
+    {
+      "code": "425",
+      "name": "PANTONE 8204 C",
+      "hex": "#34758f",
+      "category": "Metallics"
+    },
+    {
+      "code": "426",
+      "name": "PANTONE 8205 C",
+      "hex": "#326e83",
+      "category": "Metallics"
+    },
+    {
+      "code": "427",
+      "name": "PANTONE 8220 C",
+      "hex": "#728e9b",
+      "category": "Metallics"
+    },
+    {
+      "code": "428",
+      "name": "PANTONE 8221 C",
+      "hex": "#5f8b9e",
+      "category": "Metallics"
+    },
+    {
+      "code": "429",
+      "name": "PANTONE 8222 C",
+      "hex": "#4389a3",
+      "category": "Metallics"
+    },
+    {
+      "code": "430",
+      "name": "PANTONE 8223 C",
+      "hex": "#1182a2",
+      "category": "Metallics"
+    },
+    {
+      "code": "431",
+      "name": "PANTONE 8224 C",
+      "hex": "#00758e",
+      "category": "Metallics"
+    },
+    {
+      "code": "432",
+      "name": "PANTONE 8225 C",
+      "hex": "#006c80",
+      "category": "Metallics"
+    },
+    {
+      "code": "433",
+      "name": "PANTONE 8240 C",
+      "hex": "#839398",
+      "category": "Metallics"
+    },
+    {
+      "code": "434",
+      "name": "PANTONE 8241 C",
+      "hex": "#628d98",
+      "category": "Metallics"
+    },
+    {
+      "code": "435",
+      "name": "PANTONE 8242 C",
+      "hex": "#488c9b",
+      "category": "Metallics"
+    },
+    {
+      "code": "436",
+      "name": "PANTONE 8243 C",
+      "hex": "#21879a",
+      "category": "Metallics"
+    },
+    {
+      "code": "437",
+      "name": "PANTONE 8244 C",
+      "hex": "#357e85",
+      "category": "Metallics"
+    },
+    {
+      "code": "438",
+      "name": "PANTONE 8245 C",
+      "hex": "#2e797c",
+      "category": "Metallics"
+    },
+    {
+      "code": "439",
+      "name": "PANTONE 8260 C",
+      "hex": "#758f93",
+      "category": "Metallics"
+    },
+    {
+      "code": "440",
+      "name": "PANTONE 8261 C",
+      "hex": "#678d92",
+      "category": "Metallics"
+    },
+    {
+      "code": "441",
+      "name": "PANTONE 8262 C",
+      "hex": "#4d888d",
+      "category": "Metallics"
+    },
+    {
+      "code": "442",
+      "name": "PANTONE 8263 C",
+      "hex": "#2a8387",
+      "category": "Metallics"
+    },
+    {
+      "code": "443",
+      "name": "PANTONE 8264 C",
+      "hex": "#207875",
+      "category": "Metallics"
+    },
+    {
+      "code": "444",
+      "name": "PANTONE 8265 C",
+      "hex": "#0e6c64",
+      "category": "Metallics"
+    },
+    {
+      "code": "445",
+      "name": "PANTONE 8280 C",
+      "hex": "#7d9695",
+      "category": "Metallics"
+    },
+    {
+      "code": "446",
+      "name": "PANTONE 8281 C",
+      "hex": "#6b9493",
+      "category": "Metallics"
+    },
+    {
+      "code": "447",
+      "name": "PANTONE 8282 C",
+      "hex": "#599490",
+      "category": "Metallics"
+    },
+    {
+      "code": "448",
+      "name": "PANTONE 8283 C",
+      "hex": "#38968f",
+      "category": "Metallics"
+    },
+    {
+      "code": "449",
+      "name": "PANTONE 8284 C",
+      "hex": "#4e8d7f",
+      "category": "Metallics"
+    },
+    {
+      "code": "450",
+      "name": "PANTONE 8285 C",
+      "hex": "#468a74",
+      "category": "Metallics"
+    },
+    {
+      "code": "451",
+      "name": "PANTONE 8300 C",
+      "hex": "#81958d",
+      "category": "Metallics"
+    },
+    {
+      "code": "452",
+      "name": "PANTONE 8301 C",
+      "hex": "#739584",
+      "category": "Metallics"
+    },
+    {
+      "code": "453",
+      "name": "PANTONE 8302 C",
+      "hex": "#64967d",
+      "category": "Metallics"
+    },
+    {
+      "code": "454",
+      "name": "PANTONE 8303 C",
+      "hex": "#4e9571",
+      "category": "Metallics"
+    },
+    {
+      "code": "455",
+      "name": "PANTONE 8304 C",
+      "hex": "#5b8d66",
+      "category": "Metallics"
+    },
+    {
+      "code": "456",
+      "name": "PANTONE 8305 C",
+      "hex": "#56855a",
+      "category": "Metallics"
+    },
+    {
+      "code": "457",
+      "name": "PANTONE 8320 C",
+      "hex": "#8b958d",
+      "category": "Metallics"
+    },
+    {
+      "code": "458",
+      "name": "PANTONE 8321 C",
+      "hex": "#7f9678",
+      "category": "Metallics"
+    },
+    {
+      "code": "459",
+      "name": "PANTONE 8322 C",
+      "hex": "#77976c",
+      "category": "Metallics"
+    },
+    {
+      "code": "460",
+      "name": "PANTONE 8323 C",
+      "hex": "#68995b",
+      "category": "Metallics"
+    },
+    {
+      "code": "461",
+      "name": "PANTONE 8324 C",
+      "hex": "#759559",
+      "category": "Metallics"
+    },
+    {
+      "code": "462",
+      "name": "PANTONE 8325 C",
+      "hex": "#6f8b4a",
+      "category": "Metallics"
+    },
+    {
+      "code": "463",
+      "name": "PANTONE 8340 C",
+      "hex": "#8e957d",
+      "category": "Metallics"
+    },
+    {
+      "code": "464",
+      "name": "PANTONE 8341 C",
+      "hex": "#8c9770",
+      "category": "Metallics"
+    },
+    {
+      "code": "465",
+      "name": "PANTONE 8342 C",
+      "hex": "#8b9b62",
+      "category": "Metallics"
+    },
+    {
+      "code": "466",
+      "name": "PANTONE 8343 C",
+      "hex": "#859a4e",
+      "category": "Metallics"
+    },
+    {
+      "code": "467",
+      "name": "PANTONE 8344 C",
+      "hex": "#839536",
+      "category": "Metallics"
+    },
+    {
+      "code": "468",
+      "name": "PANTONE 8345 C",
+      "hex": "#818e26",
+      "category": "Metallics"
+    },
+    {
+      "code": "469",
+      "name": "PANTONE 8360 C",
+      "hex": "#939679",
+      "category": "Metallics"
+    },
+    {
+      "code": "470",
+      "name": "PANTONE 8361 C",
+      "hex": "#96976a",
+      "category": "Metallics"
+    },
+    {
+      "code": "471",
+      "name": "PANTONE 8362 C",
+      "hex": "#9c9959",
+      "category": "Metallics"
+    },
+    {
+      "code": "472",
+      "name": "PANTONE 8363 C",
+      "hex": "#a39c41",
+      "category": "Metallics"
+    },
+    {
+      "code": "473",
+      "name": "PANTONE 8364 C",
+      "hex": "#a19241",
+      "category": "Metallics"
+    },
+    {
+      "code": "474",
+      "name": "PANTONE 8365 C",
+      "hex": "#a28e36",
+      "category": "Metallics"
+    },
+    {
+      "code": "475",
+      "name": "PANTONE 8380 C",
+      "hex": "#919287",
+      "category": "Metallics"
+    },
+    {
+      "code": "476",
+      "name": "PANTONE 8381 C",
+      "hex": "#979279",
+      "category": "Metallics"
+    },
+    {
+      "code": "477",
+      "name": "PANTONE 8382 C",
+      "hex": "#9b906a",
+      "category": "Metallics"
+    },
+    {
+      "code": "478",
+      "name": "PANTONE 8383 C",
+      "hex": "#a28d5c",
+      "category": "Metallics"
+    },
+    {
+      "code": "479",
+      "name": "PANTONE 8384 C",
+      "hex": "#a68340",
+      "category": "Metallics"
+    },
+    {
+      "code": "480",
+      "name": "PANTONE 8385 C",
+      "hex": "#a57e34",
+      "category": "Metallics"
+    },
+    {
+      "code": "481",
+      "name": "PANTONE 8400 C",
+      "hex": "#848788",
+      "category": "Metallics"
+    },
+    {
+      "code": "482",
+      "name": "PANTONE 8401 C",
+      "hex": "#7e7e7e",
+      "category": "Metallics"
+    },
+    {
+      "code": "483",
+      "name": "PANTONE 8402 C",
+      "hex": "#6e6e6e",
+      "category": "Metallics"
+    },
+    {
+      "code": "484",
+      "name": "PANTONE 8403 C",
+      "hex": "#5f5e5d",
+      "category": "Metallics"
+    },
+    {
+      "code": "485",
+      "name": "PANTONE 8404 C",
+      "hex": "#524e48",
+      "category": "Metallics"
+    },
+    {
+      "code": "486",
+      "name": "PANTONE 8405 C",
+      "hex": "#4b443e",
+      "category": "Metallics"
+    },
+    {
+      "code": "487",
+      "name": "PANTONE 8420 C",
+      "hex": "#8f8d8e",
+      "category": "Metallics"
+    },
+    {
+      "code": "488",
+      "name": "PANTONE 8421 C",
+      "hex": "#7f7f7f",
+      "category": "Metallics"
+    },
+    {
+      "code": "489",
+      "name": "PANTONE 8422 C",
+      "hex": "#737172",
+      "category": "Metallics"
+    },
+    {
+      "code": "490",
+      "name": "PANTONE 8423 C",
+      "hex": "#675f60",
+      "category": "Metallics"
+    },
+    {
+      "code": "491",
+      "name": "PANTONE 8424 C",
+      "hex": "#61544f",
+      "category": "Metallics"
+    },
+    {
+      "code": "492",
+      "name": "PANTONE 8425 C",
+      "hex": "#5c4d47",
+      "category": "Metallics"
+    },
+    {
+      "code": "493",
+      "name": "PANTONE 8440 C",
+      "hex": "#978485",
+      "category": "Metallics"
+    },
+    {
+      "code": "494",
+      "name": "PANTONE 8441 C",
+      "hex": "#a07b7b",
+      "category": "Metallics"
+    },
+    {
+      "code": "495",
+      "name": "PANTONE 8442 C",
+      "hex": "#a56f6f",
+      "category": "Metallics"
+    },
+    {
+      "code": "496",
+      "name": "PANTONE 8443 C",
+      "hex": "#ab605f",
+      "category": "Metallics"
+    },
+    {
+      "code": "497",
+      "name": "PANTONE 8444 C",
+      "hex": "#b0544c",
+      "category": "Metallics"
+    },
+    {
+      "code": "498",
+      "name": "PANTONE 8445 C",
+      "hex": "#ac4b40",
+      "category": "Metallics"
+    },
+    {
+      "code": "499",
+      "name": "PANTONE 8460 C",
+      "hex": "#8d8a91",
+      "category": "Metallics"
+    },
+    {
+      "code": "500",
+      "name": "PANTONE 8461 C",
+      "hex": "#867b85",
+      "category": "Metallics"
+    },
+    {
+      "code": "501",
+      "name": "PANTONE 8462 C",
+      "hex": "#81717c",
+      "category": "Metallics"
+    },
+    {
+      "code": "502",
+      "name": "PANTONE 8463 C",
+      "hex": "#786371",
+      "category": "Metallics"
+    },
+    {
+      "code": "503",
+      "name": "PANTONE 8464 C",
+      "hex": "#734e5d",
+      "category": "Metallics"
+    },
+    {
+      "code": "504",
+      "name": "PANTONE 8465 C",
+      "hex": "#714853",
+      "category": "Metallics"
+    },
+    {
+      "code": "505",
+      "name": "PANTONE 8480 C",
+      "hex": "#3f6378",
+      "category": "Metallics"
+    },
+    {
+      "code": "506",
+      "name": "PANTONE 8481 C",
+      "hex": "#4e5f77",
+      "category": "Metallics"
+    },
+    {
+      "code": "507",
+      "name": "PANTONE 8482 C",
+      "hex": "#2d5570",
+      "category": "Metallics"
+    },
+    {
+      "code": "508",
+      "name": "PANTONE 8483 C",
+      "hex": "#0d4368",
+      "category": "Metallics"
+    },
+    {
+      "code": "509",
+      "name": "PANTONE 8484 C",
+      "hex": "#16527d",
+      "category": "Metallics"
+    },
+    {
+      "code": "510",
+      "name": "PANTONE 8485 C",
+      "hex": "#1f5d8b",
+      "category": "Metallics"
+    },
+    {
+      "code": "511",
+      "name": "PANTONE 8500 C",
+      "hex": "#70817f",
+      "category": "Metallics"
+    },
+    {
+      "code": "512",
+      "name": "PANTONE 8501 C",
+      "hex": "#57766a",
+      "category": "Metallics"
+    },
+    {
+      "code": "513",
+      "name": "PANTONE 8502 C",
+      "hex": "#406168",
+      "category": "Metallics"
+    },
+    {
+      "code": "514",
+      "name": "PANTONE 8503 C",
+      "hex": "#2a3c43",
+      "category": "Metallics"
+    },
+    {
+      "code": "515",
+      "name": "PANTONE 8504 C",
+      "hex": "#2e4d5e",
+      "category": "Metallics"
+    },
+    {
+      "code": "516",
+      "name": "PANTONE 8505 C",
+      "hex": "#355566",
+      "category": "Metallics"
+    },
+    {
+      "code": "517",
+      "name": "PANTONE 8520 C",
+      "hex": "#76765d",
+      "category": "Metallics"
+    },
+    {
+      "code": "518",
+      "name": "PANTONE 8521 C",
+      "hex": "#4f5343",
+      "category": "Metallics"
+    },
+    {
+      "code": "519",
+      "name": "PANTONE 8522 C",
+      "hex": "#3c483f",
+      "category": "Metallics"
+    },
+    {
+      "code": "520",
+      "name": "PANTONE 8523 C",
+      "hex": "#2e3b35",
+      "category": "Metallics"
+    },
+    {
+      "code": "521",
+      "name": "PANTONE 8524 C",
+      "hex": "#304949",
+      "category": "Metallics"
+    },
+    {
+      "code": "522",
+      "name": "PANTONE 8525 C",
+      "hex": "#355053",
+      "category": "Metallics"
+    },
+    {
+      "code": "523",
+      "name": "PANTONE 8540 C",
+      "hex": "#874a4f",
+      "category": "Metallics"
+    },
+    {
+      "code": "524",
+      "name": "PANTONE 8541 C",
+      "hex": "#6f4147",
+      "category": "Metallics"
+    },
+    {
+      "code": "525",
+      "name": "PANTONE 8542 C",
+      "hex": "#632e37",
+      "category": "Metallics"
+    },
+    {
+      "code": "526",
+      "name": "PANTONE 8543 C",
+      "hex": "#5b3044",
+      "category": "Metallics"
+    },
+    {
+      "code": "527",
+      "name": "PANTONE 8544 C",
+      "hex": "#633952",
+      "category": "Metallics"
+    },
+    {
+      "code": "528",
+      "name": "PANTONE 8545 C",
+      "hex": "#613c55",
+      "category": "Metallics"
+    },
+    {
+      "code": "529",
+      "name": "PANTONE 8560 C",
+      "hex": "#7a4b3c",
+      "category": "Metallics"
+    },
+    {
+      "code": "530",
+      "name": "PANTONE 8561 C",
+      "hex": "#774342",
+      "category": "Metallics"
+    },
+    {
+      "code": "531",
+      "name": "PANTONE 8562 C",
+      "hex": "#713b42",
+      "category": "Metallics"
+    },
+    {
+      "code": "532",
+      "name": "PANTONE 8563 C",
+      "hex": "#71433e",
+      "category": "Metallics"
+    },
+    {
+      "code": "533",
+      "name": "PANTONE 8564 C",
+      "hex": "#774c4c",
+      "category": "Metallics"
+    },
+    {
+      "code": "534",
+      "name": "PANTONE 8565 C",
+      "hex": "#754e50",
+      "category": "Metallics"
+    },
+    {
+      "code": "535",
+      "name": "PANTONE 8580 C",
+      "hex": "#956c3a",
+      "category": "Metallics"
+    },
+    {
+      "code": "536",
+      "name": "PANTONE 8581 C",
+      "hex": "#825a31",
+      "category": "Metallics"
+    },
+    {
+      "code": "537",
+      "name": "PANTONE 8582 C",
+      "hex": "#7c522b",
+      "category": "Metallics"
+    },
+    {
+      "code": "538",
+      "name": "PANTONE 8583 C",
+      "hex": "#6d431d",
+      "category": "Metallics"
+    },
+    {
+      "code": "539",
+      "name": "PANTONE 8584 C",
+      "hex": "#6d4727",
+      "category": "Metallics"
+    },
+    {
+      "code": "540",
+      "name": "PANTONE 8585 C",
+      "hex": "#714f30",
+      "category": "Metallics"
+    },
+    {
+      "code": "541",
+      "name": "PANTONE 8600 C",
+      "hex": "#5b5654",
+      "category": "Metallics"
+    },
+    {
+      "code": "542",
+      "name": "PANTONE 8601 C",
+      "hex": "#4b4442",
+      "category": "Metallics"
+    },
+    {
+      "code": "543",
+      "name": "PANTONE 8602 C",
+      "hex": "#3c3a3f",
+      "category": "Metallics"
+    },
+    {
+      "code": "544",
+      "name": "PANTONE 8603 C",
+      "hex": "#2e303b",
+      "category": "Metallics"
+    },
+    {
+      "code": "545",
+      "name": "PANTONE 8604 C",
+      "hex": "#323949",
+      "category": "Metallics"
+    },
+    {
+      "code": "546",
+      "name": "PANTONE 8605 C",
+      "hex": "#384354",
+      "category": "Metallics"
+    },
+    {
+      "code": "547",
+      "name": "PANTONE 8620 C",
+      "hex": "#765c40",
+      "category": "Metallics"
+    },
+    {
+      "code": "548",
+      "name": "PANTONE 8621 C",
+      "hex": "#614c39",
+      "category": "Metallics"
+    },
+    {
+      "code": "549",
+      "name": "PANTONE 8622 C",
+      "hex": "#524233",
+      "category": "Metallics"
+    },
+    {
+      "code": "550",
+      "name": "PANTONE 8623 C",
+      "hex": "#433a33",
+      "category": "Metallics"
+    },
+    {
+      "code": "551",
+      "name": "PANTONE 8624 C",
+      "hex": "#423c37",
+      "category": "Metallics"
+    },
+    {
+      "code": "552",
+      "name": "PANTONE 8625 C",
+      "hex": "#44403c",
+      "category": "Metallics"
+    },
+    {
+      "code": "553",
+      "name": "PANTONE 8640 C",
+      "hex": "#9d7c30",
+      "category": "Metallics"
+    },
+    {
+      "code": "554",
+      "name": "PANTONE 8641 C",
+      "hex": "#a88624",
+      "category": "Metallics"
+    },
+    {
+      "code": "555",
+      "name": "PANTONE 8642 C",
+      "hex": "#ad8a10",
+      "category": "Metallics"
+    },
+    {
+      "code": "556",
+      "name": "PANTONE 8643 C",
+      "hex": "#ad8900",
+      "category": "Metallics"
+    },
+    {
+      "code": "557",
+      "name": "PANTONE 8644 C",
+      "hex": "#aa9115",
+      "category": "Metallics"
+    },
+    {
+      "code": "558",
+      "name": "PANTONE 8645 C",
+      "hex": "#a5942c",
+      "category": "Metallics"
+    },
+    {
+      "code": "559",
+      "name": "PANTONE 8660 C",
+      "hex": "#8e7833",
+      "category": "Metallics"
+    },
+    {
+      "code": "560",
+      "name": "PANTONE 8661 C",
+      "hex": "#887c1b",
+      "category": "Metallics"
+    },
+    {
+      "code": "561",
+      "name": "PANTONE 8662 C",
+      "hex": "#85811b",
+      "category": "Metallics"
+    },
+    {
+      "code": "562",
+      "name": "PANTONE 8663 C",
+      "hex": "#7d850a",
+      "category": "Metallics"
+    },
+    {
+      "code": "563",
+      "name": "PANTONE 8664 C",
+      "hex": "#839029",
+      "category": "Metallics"
+    },
+    {
+      "code": "564",
+      "name": "PANTONE 8665 C",
+      "hex": "#829337",
+      "category": "Metallics"
+    },
+    {
+      "code": "565",
+      "name": "PANTONE 8680 C",
+      "hex": "#7b723e",
+      "category": "Metallics"
+    },
+    {
+      "code": "566",
+      "name": "PANTONE 8681 C",
+      "hex": "#767c33",
+      "category": "Metallics"
+    },
+    {
+      "code": "567",
+      "name": "PANTONE 8682 C",
+      "hex": "#687e2b",
+      "category": "Metallics"
+    },
+    {
+      "code": "568",
+      "name": "PANTONE 8683 C",
+      "hex": "#5a8827",
+      "category": "Metallics"
+    },
+    {
+      "code": "569",
+      "name": "PANTONE 8684 C",
+      "hex": "#5b8733",
+      "category": "Metallics"
+    },
+    {
+      "code": "570",
+      "name": "PANTONE 8685 C",
+      "hex": "#5e8c42",
+      "category": "Metallics"
+    },
+    {
+      "code": "571",
+      "name": "PANTONE 8700 C",
+      "hex": "#6f744c",
+      "category": "Metallics"
+    },
+    {
+      "code": "572",
+      "name": "PANTONE 8701 C",
+      "hex": "#667842",
+      "category": "Metallics"
+    },
+    {
+      "code": "573",
+      "name": "PANTONE 8702 C",
+      "hex": "#557c40",
+      "category": "Metallics"
+    },
+    {
+      "code": "574",
+      "name": "PANTONE 8703 C",
+      "hex": "#3d7f3d",
+      "category": "Metallics"
+    },
+    {
+      "code": "575",
+      "name": "PANTONE 8704 C",
+      "hex": "#418850",
+      "category": "Metallics"
+    },
+    {
+      "code": "576",
+      "name": "PANTONE 8705 C",
+      "hex": "#458c5b",
+      "category": "Metallics"
+    },
+    {
+      "code": "577",
+      "name": "PANTONE 8720 C",
+      "hex": "#4b6e56",
+      "category": "Metallics"
+    },
+    {
+      "code": "578",
+      "name": "PANTONE 8721 C",
+      "hex": "#517455",
+      "category": "Metallics"
+    },
+    {
+      "code": "579",
+      "name": "PANTONE 8722 C",
+      "hex": "#357258",
+      "category": "Metallics"
+    },
+    {
+      "code": "580",
+      "name": "PANTONE 8723 C",
+      "hex": "#127e5e",
+      "category": "Metallics"
+    },
+    {
+      "code": "581",
+      "name": "PANTONE 8724 C",
+      "hex": "#1b876f",
+      "category": "Metallics"
+    },
+    {
+      "code": "582",
+      "name": "PANTONE 8725 C",
+      "hex": "#268a78",
+      "category": "Metallics"
+    },
+    {
+      "code": "583",
+      "name": "PANTONE 8740 C",
+      "hex": "#436760",
+      "category": "Metallics"
+    },
+    {
+      "code": "584",
+      "name": "PANTONE 8741 C",
+      "hex": "#296656",
+      "category": "Metallics"
+    },
+    {
+      "code": "585",
+      "name": "PANTONE 8742 C",
+      "hex": "#26695f",
+      "category": "Metallics"
+    },
+    {
+      "code": "586",
+      "name": "PANTONE 8743 C",
+      "hex": "#006868",
+      "category": "Metallics"
+    },
+    {
+      "code": "587",
+      "name": "PANTONE 8744 C",
+      "hex": "#007078",
+      "category": "Metallics"
+    },
+    {
+      "code": "588",
+      "name": "PANTONE 8745 C",
+      "hex": "#007782",
+      "category": "Metallics"
+    },
+    {
+      "code": "589",
+      "name": "PANTONE 8760 C",
+      "hex": "#1f6162",
+      "category": "Metallics"
+    },
+    {
+      "code": "590",
+      "name": "PANTONE 8761 C",
+      "hex": "#005e69",
+      "category": "Metallics"
+    },
+    {
+      "code": "591",
+      "name": "PANTONE 8762 C",
+      "hex": "#265965",
+      "category": "Metallics"
+    },
+    {
+      "code": "592",
+      "name": "PANTONE 8763 C",
+      "hex": "#00536d",
+      "category": "Metallics"
+    },
+    {
+      "code": "593",
+      "name": "PANTONE 8764 C",
+      "hex": "#005d7d",
+      "category": "Metallics"
+    },
+    {
+      "code": "594",
+      "name": "PANTONE 8765 C",
+      "hex": "#0e6687",
+      "category": "Metallics"
+    },
+    {
+      "code": "595",
+      "name": "PANTONE 8780 C",
+      "hex": "#3f3a60",
+      "category": "Metallics"
+    },
+    {
+      "code": "596",
+      "name": "PANTONE 8781 C",
+      "hex": "#39425e",
+      "category": "Metallics"
+    },
+    {
+      "code": "597",
+      "name": "PANTONE 8782 C",
+      "hex": "#2f3572",
+      "category": "Metallics"
+    },
+    {
+      "code": "598",
+      "name": "PANTONE 8783 C",
+      "hex": "#19356d",
+      "category": "Metallics"
+    },
+    {
+      "code": "599",
+      "name": "PANTONE 8784 C",
+      "hex": "#21437c",
+      "category": "Metallics"
+    },
+    {
+      "code": "600",
+      "name": "PANTONE 8785 C",
+      "hex": "#2d4c86",
+      "category": "Metallics"
+    },
+    {
+      "code": "601",
+      "name": "PANTONE 8800 C",
+      "hex": "#573659",
+      "category": "Metallics"
+    },
+    {
+      "code": "602",
+      "name": "PANTONE 8801 C",
+      "hex": "#53375f",
+      "category": "Metallics"
+    },
+    {
+      "code": "603",
+      "name": "PANTONE 8802 C",
+      "hex": "#452b63",
+      "category": "Metallics"
+    },
+    {
+      "code": "604",
+      "name": "PANTONE 8803 C",
+      "hex": "#4d2b5f",
+      "category": "Metallics"
+    },
+    {
+      "code": "605",
+      "name": "PANTONE 8804 C",
+      "hex": "#51356c",
+      "category": "Metallics"
+    },
+    {
+      "code": "606",
+      "name": "PANTONE 8805 C",
+      "hex": "#553f79",
+      "category": "Metallics"
+    },
+    {
+      "code": "607",
+      "name": "PANTONE 8820 C",
+      "hex": "#883e5e",
+      "category": "Metallics"
+    },
+    {
+      "code": "608",
+      "name": "PANTONE 8821 C",
+      "hex": "#852f5d",
+      "category": "Metallics"
+    },
+    {
+      "code": "609",
+      "name": "PANTONE 8822 C",
+      "hex": "#6d3567",
+      "category": "Metallics"
+    },
+    {
+      "code": "610",
+      "name": "PANTONE 8823 C",
+      "hex": "#632666",
+      "category": "Metallics"
+    },
+    {
+      "code": "611",
+      "name": "PANTONE 8824 C",
+      "hex": "#663475",
+      "category": "Metallics"
+    },
+    {
+      "code": "612",
+      "name": "PANTONE 8825 C",
+      "hex": "#66377e",
+      "category": "Metallics"
+    },
+    {
+      "code": "613",
+      "name": "PANTONE 8840 C",
+      "hex": "#903d56",
+      "category": "Metallics"
+    },
+    {
+      "code": "614",
+      "name": "PANTONE 8841 C",
+      "hex": "#8f2e55",
+      "category": "Metallics"
+    },
+    {
+      "code": "615",
+      "name": "PANTONE 8842 C",
+      "hex": "#8e1d57",
+      "category": "Metallics"
+    },
+    {
+      "code": "616",
+      "name": "PANTONE 8843 C",
+      "hex": "#851a60",
+      "category": "Metallics"
+    },
+    {
+      "code": "617",
+      "name": "PANTONE 8844 C",
+      "hex": "#83286d",
+      "category": "Metallics"
+    },
+    {
+      "code": "618",
+      "name": "PANTONE 8845 C",
+      "hex": "#803876",
+      "category": "Metallics"
+    },
+    {
+      "code": "619",
+      "name": "PANTONE 8860 C",
+      "hex": "#994543",
+      "category": "Metallics"
+    },
+    {
+      "code": "620",
+      "name": "PANTONE 8861 C",
+      "hex": "#953c48",
+      "category": "Metallics"
+    },
+    {
+      "code": "621",
+      "name": "PANTONE 8862 C",
+      "hex": "#9a2d48",
+      "category": "Metallics"
+    },
+    {
+      "code": "622",
+      "name": "PANTONE 8863 C",
+      "hex": "#991c40",
+      "category": "Metallics"
+    },
+    {
+      "code": "623",
+      "name": "PANTONE 8864 C",
+      "hex": "#972a51",
+      "category": "Metallics"
+    },
+    {
+      "code": "624",
+      "name": "PANTONE 8865 C",
+      "hex": "#93375e",
+      "category": "Metallics"
+    },
+    {
+      "code": "625",
+      "name": "PANTONE 8880 C",
+      "hex": "#974e4b",
+      "category": "Metallics"
+    },
+    {
+      "code": "626",
+      "name": "PANTONE 8881 C",
+      "hex": "#9e4251",
+      "category": "Metallics"
+    },
+    {
+      "code": "627",
+      "name": "PANTONE 8882 C",
+      "hex": "#a8365a",
+      "category": "Metallics"
+    },
+    {
+      "code": "628",
+      "name": "PANTONE 8883 C",
+      "hex": "#ac3441",
+      "category": "Metallics"
+    },
+    {
+      "code": "629",
+      "name": "PANTONE 8884 C",
+      "hex": "#a63d4b",
+      "category": "Metallics"
+    },
+    {
+      "code": "630",
+      "name": "PANTONE 8885 C",
+      "hex": "#a34555",
+      "category": "Metallics"
+    },
+    {
+      "code": "631",
+      "name": "PANTONE 8900 C",
+      "hex": "#a55139",
+      "category": "Metallics"
+    },
+    {
+      "code": "632",
+      "name": "PANTONE 8901 C",
+      "hex": "#b8503c",
+      "category": "Metallics"
+    },
+    {
+      "code": "633",
+      "name": "PANTONE 8902 C",
+      "hex": "#ba514f",
+      "category": "Metallics"
+    },
+    {
+      "code": "634",
+      "name": "PANTONE 8903 C",
+      "hex": "#c14649",
+      "category": "Metallics"
+    },
+    {
+      "code": "635",
+      "name": "PANTONE 8904 C",
+      "hex": "#be4f57",
+      "category": "Metallics"
+    },
+    {
+      "code": "636",
+      "name": "PANTONE 8905 C",
+      "hex": "#b7535d",
+      "category": "Metallics"
+    },
+    {
+      "code": "637",
+      "name": "PANTONE 8920 C",
+      "hex": "#a35d43",
+      "category": "Metallics"
+    },
+    {
+      "code": "638",
+      "name": "PANTONE 8921 C",
+      "hex": "#b5532a",
+      "category": "Metallics"
+    },
+    {
+      "code": "639",
+      "name": "PANTONE 8922 C",
+      "hex": "#b9510c",
+      "category": "Metallics"
+    },
+    {
+      "code": "640",
+      "name": "PANTONE 8923 C",
+      "hex": "#bb4a1e",
+      "category": "Metallics"
+    },
+    {
+      "code": "641",
+      "name": "PANTONE 8924 C",
+      "hex": "#b7502d",
+      "category": "Metallics"
+    },
+    {
+      "code": "642",
+      "name": "PANTONE 8925 C",
+      "hex": "#b25538",
+      "category": "Metallics"
+    },
+    {
+      "code": "643",
+      "name": "PANTONE 8940 C",
+      "hex": "#a26429",
+      "category": "Metallics"
+    },
+    {
+      "code": "644",
+      "name": "PANTONE 8941 C",
+      "hex": "#aa611d",
+      "category": "Metallics"
+    },
+    {
+      "code": "645",
+      "name": "PANTONE 8942 C",
+      "hex": "#af5b09",
+      "category": "Metallics"
+    },
+    {
+      "code": "646",
+      "name": "PANTONE 8943 C",
+      "hex": "#be5b00",
+      "category": "Metallics"
+    },
+    {
+      "code": "647",
+      "name": "PANTONE 8944 C",
+      "hex": "#ba6016",
+      "category": "Metallics"
+    },
+    {
+      "code": "648",
+      "name": "PANTONE 8945 C",
+      "hex": "#b0622c",
+      "category": "Metallics"
+    },
+    {
+      "code": "649",
+      "name": "PANTONE 8960 C",
+      "hex": "#9c702d",
+      "category": "Metallics"
+    },
+    {
+      "code": "650",
+      "name": "PANTONE 8961 C",
+      "hex": "#a6691f",
+      "category": "Metallics"
+    },
+    {
+      "code": "651",
+      "name": "PANTONE 8962 C",
+      "hex": "#ae6d00",
+      "category": "Metallics"
+    },
+    {
+      "code": "652",
+      "name": "PANTONE 8963 C",
+      "hex": "#b66400",
+      "category": "Metallics"
+    },
+    {
+      "code": "653",
+      "name": "PANTONE 8964 C",
+      "hex": "#ae671c",
+      "category": "Metallics"
+    },
+    {
+      "code": "654",
+      "name": "PANTONE 8965 C",
+      "hex": "#a86d2e",
+      "category": "Metallics"
+    }
+  ]
+}
