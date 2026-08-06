@@ -39,6 +39,38 @@
         />
       </UFormGroup>
 
+      <!-- divider: upload file OR image URL -->
+      <UDivider
+        :label="$t('imageColorPicker.orLabel')"
+        class="py-1"
+      />
+
+      <!-- image url -->
+      <UFormGroup
+        name="imageUrl"
+        :label="$t('imageColorPicker.imageUrl')"
+      >
+        <div class="flex gap-2">
+          <UInput
+            v-model="imageUrl"
+            size="xl"
+            :placeholder="$t('imageColorPicker.imageUrlPlaceholder')"
+            icon="i-heroicons-link"
+            class="flex-1"
+            :disabled="isPending || isFetchingImage"
+            @keyup.enter="onClickUrl"
+          />
+          <UButton
+            size="xl"
+            icon="i-heroicons-arrow-down-tray"
+            :label="$t('imageColorPicker.imageUrlLoad')"
+            :loading="isFetchingImage"
+            :disabled="isPending"
+            @click="onClickUrl"
+          />
+        </div>
+      </UFormGroup>
+
       <!-- submit button -->
       <UButton
         type="submit"
@@ -96,6 +128,7 @@ const notifications = useNotifications();
 const { mutate: create, isPending } = useCreatePalette();
 
 const files = ref<FileList>();
+const imageUrl = ref('');
 const isFetchingImage = ref(false);
 
 const state = ref({
@@ -144,6 +177,30 @@ async function onClickExample(thumbnailUrl: string): Promise<void> {
   });
 
   isFetchingImage.value = false;
+}
+
+/** @description load an image from a pasted URL (server-side proxy to avoid CORS) */
+async function onClickUrl(): Promise<void> {
+  const url = imageUrl.value.trim();
+  if (url === '' || isPending.value || isFetchingImage.value) {
+    return;
+  }
+
+  isFetchingImage.value = true;
+  try {
+    const response = await $fetch<{ dataUrl: string }>('/api/image-url', { query: { url } });
+    state.value.dataUrl = response.dataUrl;
+
+    const colors = await prominent(response.dataUrl, { amount: 5, format: 'hex' });
+    if (colors.length > 0) {
+      state.value.prompt = colors.toString();
+    }
+  } catch (err: any) {
+    const message = err?.data?.statusMessage ?? err?.message;
+    notifications.addError(message ?? t('imageColorPicker.imageUrlError'));
+  } finally {
+    isFetchingImage.value = false;
+  }
 }
 
 /** @description load the image preview */

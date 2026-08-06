@@ -126,7 +126,12 @@ export default defineI18nConfig(() => ({
         title: 'Image Color Picker',
         seoTitle: 'Image Color Picker - Magicolor',
         seoDescription: 'Extract and pick a beatiful color scheme from any image with AI.',
-        uploadPlaceholder: 'Upload an Image'
+        uploadPlaceholder: 'Upload an Image',
+        imageUrl: 'Image URL',
+        orLabel: 'OR',
+        imageUrlPlaceholder: 'Paste an image URL...',
+        imageUrlLoad: 'Load',
+        imageUrlError: 'Could not load the image from that URL.'
       },
       api: {
         title: 'Color API',
@@ -427,7 +432,12 @@ export default defineI18nConfig(() => ({
         title: '画像カラーピッカー',
         seoTitle: '画像カラーピッカー - Magicolor',
         seoDescription: 'AI を使用して、あらゆる画像から美しい配色を抽出して選択します。',
-        uploadPlaceholder: '画像をアップロードする'
+        uploadPlaceholder: '画像をアップロードする',
+        imageUrl: '画像URL',
+        orLabel: 'または',
+        imageUrlPlaceholder: '画像のURLを貼り付けてください...',
+        imageUrlLoad: '読み込む',
+        imageUrlError: 'そのURLから画像を読み込めませんでした。'
       },
       api: {
         title: 'カラーAPI',
@@ -728,7 +738,12 @@ export default defineI18nConfig(() => ({
         title: 'Selettore colore immagine',
         seoTitle: 'Selettore colore immagine - Magicolor',
         seoDescription: 'Estrai e scegli una bellissima combinazione di colori da qualsiasi immagine con l\'intelligenza artificiale.',
-        uploadPlaceholder: 'Carica un\'immagine'
+        uploadPlaceholder: 'Carica un\'immagine',
+        imageUrl: 'URL Immagine',
+        orLabel: 'OPPURE',
+        imageUrlPlaceholder: 'Incolla un URL di immagine...',
+        imageUrlLoad: 'Carica',
+        imageUrlError: 'Impossibile caricare l\'immagine da questo URL.'
       },
       api: {
         title: 'API dei colori',
@@ -1029,7 +1044,12 @@ export default defineI18nConfig(() => ({
         title: 'Selector de Color de Imagen',
         seoTitle: 'Selector de Color de Imagen - Magicolor',
         seoDescription: 'Extrae y elige una hermosa combinación de colores de cualquier imagen con IA.',
-        uploadPlaceholder: 'Subir una Imagen'
+        uploadPlaceholder: 'Subir una Imagen',
+        imageUrl: 'URL de la Imagen',
+        orLabel: 'O',
+        imageUrlPlaceholder: 'Pega una URL de imagen...',
+        imageUrlLoad: 'Cargar',
+        imageUrlError: 'No se pudo cargar la imagen desde esa URL.'
       },
       api: {
         title: 'API de Colores',
@@ -1330,7 +1350,12 @@ export default defineI18nConfig(() => ({
         title: 'Sélecteur de Couleur d\'Image',
         seoTitle: 'Sélecteur de Couleur d\'Image - Magicolor',
         seoDescription: 'Extrayez et choisissez une magnifique combinaison de couleurs depuis n\'importe quelle image avec l\'IA.',
-        uploadPlaceholder: 'Télécharger une Image'
+        uploadPlaceholder: 'Télécharger une Image',
+        imageUrl: 'URL de l\'Image',
+        orLabel: 'OU',
+        imageUrlPlaceholder: 'Collez une URL d\'image...',
+        imageUrlLoad: 'Charger',
+        imageUrlError: 'Impossible de charger l\'image depuis cette URL.'
       },
       api: {
         title: 'API de Couleurs',
