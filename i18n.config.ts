@@ -14,6 +14,15 @@ export default defineI18nConfig(() => ({
         topLabel: 'Recents:',
         noneFound: 'No recents.'
       },
+      favorites: {
+        title: 'Favorites',
+        seoTitle: 'Favorites - Magicolor',
+        seoDescription: 'Your favorite color palettes, saved in one place.',
+        emptyTitle: 'No favorites yet',
+        emptyDescription: 'Palettes you like will appear here. Start exploring and save your favorites.',
+        addFavorite: 'Add to Favorites',
+        removeFavorite: 'Remove from Favorites'
+      },
       generate: {
         placeholder: 'Enter keywords for image or mood of color',
         label: 'Create Palette'
@@ -41,7 +50,8 @@ export default defineI18nConfig(() => ({
         colorMixer: 'Color Mixer',
         allColors: 'All Colors',
         colorPaletteCreator: 'Color Palette Creator',
-        gradientGenerator: 'Gradient Generator'
+        gradientGenerator: 'Gradient Generator',
+        favorites: 'Favorites'
       },
       palette: {
         seoTitle: 'Magicolor - AI Color Palette Generator',
@@ -320,6 +330,15 @@ export default defineI18nConfig(() => ({
         topLabel: '最近:',
         noneFound: '最近のものはありません'
       },
+      favorites: {
+        title: 'お気に入り',
+        seoTitle: 'お気に入り - Magicolor',
+        seoDescription: 'お気に入りのカラーパレットをひとつの場所に保存します。',
+        emptyTitle: 'まだお気に入りがありません',
+        emptyDescription: '気に入ったパレットはここに表示されます。パレットを探して保存しましょう。',
+        addFavorite: 'お気に入りに追加',
+        removeFavorite: 'お気に入りから削除'
+      },
       generate: {
         placeholder: '色の雰囲気やイメージを入力してください',
         label: '生成する'
@@ -347,7 +366,8 @@ export default defineI18nConfig(() => ({
         colorMixer: 'カラーミキサー',
         allColors: 'オールカラー',
         colorPaletteCreator: 'カラーパレットクリエーター',
-        gradientGenerator: 'グラデーションジェネレーター'
+        gradientGenerator: 'グラデーションジェネレーター',
+        favorites: 'お気に入り'
       },
       palette: {
         seoTitle: 'あなたの思い描く色をかんたんに',
@@ -626,6 +646,15 @@ export default defineI18nConfig(() => ({
         topLabel: 'Recenti:',
         noneFound: 'Nessun elemento recente trovato'
       },
+      favorites: {
+        title: 'Preferiti',
+        seoTitle: 'Preferiti - Magicolor',
+        seoDescription: 'Le tue palette di colori preferite, salvate in un unico posto.',
+        emptyTitle: 'Nessun preferito ancora',
+        emptyDescription: 'Le palette che ti piacciono appariranno qui. Esplora e salva i tuoi preferiti.',
+        addFavorite: 'Aggiungi ai Preferiti',
+        removeFavorite: 'Rimuovi dai Preferiti'
+      },
       generate: {
         placeholder: 'Inserisci l\'atmosfera o l\'immagine del colore',
         label: 'Genera'
@@ -653,7 +682,8 @@ export default defineI18nConfig(() => ({
         colorMixer: 'Mescolatore di Colori',
         allColors: 'Tutti i Colori',
         colorPaletteCreator: 'Color Palette Creator',
-        gradientGenerator: 'Generatore di Gradienti'
+        gradientGenerator: 'Generatore di Gradienti',
+        favorites: 'Preferiti'
       },
       palette: {
         seoTitle: 'Genera la tua palette di colori ideale',
@@ -932,6 +962,15 @@ export default defineI18nConfig(() => ({
         topLabel: 'Recientes:',
         noneFound: 'Sin recientes.'
       },
+      favorites: {
+        title: 'Favoritos',
+        seoTitle: 'Favoritos - Magicolor',
+        seoDescription: 'Tus paletas de colores favoritas, guardadas en un solo lugar.',
+        emptyTitle: 'Aún no hay favoritos',
+        emptyDescription: 'Las paletas que te gusten aparecerán aquí. Explora y guarda tus favoritas.',
+        addFavorite: 'Agregar a Favoritos',
+        removeFavorite: 'Quitar de Favoritos'
+      },
       generate: {
         placeholder: 'Escribe palabras clave para la imagen o el ambiente del color',
         label: 'Crear Paleta'
@@ -959,7 +998,8 @@ export default defineI18nConfig(() => ({
         colorMixer: 'Mezclador de Colores',
         allColors: 'Todos los Colores',
         colorPaletteCreator: 'Creador de Paletas de Colores',
-        gradientGenerator: 'Generador de Degradados'
+        gradientGenerator: 'Generador de Degradados',
+        favorites: 'Favoritos'
       },
       palette: {
         seoTitle: 'Magicolor - Generador de Paletas de Colores con IA',
@@ -1238,6 +1278,15 @@ export default defineI18nConfig(() => ({
         topLabel: 'Récents:',
         noneFound: 'Aucun récent.'
       },
+      favorites: {
+        title: 'Favoris',
+        seoTitle: 'Favoris - Magicolor',
+        seoDescription: 'Vos palettes de couleurs préférées, enregistrées au même endroit.',
+        emptyTitle: 'Aucun favori pour le moment',
+        emptyDescription: 'Les palettes que vous aimez apparaîtront ici. Explorez et enregistrez vos favoris.',
+        addFavorite: 'Ajouter aux Favoris',
+        removeFavorite: 'Retirer des Favoris'
+      },
       generate: {
         placeholder: 'Saisissez des mots-clés pour l\'image ou l\'ambiance de la couleur',
         label: 'Créer une Palette'
@@ -1265,7 +1314,8 @@ export default defineI18nConfig(() => ({
         colorMixer: 'Mélangeur de Couleurs',
         allColors: 'Toutes les Couleurs',
         colorPaletteCreator: 'Créateur de Palettes de Couleurs',
-        gradientGenerator: 'Générateur de Dégradés'
+        gradientGenerator: 'Générateur de Dégradés',
+        favorites: 'Favoris'
       },
       palette: {
         seoTitle: 'Magicolor - Générateur de Palettes de Couleurs IA',

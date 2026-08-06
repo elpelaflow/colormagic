@@ -14,6 +14,7 @@
         <ColorPaletteButton
           :colors="item.colors"
           :name="item.text"
+          :id="key"
           :to="localePath(`/palette/${key}`)"
         />
       </li>

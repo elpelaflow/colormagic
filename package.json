@@ -13,7 +13,8 @@
     "test:parity": "node --experimental-strip-types layers/color-palette-creator/utils/__tests__/palette-parity.test.ts",
     "test:unit": "node --experimental-strip-types scripts/unit-tests.mjs",
     "test:i18n": "node --experimental-strip-types scripts/check-i18n-keys.mjs",
-    "test": "npm run test:parity && npm run test:unit && npm run test:i18n"
+    "test:favorites": "node --experimental-strip-types scripts/test-favorites.mjs",
+    "test": "npm run test:parity && npm run test:unit && npm run test:i18n && npm run test:favorites"
   },
   "dependencies": {
     "@apideck/better-ajv-errors": "0.3.6",

@@ -48,6 +48,7 @@
           <ColorPaletteButton
             :colors="item.colors"
             :name="item.text"
+            :id="item.id"
             :to="localePath(`/palette/${item.id}`)"
           />
         </li>

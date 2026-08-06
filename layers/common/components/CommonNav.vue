@@ -144,6 +144,10 @@ const links = computed(() => [
   {
     label: t('nav.recent'),
     to: localePath('/recent')
+  },
+  {
+    label: t('nav.favorites'),
+    to: localePath('/favorites')
   }
 ]);
 

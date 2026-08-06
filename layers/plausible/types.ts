@@ -33,4 +33,7 @@ export enum PlausibleEventName {
   GITHUB_BUTTON_FLOATING_CLICKED = 'github-button:floating:clicked',
 
   FEEDBACK_SUBMITTED = 'feedback:submitted',
+
+  FAVORITE_ADDED = 'favorite:added',
+  FAVORITE_REMOVED = 'favorite:removed',
 }
