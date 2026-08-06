@@ -1,6 +1,6 @@
 <template>
   <div class="prose pt-8">
-    <p>ColorMagic (&quot;ColorMagic&quot;) has established the following privacy policy (&quot;Policy&quot;) regarding the handling of user information, including personal information about users, for all services provided by ColorMagic under the ColorMagic service name (&quot;Services&quot;).</p>
+    <p>Magicolor (&quot;Magicolor&quot;) has established the following privacy policy (&quot;Policy&quot;) regarding the handling of user information, including personal information about users, for all services provided by Magicolor under the Magicolor service name (&quot;Services&quot;).</p>
     <h2>1. user information to be collected and collection method</h2>
     <p>
       In this Policy, &quot;User Information&quot; means information pertaining to the identification of users, action history on communication services, and other information generated or accumulated in relation to users or their terminals, which is collected by the Organization in accordance with this Policy.
@@ -74,6 +74,6 @@
 
 <script setup lang="ts">
 useHead({
-  title: 'Privacy | ColorMagic | AI Color Palette Generator'
+  title: 'Privacy | Magicolor | AI Color Palette Generator'
 });
 </script>

@@ -131,7 +131,7 @@
           <CommonSocialShareButtons
             type="text"
             orientation="horizontal"
-            :text="`${t('palette.shareText')} ${data.text ?? ''} with ColorMagic AI!`"
+            :text="`${t('palette.shareText')} ${data.text ?? ''} with Magicolor AI!`"
           />
         </div>
 
@@ -384,7 +384,7 @@
             <CommonSocialShareButtons
               type="text"
               orientation="horizontal"
-              :text="`${t('palette.shareText')} ${data.text ?? ''} with ColorMagic AI!`"
+              :text="`${t('palette.shareText')} ${data.text ?? ''} with Magicolor AI!`"
             />
           </div>
         </div>

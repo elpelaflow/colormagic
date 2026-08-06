@@ -1,7 +1,7 @@
 export default defineNuxtConfig({
   runtimeConfig: {
     mongo: {
-      url: process.env.MONGO_URL ?? 'mongodb://colormagic:secret@localhost:27018/colormagic?authSource=admin'
+      url: process.env.MONGO_URL ?? 'mongodb://magicolor:secret@localhost:27018/magicolor?authSource=admin'
     }
   }
 });

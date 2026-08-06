@@ -11,7 +11,7 @@
             width="128px"
             height="20.4px"
             src="/img/HorizontalLogo.svg"
-            alt="ColorMagic - AI Color Palette generator"
+            alt="Magicolor - AI Color Palette generator"
           >
         </NuxtLinkLocale>
 
@@ -70,7 +70,7 @@
       <div class="flex items-center gap-2 sm:gap-4">
         <UButton
           icon="i-fa6-brands-github"
-          to="https://github.com/timb-103/colormagic"
+          to="https://github.com/elpelaflow/magicolor"
         />
 
         <!-- lang switcher-->
@@ -102,7 +102,7 @@
               width="128px"
               height="20.4px"
               src="/img/HorizontalLogo.svg"
-              alt="ColorMagic - AI Color Palette generator"
+              alt="Magicolor - AI Color Palette generator"
             >
           </NuxtLinkLocale>
 

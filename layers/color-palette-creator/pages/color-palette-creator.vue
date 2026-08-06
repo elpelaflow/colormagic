@@ -283,7 +283,7 @@ function rowsForExport(): PaletteRow[] {
   }));
 }
 
-const fileStem = computed(() => `colormagic-palette-${state.baseHex.replace('#', '')}`);
+const fileStem = computed(() => `magicolor-palette-${state.baseHex.replace('#', '')}`);
 
 function onExportPng(): void {
   const dataUrl = renderPalettePng(rowsForExport());

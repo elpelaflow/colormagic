@@ -55,7 +55,7 @@
             <UTextarea
               v-model="state.feedback"
               :rows="5"
-              placeholder="Tell us how we can improve ColorMagic"
+              placeholder="Tell us how we can improve Magicolor"
             />
           </UFormGroup>
 
@@ -114,7 +114,7 @@ const FormSchema = object({
 export type Form = InferType<typeof FormSchema>;
 
 function onClick(): void {
-  void navigateTo('https://github.com/timb-103/colormagic', { external: true });
+  void navigateTo('https://github.com/elpelaflow/magicolor', { external: true });
   sendPlausibleEvent(PlausibleEventName.GITHUB_BUTTON_FLOATING_CLICKED);
 }
 

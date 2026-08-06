@@ -1,6 +1,6 @@
 # Scripts
 
-Scripts para poblar y migrar la base local de paletas (`db.palettes` en el container `colormagic_database`).
+Scripts para poblar y migrar la base local de paletas (`db.palettes` en el container `magicolor_database`).
 
 ## Secuencia completa (en cualquier PC nueva)
 

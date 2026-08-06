@@ -5,7 +5,7 @@
     </p>
     <p>The English version of the Terms of Use is currently under preparation. Therefore, the Japanese version of the Terms of Use will take precedence over the English version.</p>
 
-    <p>These terms and conditions of use (hereinafter referred to as the "Terms of Use") set forth the terms and conditions of all services provided by ColorMagic (hereinafter referred to as the "Organization") under the ColorMagic service name (hereinafter referred to as the "Service") and the rights and obligations between the Organization and all registered users. In order to use the Services, you must read and agree to these Terms of Use in their entirety.</p>
+    <p>These terms and conditions of use (hereinafter referred to as the "Terms of Use") set forth the terms and conditions of all services provided by Magicolor (hereinafter referred to as the "Organization") under the Magicolor service name (hereinafter referred to as the "Service") and the rights and obligations between the Organization and all registered users. In order to use the Services, you must read and agree to these Terms of Use in their entirety.</p>
 
     <h2 class="text-xl font-semibold">
       Article 1 (Application)
@@ -148,6 +148,6 @@
 
 <script setup lang="ts">
 useHead({
-  title: 'Terms | ColorMagic | AI Color Palette Generator'
+  title: 'Terms | Magicolor | AI Color Palette Generator'
 });
 </script>

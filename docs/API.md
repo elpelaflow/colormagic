@@ -1,6 +1,6 @@
-# ColorMagic API — Documentación de endpoints
+# Magicolor API — Documentación de endpoints
 
-Documentación de todos los endpoints del server de ColorMagic. Corriendo localmente con `npm run dev` (por defecto en `http://localhost:3000`, en este doc asumimos `http://localhost:3011` cuando hay conflicto de puerto).
+Documentación de todos los endpoints del server de Magicolor. Corriendo localmente con `npm run dev` (por defecto en `http://localhost:3000`, en este doc asumimos `http://localhost:3011` cuando hay conflicto de puerto).
 
 Base URL: `http://localhost:3011/api`
 
@@ -396,11 +396,11 @@ Por default el server escucha en `http://localhost:3000`. Si el puerto está ocu
 
 ## Notas importantes
 
-1. **Sin autenticación local** — el repo no implementa ningún middleware de auth. Todos los endpoints son públicos. En el sitio público `api.colormagic.app` sí piden un token de "desktop client" (401), pero eso es específico del deployment del autor, no del código del repo.
+1. **Sin autenticación local** — el repo no implementa ningún middleware de auth. Todos los endpoints son públicos. En el sitio público `api.magicolor.app` sí piden un token de "desktop client" (401), pero eso es específico del deployment del autor, no del código del repo.
 
 2. **Requiere `OPENAI_API_KEY` para IA** — solo `/palette/create` y `/palette/clone` llaman a OpenAI. Los demás endpoints funcionan sin la key.
 
-3. **Mongo URL configurable** — viene de `useRuntimeConfig().mongo.url` (variable `MONGO_URL`). Default: `mongodb://colormagic:secret@localhost:27018/colormagic?authSource=admin` (levantado por `compose.yml`).
+3. **Mongo URL configurable** — viene de `useRuntimeConfig().mongo.url` (variable `MONGO_URL`). Default: `mongodb://magicolor:secret@localhost:27018/magicolor?authSource=admin` (levantado por `compose.yml`).
 
 4. **Bug conocido en Windows + Nitro 2.9.7** — no importar archivos `.js` sin extensión desde el server side con path absoluto. El handler original `contrast-checker` usaba `ntc.rgb()` (que es `.js`); los endpoints nuevos usan solo utilidades `.ts` para evitar este issue.
 

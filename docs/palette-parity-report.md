@@ -1,6 +1,6 @@
 # Informe de paridad numérica — Color Palette Creator vs pro-color-harmonies
 
-Fecha: 2026-08-05 · Repo: `colormagic` · Librería original: **pro-color-harmonies v0.11.0** (meodai, MIT)
+Fecha: 2026-08-05 · Repo: `magicolor` · Librería original: **pro-color-harmonies v0.11.0** (meodai, MIT)
 
 ## Resumen ejecutivo
 

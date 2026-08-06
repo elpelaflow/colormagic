@@ -296,7 +296,7 @@ watch(angleInput, (value) => {
 const gradientValue = computed(() => buildGradientValue(state));
 const cssDeclaration = computed(() => buildCssDeclaration(state));
 
-const fileStem = computed(() => `colormagic-gradient-${state.type}-${state.angle}`);
+const fileStem = computed(() => `magicolor-gradient-${state.type}-${state.angle}`);
 
 // galería local
 const savedGradients = ref<SavedGradient[]>([]);

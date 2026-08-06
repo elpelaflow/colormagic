@@ -1,9 +1,9 @@
 services:
   database:
-    container_name: colormagic_database
+    container_name: magicolor_database
     image: mongo:7.0
     environment:
-      MONGO_INITDB_ROOT_USERNAME: colormagic
+      MONGO_INITDB_ROOT_USERNAME: magicolor
       MONGO_INITDB_ROOT_PASSWORD: secret
     ports:
       - "27018:27017"

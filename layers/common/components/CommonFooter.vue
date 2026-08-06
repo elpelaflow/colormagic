@@ -96,7 +96,7 @@
       <div class="flex items-center gap-4 sm:justify-center flex-wrap">
         <!-- copyright label -->
         <p class="text-sm text-gray-400">
-          © 2024 ColorMagic
+          © 2024 Magicolor
         </p>
 
         <!-- languages -->
@@ -196,15 +196,15 @@ const toolsLinks = computed(() => [{
 const moreLinks = computed(() => [
   {
     label: t('nav.contact'),
-    to: 'mailto:hello@colormagic.app'
+    to: 'mailto:hello@magicolor.app'
   },
   {
     label: t('nav.suggestIdea'),
-    to: 'https://colormagic.canny.io'
+    to: 'https://magicolor.canny.io'
   },
   {
     label: 'GitHub',
-    to: 'https://github.com/timb-103/colormagic'
+    to: 'https://github.com/elpelaflow/magicolor'
   }
 ]);
 </script>

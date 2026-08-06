@@ -5,12 +5,12 @@ export default defineI18nConfig(() => ({
     en: {
       home: {
         title: 'Generate your ideal color palette',
-        seoTitle: 'ColorMagic - AI Color Palette Generator',
-        seoDescription: 'ColorMagic is a color palette generator with AI. Enter any keyword and generate a matching color palette.',
+        seoTitle: 'Magicolor - AI Color Palette Generator',
+        seoDescription: 'Magicolor is a color palette generator with AI. Enter any keyword and generate a matching color palette.',
         exampleLabel: 'Try an example:'
       },
       recent: {
-        seoTitle: 'Recent - ColorMagic - AI Color Palette Generator',
+        seoTitle: 'Recent - Magicolor - AI Color Palette Generator',
         topLabel: 'Recents:',
         noneFound: 'No recents.'
       },
@@ -18,7 +18,7 @@ export default defineI18nConfig(() => ({
         placeholder: 'Enter keywords for image or mood of color',
         label: 'Create Palette'
       },
-      bannerLabel: 'Donate to keep ColorMagic free >>',
+      bannerLabel: 'Donate to keep Magicolor free >>',
       nav: {
         home: 'Home',
         recent: 'Recent',
@@ -28,7 +28,7 @@ export default defineI18nConfig(() => ({
         terms: 'Terms',
         privacy: 'Privacy',
         suggestIdea: 'Suggest an Idea',
-        free: 'ColorMagic is now 100% free',
+        free: 'Magicolor is now 100% free',
         explore: 'Explore',
         imageColorPicker: 'Image Color Picker',
         tools: 'Tools',
@@ -44,8 +44,8 @@ export default defineI18nConfig(() => ({
         gradientGenerator: 'Gradient Generator'
       },
       palette: {
-        seoTitle: 'ColorMagic - AI Color Palette Generator',
-        seoDescription: 'ColorMagic is a color palette generator with AI. Enter any keyword and generate a matching color palette.',
+        seoTitle: 'Magicolor - AI Color Palette Generator',
+        seoDescription: 'Magicolor is a color palette generator with AI. Enter any keyword and generate a matching color palette.',
         brightness: 'Brightness',
         saturation: 'Saturation',
         warmth: 'Warmth',
@@ -58,7 +58,7 @@ export default defineI18nConfig(() => ({
         descriptionPrefix: 'Discover the beautiful',
         descriptionSuffix: 'color palette featuring',
         whatYouCanDoTitle: '💡 What You Can Do',
-        whatYouCanDoIntro: 'ColorMagic makes it easy to:',
+        whatYouCanDoIntro: 'Magicolor makes it easy to:',
         whatYouCanDoCopy: 'Copy precise HEX codes and RGB values for your designs',
         whatYouCanDoAdjust: 'Adjust its brightness, saturation, and warmth to create new variations',
         whatYouCanDoPreview: 'Preview UI components to see how colors work in real interfaces',
@@ -107,13 +107,13 @@ export default defineI18nConfig(() => ({
       },
       randomColor: {
         title: 'Random Color Generator',
-        seoTitle: 'Random Color Generator - ColorMagic',
+        seoTitle: 'Random Color Generator - Magicolor',
         seoDescription: 'Find interesting and random colors instantly with just a click (or space bar hit).',
         generateLabel: 'Generate Random Color'
       },
       explore: {
         title: 'Explore Color Palettes',
-        seoTitle: 'Explore Color Palettes - ColorMagic',
+        seoTitle: 'Explore Color Palettes - Magicolor',
         seoDescription: 'Explore all of the latest generated color palettes.',
         colorPalettes: 'Color Palettes',
         color: 'Color',
@@ -124,21 +124,21 @@ export default defineI18nConfig(() => ({
       },
       imageColorPicker: {
         title: 'Image Color Picker',
-        seoTitle: 'Image Color Picker - ColorMagic',
+        seoTitle: 'Image Color Picker - Magicolor',
         seoDescription: 'Extract and pick a beatiful color scheme from any image with AI.',
         uploadPlaceholder: 'Upload an Image'
       },
       api: {
         title: 'Color API',
-        seoTitle: 'Color API - ColorMagic',
+        seoTitle: 'Color API - Magicolor',
         seoDescription: 'A free and simple API you can use to integrate with our color palettes.',
         disclaimer: 'This API may be removed or changed at anytime, without warning. Use at your own risk.'
       },
       contrastChecker: {
         title: 'Contrast Checker',
-        seoTitle: 'Contrast Checker - ColorMagic',
+        seoTitle: 'Contrast Checker - Magicolor',
         seoDescription: 'Check the contrast between primary and secondary colors to ensure legibility and accessibility.',
-        legibilityDescription: 'ColorMagic\'s contrast checker follows the web content accesibility guidelines (WCAG) as to ensure legibility:',
+        legibilityDescription: 'Magicolor\'s contrast checker follows the web content accesibility guidelines (WCAG) as to ensure legibility:',
         primaryLabel: 'Primary (foreground/text)',
         secondaryLabel: 'Secondary (background)',
         contrastRatio: 'Contrast Ratio',
@@ -190,7 +190,7 @@ export default defineI18nConfig(() => ({
       },
       colorMixer: {
         title: 'Color Mixer',
-        seoTitle: 'Color Mixer - ColorMagic',
+        seoTitle: 'Color Mixer - Magicolor',
         seoDescription: 'Mix two colors together in real time with a subtractive RYB paint model.',
         colorALabel: 'Color A',
         colorBLabel: 'Color B',
@@ -209,7 +209,7 @@ export default defineI18nConfig(() => ({
       },
       allColors: {
         title: 'All Colors',
-        seoTitle: 'All Colors - ColorMagic',
+        seoTitle: 'All Colors - Magicolor',
         seoDescription: 'Pick any color and explore it across every color model, then generate its full range of tints and shades.',
         shadesTintsTitle: 'Shades & Tints',
         shadesTintsDescription: 'Select a color and instantly generate its light tints and dark shades.',
@@ -238,7 +238,7 @@ export default defineI18nConfig(() => ({
       },
       colorPaletteCreator: {
         title: 'Color Palette Creator',
-        seoTitle: 'Color Palette Creator - ColorMagic',
+        seoTitle: 'Color Palette Creator - Magicolor',
         seoDescription: 'Generate complete color schemes from a single base color: 6 harmony types, 4 styles and creative modifiers, all in perceptual OKLCH space.',
         baseColor: 'Base color',
         random: 'Random',
@@ -273,7 +273,7 @@ export default defineI18nConfig(() => ({
       },
       gradientGenerator: {
         title: 'Gradient Generator',
-        seoTitle: 'Gradient Generator - ColorMagic',
+        seoTitle: 'Gradient Generator - Magicolor',
         seoDescription: 'Create, customize and export beautiful CSS gradients: linear, radial and conic, with full control over color stops, positions and angle.',
         gradientType: 'Gradient Type',
         types: {
@@ -307,7 +307,7 @@ export default defineI18nConfig(() => ({
       home: {
         title: 'あなたの思い描く色をかんたんに',
         seoTitle: 'あなたの思い描く色をかんたんに',
-        seoDescription: 'ColorMagicは、AIでオリジナルのカラーパレットをつくれるサービスです。\n雰囲気やイメージのキーワードから、今すぐ使える配色を簡単に生成できます',
+        seoDescription: 'Magicolorは、AIでオリジナルのカラーパレットをつくれるサービスです。\n雰囲気やイメージのキーワードから、今すぐ使える配色を簡単に生成できます',
         exampleLabel: '例を試してみてください:'
       },
       recent: {
@@ -319,7 +319,7 @@ export default defineI18nConfig(() => ({
         placeholder: '色の雰囲気やイメージを入力してください',
         label: '生成する'
       },
-      bannerLabel: 'ColorMagic を無料で維持するために寄付してください',
+      bannerLabel: 'Magicolor を無料で維持するために寄付してください',
       nav: {
         home: 'ホーム',
         recent: '最近',
@@ -329,7 +329,7 @@ export default defineI18nConfig(() => ({
         randomColor: 'ランダムカラージェネレーター',
         colorPaletteGenrator: 'カラーパレットジェネレーター',
         suggestIdea: 'アイデアを提案',
-        free: 'ColorMagicが今なら完全無料です！詳しくはこちら',
+        free: 'Magicolorが今なら完全無料です！詳しくはこちら',
         explore: '探検する',
         imageColorPicker: '画像カラーピッカー',
         tools: 'ツール',
@@ -346,7 +346,7 @@ export default defineI18nConfig(() => ({
       },
       palette: {
         seoTitle: 'あなたの思い描く色をかんたんに',
-        seoDescription: 'ColorMagicは、AIでオリジナルのカラーパレットをつくれるサービスです。\n雰囲気やイメージのキーワードから、今すぐ使える配色を簡単に生成できます',
+        seoDescription: 'Magicolorは、AIでオリジナルのカラーパレットをつくれるサービスです。\n雰囲気やイメージのキーワードから、今すぐ使える配色を簡単に生成できます',
         brightness: '明るさ',
         saturation: '彩度',
         warmth: '暖かさ',
@@ -359,7 +359,7 @@ export default defineI18nConfig(() => ({
         descriptionPrefix: '美しい',
         descriptionSuffix: 'カラーパレットを発見、特徴',
         whatYouCanDoTitle: '💡 できること',
-        whatYouCanDoIntro: 'ColorMagicなら：',
+        whatYouCanDoIntro: 'Magicolorなら：',
         whatYouCanDoCopy: 'デザイン用に正確なHEXコードとRGB値をコピー',
         whatYouCanDoAdjust: '明るさ・彩度・暖かさを調整して新しいバリエーションを作成',
         whatYouCanDoPreview: 'UIコンポーネントをプレビューして実際の画面での見え方を確認',
@@ -408,13 +408,13 @@ export default defineI18nConfig(() => ({
       },
       randomColor: {
         title: 'ランダムカラージェネレーター',
-        seoTitle: 'ランダムカラージェネレーター - ColorMagic',
+        seoTitle: 'ランダムカラージェネレーター - Magicolor',
         seoDescription: 'クリックまたはスペースバーを押すだけで、面白くてランダムな色を瞬時に見つけましょう。',
         generateLabel: 'ランダムカラーを生成する'
       },
       explore: {
         title: 'カラーパレットを探索する',
-        seoTitle: 'カラーパレットを探索する - ColorMagic',
+        seoTitle: 'カラーパレットを探索する - Magicolor',
         seoDescription: '最新に生成されたすべてのカラー パレットを探索する.',
         colorPalettes: 'カラーパレット',
         color: '色',
@@ -425,21 +425,21 @@ export default defineI18nConfig(() => ({
       },
       imageColorPicker: {
         title: '画像カラーピッカー',
-        seoTitle: '画像カラーピッカー - ColorMagic',
+        seoTitle: '画像カラーピッカー - Magicolor',
         seoDescription: 'AI を使用して、あらゆる画像から美しい配色を抽出して選択します。',
         uploadPlaceholder: '画像をアップロードする'
       },
       api: {
         title: 'カラーAPI',
-        seoTitle: 'カラーAPI - ColorMagic',
+        seoTitle: 'カラーAPI - Magicolor',
         seoDescription: 'カラーパレットと統合するために使用できる無料のシンプルな API。',
         disclaimer: 'この API は、予告なくいつでも削除または変更される場合があります。ご自身の責任でご使用ください。'
       },
       contrastChecker: {
         title: 'コントラストチェッカー',
-        seoTitle: 'コントラストチェッカー - ColorMagic',
+        seoTitle: 'コントラストチェッカー - Magicolor',
         seoDescription: 'プライマリカラーとセカンダリカラーのコントラストを確認し、可読性を確保します。',
-        legibilityDescription: 'ColorMagicのコントラストチェッカーは、可読性を確保するためにWebコンテンツアクセシビリティガイドライン（WCAG）に準拠しています:',
+        legibilityDescription: 'Magicolorのコントラストチェッカーは、可読性を確保するためにWebコンテンツアクセシビリティガイドライン（WCAG）に準拠しています:',
         primaryLabel: 'プライマリ（前景/テキスト）',
         secondaryLabel: 'セカンダリ（背景）',
         contrastRatio: 'コントラスト比',
@@ -491,7 +491,7 @@ export default defineI18nConfig(() => ({
       },
       colorMixer: {
         title: 'カラーミキサー',
-        seoTitle: 'カラーミキサー - ColorMagic',
+        seoTitle: 'カラーミキサー - Magicolor',
         seoDescription: '2つの色をリアルタイムで混ぜ合わせる、絵の具のような減法混色RYBモデル。',
         colorALabel: 'カラーA',
         colorBLabel: 'カラーB',
@@ -510,7 +510,7 @@ export default defineI18nConfig(() => ({
       },
       allColors: {
         title: 'オールカラー',
-        seoTitle: 'オールカラー - ColorMagic',
+        seoTitle: 'オールカラー - Magicolor',
         seoDescription: '色を選んで全てのカラーモデルで確認し、ティントとシェードの全範囲を生成しましょう。',
         shadesTintsTitle: 'シェード & ティント',
         shadesTintsDescription: '色を選んで、明るいティントと暗いシェードを瞬時に生成します。',
@@ -539,7 +539,7 @@ export default defineI18nConfig(() => ({
       },
       colorPaletteCreator: {
         title: 'カラーパレットクリエーター',
-        seoTitle: 'カラーパレットクリエーター - ColorMagic',
+        seoTitle: 'カラーパレットクリエーター - Magicolor',
         seoDescription: '1つのベースカラーから配色スキームを生成：6種類のハーモニー、4つのスタイル、クリエイティブなモディファイア（知覚色空間OKLCH）。',
         baseColor: 'ベースカラー',
         random: 'ランダム',
@@ -574,7 +574,7 @@ export default defineI18nConfig(() => ({
       },
       gradientGenerator: {
         title: 'グラデーションジェネレーター',
-        seoTitle: 'グラデーションジェネレーター - ColorMagic',
+        seoTitle: 'グラデーションジェネレーター - Magicolor',
         seoDescription: '美しいCSSグラデーションを作成・カスタマイズ・エクスポート：線形・放射・扇形の3タイプ、カラーストップ・位置・角度を自由に調整できます。',
         gradientType: 'グラデーションの種類',
         types: {
@@ -608,11 +608,11 @@ export default defineI18nConfig(() => ({
       home: {
         title: 'Genera la tua palette di colori ideale',
         seoTitle: 'Genera la tua palette di colori ideale',
-        seoDescription: 'ColorMagic è un generatore di palette di colori con IA. Inserisci qualsiasi parola chiave e genera una palette corrispondente.',
+        seoDescription: 'Magicolor è un generatore di palette di colori con IA. Inserisci qualsiasi parola chiave e genera una palette corrispondente.',
         exampleLabel: 'Prova un esempio:'
       },
       recent: {
-        seoTitle: 'Recenti - ColorMagic - AI Color Palette Generator',
+        seoTitle: 'Recenti - Magicolor - AI Color Palette Generator',
         topLabel: 'Recenti:',
         noneFound: 'Nessun elemento recente trovato'
       },
@@ -620,7 +620,7 @@ export default defineI18nConfig(() => ({
         placeholder: 'Inserisci l\'atmosfera o l\'immagine del colore',
         label: 'Genera'
       },
-      bannerLabel: 'Fai una donazione per mantenere ColorMagic gratuito',
+      bannerLabel: 'Fai una donazione per mantenere Magicolor gratuito',
       nav: {
         home: 'Home',
         recent: 'Recenti',
@@ -630,7 +630,7 @@ export default defineI18nConfig(() => ({
         randomColor: 'Generatore di Colori Casuali',
         colorPaletteGenrator: 'Generatore di Palette di Colori',
         suggestIdea: 'Suggerisci un\'idea',
-        free: 'ColorMagic è ora completamente gratuito! Leggi di più qui',
+        free: 'Magicolor è ora completamente gratuito! Leggi di più qui',
         explore: 'Esplorare',
         imageColorPicker: 'Selettore colore immagine',
         tools: 'Utensili',
@@ -647,7 +647,7 @@ export default defineI18nConfig(() => ({
       },
       palette: {
         seoTitle: 'Genera la tua palette di colori ideale',
-        seoDescription: 'ColorMagic è un generatore di palette di colori con IA. Inserisci qualsiasi parola chiave e genera una palette corrispondente.',
+        seoDescription: 'Magicolor è un generatore di palette di colori con IA. Inserisci qualsiasi parola chiave e genera una palette corrispondente.',
         brightness: 'Luminosità',
         saturation: 'Saturazione',
         warmth: 'Calore',
@@ -660,7 +660,7 @@ export default defineI18nConfig(() => ({
         descriptionPrefix: 'Scopri la bellissima',
         descriptionSuffix: 'palette di colori che presenta',
         whatYouCanDoTitle: '💡 Cosa puoi fare',
-        whatYouCanDoIntro: 'ColorMagic rende facile:',
+        whatYouCanDoIntro: 'Magicolor rende facile:',
         whatYouCanDoCopy: 'Copiare codici HEX precisi e valori RGB per i tuoi design',
         whatYouCanDoAdjust: 'Regolare luminosità, saturazione e calore per creare nuove varianti',
         whatYouCanDoPreview: 'Anteprimare i componenti UI per vedere i colori in interfacce reali',
@@ -709,13 +709,13 @@ export default defineI18nConfig(() => ({
       },
       randomColor: {
         title: 'Generatore di Colori Casuali',
-        seoTitle: 'Generatore di Colori Casuali - ColorMagic',
+        seoTitle: 'Generatore di Colori Casuali - Magicolor',
         seoDescription: 'Genera colori casuali all\'istante con un semplice clic (o con la barra spaziatrice).',
         generateLabel: 'Genera Colore Casuale'
       },
       explore: {
         title: 'Esplora le tavolozze dei colori',
-        seoTitle: 'Esplora le tavolozze dei colori - ColorMagic',
+        seoTitle: 'Esplora le tavolozze dei colori - Magicolor',
         seoDescription: 'Esplora tutte le tavolozze di colori generate più recenti.',
         colorPalettes: 'Tavolozze di colori',
         color: 'Colore',
@@ -726,21 +726,21 @@ export default defineI18nConfig(() => ({
       },
       imageColorPicker: {
         title: 'Selettore colore immagine',
-        seoTitle: 'Selettore colore immagine - ColorMagic',
+        seoTitle: 'Selettore colore immagine - Magicolor',
         seoDescription: 'Estrai e scegli una bellissima combinazione di colori da qualsiasi immagine con l\'intelligenza artificiale.',
         uploadPlaceholder: 'Carica un\'immagine'
       },
       api: {
         title: 'API dei colori',
-        seoTitle: 'API dei colori - ColorMagic',
+        seoTitle: 'API dei colori - Magicolor',
         seoDescription: 'Un\'API semplice e gratuita che puoi utilizzare per l\'integrazione con le nostre tavolozze di colori.',
         disclaimer: 'Questa API può essere rimossa o modificata in qualsiasi momento, senza preavviso. Utilizzare a proprio rischio.'
       },
       contrastChecker: {
         title: 'Controllo Contrasto',
-        seoTitle: 'Controllo Contrasto - ColorMagic',
+        seoTitle: 'Controllo Contrasto - Magicolor',
         seoDescription: 'Controlla il contrasto tra un colore primario e secondario per garantire la leggibilità.',
-        legibilityDescription: 'Il controllo del contrasto di ColorMagic segue le linee guida per l\'accessibilità dei contenuti web (WCAG) per garantire la leggibilità:',
+        legibilityDescription: 'Il controllo del contrasto di Magicolor segue le linee guida per l\'accessibilità dei contenuti web (WCAG) per garantire la leggibilità:',
         primaryLabel: 'Primario (testo in primo piano)',
         secondaryLabel: 'Secondario (sfondo)',
         contrastRatio: 'Rapporto di Contrasto',
@@ -792,7 +792,7 @@ export default defineI18nConfig(() => ({
       },
       colorMixer: {
         title: 'Mescolatore di Colori',
-        seoTitle: 'Mescolatore di Colori - ColorMagic',
+        seoTitle: 'Mescolatore di Colori - Magicolor',
         seoDescription: 'Mescola due colori in tempo reale con un modello sottrattivo RYB che imita la pittura.',
         colorALabel: 'Colore A',
         colorBLabel: 'Colore B',
@@ -811,7 +811,7 @@ export default defineI18nConfig(() => ({
       },
       allColors: {
         title: 'Tutti i Colori',
-        seoTitle: 'Tutti i Colori - ColorMagic',
+        seoTitle: 'Tutti i Colori - Magicolor',
         seoDescription: 'Scegli un colore ed esploralo in ogni modello cromatico, poi genera la sua gamma completa di tinte e ombre.',
         shadesTintsTitle: 'Tinte e Ombre',
         shadesTintsDescription: 'Seleziona un colore e genera all\'istante le sue tinte chiare e le ombre scure.',
@@ -840,7 +840,7 @@ export default defineI18nConfig(() => ({
       },
       colorPaletteCreator: {
         title: 'Color Palette Creator',
-        seoTitle: 'Color Palette Creator - ColorMagic',
+        seoTitle: 'Color Palette Creator - Magicolor',
         seoDescription: 'Genera schemi di colori da un singolo colore base: 6 tipi di armonia, 4 stili e modificatori creativi, tutto nello spazio percettivo OKLCH.',
         baseColor: 'Colore base',
         random: 'Casuale',
@@ -875,7 +875,7 @@ export default defineI18nConfig(() => ({
       },
       gradientGenerator: {
         title: 'Generatore di Gradienti',
-        seoTitle: 'Generatore di Gradienti - ColorMagic',
+        seoTitle: 'Generatore di Gradienti - Magicolor',
         seoDescription: 'Crea, personalizza ed esporta gradienti CSS: lineari, radiali e conici, con controllo completo su color stop, posizioni e angolo.',
         gradientType: 'Tipo di gradiente',
         types: {

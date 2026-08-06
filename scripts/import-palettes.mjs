@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Importa paletas desde colorpalettes.json a la collection `palettes`
- * del container Docker colormagic_database (Mongo 7.0).
+ * del container Docker magicolor_database (Mongo 7.0).
  *
  * Uso:
  *   node scripts/import-palettes.mjs             # borra la collection antes
@@ -27,8 +27,8 @@ import { dirname, join } from 'node:path';
 import { MongoClient } from 'mongodb';
 
 const URI = process.env.MONGO_URI
-  ?? 'mongodb://colormagic:secret@localhost:27018/colormagic?authSource=admin';
-const DB_NAME = process.env.MONGO_DB ?? 'colormagic';
+  ?? 'mongodb://magicolor:secret@localhost:27018/magicolor?authSource=admin';
+const DB_NAME = process.env.MONGO_DB ?? 'magicolor';
 const COLL = process.env.PALETTE_COLLECTION ?? 'palettes';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const JSON_PATH = process.env.PALETTES_FILE
@@ -56,7 +56,7 @@ const toHex = (c) => {
 function die(msg) { console.error('\n[ERROR] ' + msg); process.exit(1); }
 
 async function main() {
-  console.log('--- Importador de paletas ColorMagic ---');
+  console.log('--- Importador de paletas Magicolor ---');
   console.log(`MONGO : ${URI}`);
   console.log(`DB    : ${DB_NAME}  / collection: ${COLL}`);
   console.log(`JSON  : ${JSON_PATH}`);
