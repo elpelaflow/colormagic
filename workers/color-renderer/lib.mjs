@@ -93,6 +93,30 @@ export function aggregateContrast(samples, max = 20) {
 }
 
 /**
+ * Detección de dark mode comparando los renders light y dark.
+ * Señal principal: luminancia del fondo dominante (light > 0.5, dark < 0.2
+ * típicamente). Señal secundaria: solapamiento de las paletas top-10 — solo
+ * se activa si las paletas casi no se solapan (< 10%), para no dar falsos
+ * positivos cuando el fondo dominante no cambió pero los acentos difieren.
+ * @param {{ hex: string }[]} lightPalette
+ * @param {{ hex: string }[]} darkPalette
+ * @param {string} lightDominantBg
+ * @param {string} darkDominantBg
+ */
+export function detectDarkMode(lightPalette, darkPalette, lightDominantBg, darkDominantBg) {
+  const lumLight = relativeLuminance(lightDominantBg);
+  const lumDark = relativeLuminance(darkDominantBg);
+  if (Math.abs(lumLight - lumDark) > 0.25) return true;
+
+  // Señal secundaria: si la paleta cambió mucho, también es dark mode.
+  const lightTop = new Set(lightPalette.slice(0, 10).map((p) => p.hex));
+  const darkTop = new Set(darkPalette.slice(0, 10).map((p) => p.hex));
+  const intersection = [...lightTop].filter((hex) => darkTop.has(hex)).length;
+  const union = new Set([...lightTop, ...darkTop]).size;
+  return union > 0 && intersection / union < 0.1;
+}
+
+/**
  * Caché LRU simple en memoria con TTL.
  * @param {number} maxEntries
  * @param {number} ttlMs

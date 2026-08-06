@@ -30,6 +30,22 @@
       />
     </div>
 
+    <!-- runtime analysis: siempre visible, solo necesita la URL (no requiere extraer tokens primero) -->
+    <div class="flex items-center gap-2 mb-10">
+      <UButton
+        size="lg"
+        color="primary"
+        icon="i-heroicons-sparkles"
+        :loading="isRuntimeRunning"
+        :label="isRuntimeRunning ? t('tokenExtractor.runtimeRunning') : t('tokenExtractor.runtimeButton')"
+        :disabled="!url.trim()"
+        @click="onRunRuntime"
+      />
+      <span class="text-sm text-gray-500">
+        {{ t('tokenExtractor.runtimeHint') }}
+      </span>
+    </div>
+
     <!-- example sites -->
     <div class="flex flex-wrap items-center gap-2 mb-10">
       <span class="text-sm text-gray-500">
@@ -106,14 +122,6 @@
           variant="soft"
           :label="t('tokenExtractor.downloadTailwind')"
           @click="onDownloadTailwind"
-        />
-        <UButton
-          icon="i-heroicons-sparkles"
-          variant="soft"
-          color="primary"
-          :loading="isRuntimeRunning"
-          :label="isRuntimeRunning ? t('tokenExtractor.runtimeRunning') : t('tokenExtractor.runtimeButton')"
-          @click="onRunRuntime"
         />
       </div>
 
@@ -226,6 +234,7 @@
                 >
                   <TokenRow
                     :token="token"
+                    :used="usedHexes.has(token.hex ?? '')"
                     @copy-value="onCopyToken"
                     @copy-var="onCopyVar"
                   />
@@ -246,6 +255,7 @@
             >
               <TokenRow
                 :token="token"
+                :used="usedHexes.has(token.hex ?? '')"
                 @copy-value="onCopyToken"
                 @copy-var="onCopyVar"
               />
@@ -265,8 +275,23 @@
               beta
             </UBadge>
             <UBadge variant="soft">
-              {{ t('tokenExtractor.runtimeCount', { count: runtimeResult.unique }) }}
+              {{ t('tokenExtractor.runtimeCount', { count: activeRuntime?.usagePalette.length ?? 0 }) }}
             </UBadge>
+            <UButtonGroup
+              v-if="runtimeResult.hasDarkMode"
+              size="sm"
+            >
+              <UButton
+                :variant="runtimeMode === 'light' ? 'solid' : 'soft'"
+                :label="t('tokenExtractor.runtimeModeLight')"
+                @click="runtimeMode = 'light'"
+              />
+              <UButton
+                :variant="runtimeMode === 'dark' ? 'solid' : 'soft'"
+                :label="t('tokenExtractor.runtimeModeDark')"
+                @click="runtimeMode = 'dark'"
+              />
+            </UButtonGroup>
           </div>
           <p class="text-sm text-gray-500">
             <template v-if="runtimeResult.cached">
@@ -282,10 +307,14 @@
           v-if="runtimeResult.screenshot"
           :src="runtimeResult.screenshot"
           alt=""
-          class="w-full max-h-96 object-cover object-top rounded-lg border border-gray-200 mb-4 shadow-sm"
+          :class="[
+            'w-full max-h-96 object-cover object-top rounded-lg border border-gray-200 mb-4 shadow-sm transition-opacity duration-300',
+            runtimeMode === 'dark' ? 'opacity-60' : ''
+          ]"
+          :title="runtimeMode === 'dark' ? t('tokenExtractor.runtimeModeDark') : t('tokenExtractor.runtimeModeLight')"
         >
 
-        <p v-if="runtimeResult.usagePalette.length === 0" class="text-gray-500">
+        <p v-if="activeRuntime?.usagePalette.length === 0" class="text-gray-500">
           {{ t('tokenExtractor.noTokens') }}
         </p>
 
@@ -294,7 +323,7 @@
           class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3"
         >
           <div
-            v-for="entry in runtimeResult.usagePalette"
+            v-for="entry in activeRuntime?.usagePalette ?? []"
             :key="entry.hex"
             class="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow"
           >
@@ -316,7 +345,7 @@
 
       <!-- contrast (WCAG, Fase 2b) -->
       <div
-        v-if="runtimeResult?.contrast?.length"
+        v-if="activeRuntime?.contrast?.length"
         class="mb-10"
       >
         <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
@@ -325,17 +354,17 @@
               {{ t('tokenExtractor.contrastTitle') }}
             </p>
             <UBadge variant="soft">
-              {{ t('tokenExtractor.contrastPairs', { count: runtimeResult.contrast.length }) }}
+              {{ t('tokenExtractor.contrastPairs', { count: activeRuntime.contrast.length }) }}
             </UBadge>
           </div>
           <p class="text-sm text-gray-500">
-            {{ t('tokenExtractor.contrastAaSummary', { pass: aaPassCount, total: runtimeResult.contrast.length }) }}
+            {{ t('tokenExtractor.contrastAaSummary', { pass: aaPassCount, total: activeRuntime.contrast.length }) }}
           </p>
         </div>
 
         <ul class="border border-gray-200 rounded-lg divide-y divide-gray-200">
           <li
-            v-for="entry in runtimeResult.contrast"
+            v-for="entry in activeRuntime.contrast"
             :key="entry.fg + entry.bg"
             class="flex flex-wrap items-center gap-3 p-3 hover:bg-gray-50 transition-colors"
           >
@@ -519,6 +548,11 @@ interface RuntimeContrastEntry {
   passesAAA: boolean;
 }
 
+interface RuntimeModeData {
+  usagePalette: { hex: string; count: number; share: number }[];
+  contrast: RuntimeContrastEntry[];
+}
+
 interface RuntimeResult {
   url: string;
   title: string | null;
@@ -528,20 +562,40 @@ interface RuntimeResult {
   unique: number;
   usagePalette: { hex: string; count: number; share: number }[];
   contrast: RuntimeContrastEntry[];
+  hasDarkMode?: boolean;
+  dark: RuntimeModeData | null;
   screenshot?: string;
   cached?: boolean;
 }
 
-const aaPassCount = computed(() => runtimeResult.value?.contrast?.filter(entry => entry.passesAA).length ?? 0);
+const runtimeMode = ref<'light' | 'dark'>('light');
+
+/** Datos del modo activo: top-level = light, o dark si el sitio tiene dark mode. */
+const activeRuntime = computed<RuntimeModeData | null>(() => {
+  if (!runtimeResult.value) return null;
+  if (runtimeMode.value === 'dark' && runtimeResult.value.dark) return runtimeResult.value.dark;
+  return runtimeResult.value;
+});
+
+const aaPassCount = computed(() => activeRuntime.value?.contrast?.filter(entry => entry.passesAA).length ?? 0);
+
+/** Hexes usados en el MODO ACTIVO: marca tokens en uso coherente con el toggle Light/Dark. */
+const usedHexes = computed(() => {
+  const set = new Set<string>();
+  for (const entry of activeRuntime.value?.usagePalette ?? []) set.add(entry.hex);
+  return set;
+});
 
 async function onRunRuntime(): Promise<void> {
-  if (!result.value || isRuntimeRunning.value) return;
+  const target = url.value.trim();
+  if (!target || isRuntimeRunning.value) return;
   isRuntimeRunning.value = true;
   try {
     runtimeResult.value = await $fetch<RuntimeResult>('/api/color-token-extractor/runtime', {
       method: 'POST',
-      body: { url: result.value.url, screenshot: true }
+      body: { url: target, screenshot: true, darkMode: true }
     });
+    runtimeMode.value = 'light';
     sendPlausibleEvent(PlausibleEventName.TOKEN_EXTRACTOR_RUNTIME_RUN);
   } catch (error: any) {
     runtimeResult.value = null;

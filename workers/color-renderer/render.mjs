@@ -101,6 +101,7 @@ export async function renderSite(context, url, { signal, maxElements = 5000, set
       };
       const props = ['color', 'backgroundColor', 'fill', 'stroke'];
       const samples = [];
+      const bgSamples = [];
       const contrastSamples = [];
       for (const el of Array.from(document.querySelectorAll('body *')).slice(0, maxElems)) {
         const cs = getComputedStyle(el);
@@ -108,6 +109,8 @@ export async function renderSite(context, url, { signal, maxElements = 5000, set
           const hex = toHex(cs[prop]);
           if (hex) samples.push(hex);
         }
+        const bgHex = toHex(cs.backgroundColor);
+        if (bgHex) bgSamples.push(bgHex);
         if (hasDirectText(el)) {
           const fg = parseRgba(cs.color);
           if (fg && fg.a > 0) {
@@ -122,7 +125,7 @@ export async function renderSite(context, url, { signal, maxElements = 5000, set
           }
         }
       }
-      return { title: document.title, samples, contrastSamples };
+      return { title: document.title, samples, bgSamples, contrastSamples };
     }, maxElements);
 
     let screenshot = null;
@@ -140,6 +143,7 @@ export async function renderSite(context, url, { signal, maxElements = 5000, set
     }
 
     const usagePalette = aggregateUsage(data.samples);
+    const bgUsage = aggregateUsage(data.bgSamples, 1);
     const contrast = aggregateContrast(data.contrastSamples);
     return {
       url,
@@ -148,6 +152,7 @@ export async function renderSite(context, url, { signal, maxElements = 5000, set
       viewport: '1440x900',
       sampled: data.samples.length,
       unique: usagePalette.length,
+      dominantBg: bgUsage[0]?.hex ?? '#ffffff',
       usagePalette,
       contrast,
       screenshot

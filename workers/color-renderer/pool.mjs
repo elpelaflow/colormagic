@@ -40,17 +40,19 @@ export class BrowserPool {
 
   /**
    * Reserva un slot, crea un contexto aislado, corre fn(context) y libera todo.
+   * `colorScheme` emula prefers-color-scheme del SO (clave para dark mode).
    * @param {(context: import('playwright').BrowserContext) => Promise<T>} fn
+   * @param {{ colorScheme?: 'light' | 'dark' }} [opts]
    * @returns {Promise<T>}
    */
-  async run(fn) {
+  async run(fn, { colorScheme = 'light' } = {}) {
     while (this.active >= this.maxConcurrency) {
       await new Promise((resolve) => this.waiters.push(resolve));
     }
     this.active++;
     let context;
     try {
-      context = await (await this._browser()).newContext({ viewport: VIEWPORT });
+      context = await (await this._browser()).newContext({ viewport: VIEWPORT, colorScheme });
       return await fn(context);
     } finally {
       if (context) await context.close().catch(() => {});

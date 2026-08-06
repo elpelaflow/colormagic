@@ -20,6 +20,13 @@
       <p class="font-mono text-xs text-gray-500 truncate">
         {{ token.value }}
       </p>
+      <span
+        v-if="used"
+        class="inline-flex items-center gap-1 text-xs text-green-600 font-medium"
+      >
+        <UIcon name="i-heroicons-check-circle" class="w-3.5 h-3.5" />
+        {{ t('tokenExtractor.usedOnPage') }}
+      </span>
     </div>
 
     <!-- hex -->
@@ -56,7 +63,7 @@
 <script setup lang="ts">
 import type { ColorToken, TokenType, TokenScope } from '../utils/token-extractor.util';
 
-defineProps<{ token: ColorToken }>();
+defineProps<{ token: ColorToken; used?: boolean }>();
 
 const emit = defineEmits<{
   (e: 'copy-value', token: ColorToken): void;

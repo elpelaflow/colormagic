@@ -10,7 +10,7 @@
 import http from 'node:http';
 import { BrowserPool } from './pool.mjs';
 import { renderSite } from './render.mjs';
-import { createLruCache } from './lib.mjs';
+import { createLruCache, detectDarkMode } from './lib.mjs';
 
 const PORT = Number(process.env.PORT || 3100);
 const MAX_CONCURRENCY = Number(process.env.MAX_CONCURRENCY || 3);
@@ -63,14 +63,17 @@ function withTimeout(promise, ms) {
   });
 }
 
-async function runRender(url, key, { screenshot }) {
+async function runRender(url, key, { screenshot, colorScheme }) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), JOB_TIMEOUT_MS);
   try {
     // Si el job expiró mientras esperaba slot en la cola, ni arrancar.
     if (controller.signal.aborted) throw httpError(504, 'Render timed out.');
     return await withTimeout(
-      pool.run((context) => renderSite(context, url.toString(), { signal: controller.signal, settleMs: SETTLE_MS, screenshot })),
+      pool.run(
+        (context) => renderSite(context, url.toString(), { signal: controller.signal, settleMs: SETTLE_MS, screenshot }),
+        { colorScheme }
+      ),
       JOB_TIMEOUT_MS + 3000
     );
   } finally {
@@ -78,37 +81,74 @@ async function runRender(url, key, { screenshot }) {
   }
 }
 
-async function handleRender(body, wantScreenshot) {
+async function handleRender(body, wantScreenshot, wantDark) {
   const url = assertSafeUrl(typeof body?.url === 'string' ? body.url.trim() : '');
   const key = url.toString();
+  const darkKey = `${key}#dark`;
 
-  if (!wantScreenshot) {
-    const hit = cache.get(key);
-    if (hit) {
-      // durationMs del hit reflejaría el render original: se limpia y la UI
-      // muestra "cached" en su lugar.
-      return { ...hit, durationMs: 0, cached: true };
+  if (!wantDark) {
+    if (!wantScreenshot) {
+      const hit = cache.get(key);
+      if (hit) {
+        // durationMs del hit reflejaría el render original: se limpia y la UI
+        // muestra "cached" en su lugar.
+        return { ...hit, durationMs: 0, cached: true };
+      }
+      const result = await runRender(url, key, { screenshot: false, colorScheme: 'light' });
+      delete result.screenshot; // normaliza: el path cacheado también omite el campo
+      cache.set(key, result);
+      return { ...result, cached: false };
     }
-    const result = await runRender(url, key, { screenshot: false });
-    delete result.screenshot; // normaliza: el path cacheado también omite el campo
-    cache.set(key, result);
+
+    // Con screenshot: si ambos caches están calientes, respuesta instantánea.
+    const shot = screenshotCache.get(key);
+    const hit = cache.get(key);
+    if (shot && hit) {
+      return { ...hit, durationMs: 0, cached: true, screenshot: shot };
+    }
+
+    const result = await runRender(url, key, { screenshot: true, colorScheme: 'light' });
+    const { screenshot, ...rest } = result;
+    if (screenshot) {
+      screenshotCache.set(key, screenshot);
+    }
+    cache.set(key, rest);
     return { ...result, cached: false };
   }
 
-  // Con screenshot: si ambos caches están calientes, respuesta instantánea.
-  const shot = screenshotCache.get(key);
-  const hit = cache.get(key);
-  if (shot && hit) {
-    return { ...hit, durationMs: 0, cached: true, screenshot: shot };
+  // Dark mode: dos renders (light + dark) para detectar prefers-color-scheme.
+  const lightHit = cache.get(key);
+  const darkHit = cache.get(darkKey);
+  const shot = wantScreenshot ? screenshotCache.get(key) : undefined;
+  if (lightHit && darkHit && (!wantScreenshot || shot)) {
+    return {
+      ...lightHit,
+      durationMs: 0,
+      cached: true,
+      hasDarkMode: darkHit.hasDarkMode,
+      dark: darkHit.dark,
+      ...(shot ? { screenshot: shot } : {})
+    };
   }
 
-  const result = await runRender(url, key, { screenshot: true });
-  const { screenshot, ...rest } = result;
+  const light = await runRender(url, key, { screenshot: wantScreenshot, colorScheme: 'light' });
+  const dark = await runRender(url, key, { screenshot: false, colorScheme: 'dark' });
+  const hasDarkMode = detectDarkMode(light.usagePalette, dark.usagePalette, light.dominantBg, dark.dominantBg);
+  const darkEntry = {
+    hasDarkMode,
+    dark: hasDarkMode
+      ? { usagePalette: dark.usagePalette, contrast: dark.contrast, dominantBg: dark.dominantBg }
+      : null
+  };
+
+  const { screenshot, ...lightRest } = light;
   if (screenshot) {
     screenshotCache.set(key, screenshot);
   }
-  cache.set(key, rest);
-  return { ...result, cached: false };
+  cache.set(key, lightRest);
+  cache.set(darkKey, darkEntry);
+
+  return { ...light, cached: false, hasDarkMode, dark: darkEntry.dark };
 }
 
 function readJson(req, limit) {
@@ -157,7 +197,7 @@ const server = http.createServer((req, res) => {
 
   if (url === '/render' && method === 'POST') {
     readJson(req, 100_000)
-      .then((body) => handleRender(body, body?.screenshot === true))
+      .then((body) => handleRender(body, body?.screenshot === true, body?.darkMode === true))
       .then((data) => sendJson(res, 200, data))
       .catch((error) => {
         sendJson(res, error.statusCode || 500, { error: error.statusMessage || error.message });

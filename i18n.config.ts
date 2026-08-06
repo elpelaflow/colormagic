@@ -362,6 +362,7 @@ export default defineI18nConfig(() => ({
         runtimeButton: 'Analyze rendered colors',
         runtimeRunning: 'Analyzing…',
         runtimeTitle: 'Rendered Colors',
+        runtimeHint: 'Renders the page to measure the colors actually used — works on any site, even without design tokens.',
         runtimeCount: '{count} colors used',
         runtimeShare: '{count} uses · {share}%',
         runtimeDuration: 'Took {seconds}s',
@@ -371,7 +372,10 @@ export default defineI18nConfig(() => ({
         contrastPairs: '{count} pairs',
         contrastUses: '{count} uses',
         contrastAaSummary: '{pass}/{total} pass AA',
-        contrastRatio: '{ratio}:1'
+        contrastRatio: '{ratio}:1',
+        runtimeModeLight: 'Light',
+        runtimeModeDark: 'Dark',
+        usedOnPage: 'used on page'
       }
     },
     ja: {
@@ -734,6 +738,7 @@ export default defineI18nConfig(() => ({
         runtimeButton: 'レンダリングされた色を分析',
         runtimeRunning: '分析中…',
         runtimeTitle: 'レンダリングされた色',
+        runtimeHint: 'ページを実際にレンダリングして使用されている色を測定します。トークンがなくても動作します。',
         runtimeCount: '{count}色が使用中',
         runtimeShare: '{count}回使用 · {share}%',
         runtimeDuration: '{seconds}秒かかりました',
@@ -743,7 +748,10 @@ export default defineI18nConfig(() => ({
         contrastPairs: '{count}組',
         contrastUses: '{count}回使用',
         contrastAaSummary: '{pass}/{total}がAA合格',
-        contrastRatio: '{ratio}:1'
+        contrastRatio: '{ratio}:1',
+        runtimeModeLight: 'ライト',
+        runtimeModeDark: 'ダーク',
+        usedOnPage: 'ページで使用'
       }
     },
     it: {
@@ -1106,6 +1114,7 @@ export default defineI18nConfig(() => ({
         runtimeButton: 'Analizza i colori renderizzati',
         runtimeRunning: 'Analisi in corso…',
         runtimeTitle: 'Colori Renderizzati',
+        runtimeHint: 'Esegue il rendering della pagina per misurare i colori realmente usati — funziona su qualsiasi sito, anche senza token.',
         runtimeCount: '{count} colori in uso',
         runtimeShare: '{count} usi · {share}%',
         runtimeDuration: 'Impiegato {seconds}s',
@@ -1115,7 +1124,10 @@ export default defineI18nConfig(() => ({
         contrastPairs: '{count} coppie',
         contrastUses: '{count} usi',
         contrastAaSummary: '{pass}/{total} superano AA',
-        contrastRatio: '{ratio}:1'
+        contrastRatio: '{ratio}:1',
+        runtimeModeLight: 'Chiaro',
+        runtimeModeDark: 'Scuro',
+        usedOnPage: 'usato nella pagina'
       }
     },
     es: {
@@ -1478,6 +1490,7 @@ export default defineI18nConfig(() => ({
         runtimeButton: 'Analizar colores renderizados',
         runtimeRunning: 'Analizando…',
         runtimeTitle: 'Colores Renderizados',
+        runtimeHint: 'Renderiza la página para medir los colores realmente usados — funciona en cualquier sitio, incluso sin tokens.',
         runtimeCount: '{count} colores en uso',
         runtimeShare: '{count} usos · {share}%',
         runtimeDuration: 'Tardó {seconds}s',
@@ -1487,7 +1500,10 @@ export default defineI18nConfig(() => ({
         contrastPairs: '{count} pares',
         contrastUses: '{count} usos',
         contrastAaSummary: '{pass}/{total} cumplen AA',
-        contrastRatio: '{ratio}:1'
+        contrastRatio: '{ratio}:1',
+        runtimeModeLight: 'Claro',
+        runtimeModeDark: 'Oscuro',
+        usedOnPage: 'usado en la página'
       }
     },
     fr: {
@@ -1850,6 +1866,7 @@ export default defineI18nConfig(() => ({
         runtimeButton: 'Analyser les couleurs rendues',
         runtimeRunning: 'Analyse en cours…',
         runtimeTitle: 'Couleurs Rendues',
+        runtimeHint: 'Affiche la page pour mesurer les couleurs réellement utilisées — fonctionne sur n\u2019importe quel site, même sans tokens.',
         runtimeCount: '{count} couleurs utilisées',
         runtimeShare: '{count} usages · {share}%',
         runtimeDuration: 'Durée : {seconds}s',
@@ -1859,7 +1876,10 @@ export default defineI18nConfig(() => ({
         contrastPairs: '{count} paires',
         contrastUses: '{count} usages',
         contrastAaSummary: '{pass}/{total} passent AA',
-        contrastRatio: '{ratio}:1'
+        contrastRatio: '{ratio}:1',
+        runtimeModeLight: 'Clair',
+        runtimeModeDark: 'Sombre',
+        usedOnPage: 'utilisé sur la page'
       }
     }
   }

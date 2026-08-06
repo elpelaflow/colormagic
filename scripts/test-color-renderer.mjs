@@ -3,7 +3,7 @@
  * La parte de Playwright se valida con el endpoint real (docker run), no aquí.
  * Corre con: node --experimental-strip-types scripts/test-color-renderer.mjs
  */
-import { rgbToHex, aggregateUsage, createLruCache, contrastRatio, aggregateContrast } from '../workers/color-renderer/lib.mjs';
+import { rgbToHex, aggregateUsage, createLruCache, contrastRatio, aggregateContrast, detectDarkMode } from '../workers/color-renderer/lib.mjs';
 import assert from 'node:assert';
 
 // 1) rgbToHex
@@ -71,5 +71,14 @@ assert.strictEqual(contrastAgg[0].passesAAA, true, 'negro/blanco pasa AAA');
 assert.strictEqual(contrastAgg[1].passesAA, true, '#777777 large text pasa AA (umbral 3:1)');
 assert.strictEqual(contrastAgg[1].passesAAA, false, '#777777 large text no pasa AAA (umbral 4.5:1)');
 console.log('[4] contrastRatio + aggregateContrast OK');
+
+// 5) detección de dark mode
+const lightPalette = [{ hex: '#ffffff' }, { hex: '#1f2328' }, { hex: '#0172ad' }];
+const darkPalette = [{ hex: '#181818' }, { hex: '#f4f4f4' }, { hex: '#3b82f6' }];
+assert.strictEqual(detectDarkMode(lightPalette, darkPalette, '#ffffff', '#181818'), true, 'fondo claro vs oscuro -> dark mode');
+assert.strictEqual(detectDarkMode(lightPalette, lightPalette, '#ffffff', '#ffffff'), false, 'mismos fondos y paleta -> sin dark mode');
+assert.strictEqual(detectDarkMode(lightPalette, [{ hex: '#ffffff' }, { hex: '#101010' }], '#ffffff', '#ffffff'), false, 'mismo fondo dominante -> sin dark mode (paleta no cambia lo suficiente)');
+assert.strictEqual(detectDarkMode([{ hex: '#ffffff' }], [{ hex: '#000000' }], '#ffffff', '#ffffff'), true, 'paleta completamente distinta -> dark mode por señal secundaria');
+console.log('[5] detectDarkMode OK');
 
 console.log('\nTODO OK ✔');
