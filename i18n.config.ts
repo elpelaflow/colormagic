@@ -51,6 +51,7 @@ export default defineI18nConfig(() => ({
         allColors: 'All Colors',
         colorPaletteCreator: 'Color Palette Creator',
         gradientGenerator: 'Gradient Generator',
+        tokenExtractor: 'Color Token Extractor',
         favorites: 'Favorites'
       },
       palette: {
@@ -316,6 +317,36 @@ export default defineI18nConfig(() => ({
         savedSuccess: 'Gradient saved',
         loadedSuccess: 'Gradient loaded',
         savedName: 'Gradient {number}'
+      },
+      tokenExtractor: {
+        title: 'Color Token Extractor',
+        seoTitle: 'Color Token Extractor - Magicolor',
+        seoDescription: 'Extract CSS color tokens (custom properties) from any website: copy them as JSON, CSS variables or a Tailwind config.',
+        urlPlaceholder: 'https://example.com',
+        extractLabel: 'Extract Tokens',
+        extracting: 'Extracting…',
+        urlMissing: 'Enter a website URL first.',
+        urlInvalid: 'Invalid URL. Expected an http(s) URL.',
+        fetchFailed: 'Could not fetch the page.',
+        themeColor: 'Theme color',
+        tokensTitle: 'Color Tokens',
+        tokensCount: '{count} tokens',
+        filterAll: 'All',
+        typeBrand: 'Brand',
+        typeSemantic: 'Semantic',
+        typeCustom: 'Custom',
+        scopeRoot: 'Root',
+        scopeScoped: 'Scoped',
+        paletteTitle: 'Derived Palette',
+        noTokens: 'No color tokens found on this page.',
+        copyCss: 'Copy CSS',
+        copyTailwind: 'Copy Tailwind',
+        downloadJson: 'Download JSON',
+        downloadTailwind: 'Download Tailwind Config',
+        copiedCss: 'CSS copied to clipboard',
+        copiedTailwind: 'Tailwind config copied to clipboard',
+        tokenCopied: 'Token copied',
+        copyValue: 'Copy value'
       }
     },
     ja: {
@@ -367,6 +398,7 @@ export default defineI18nConfig(() => ({
         allColors: 'オールカラー',
         colorPaletteCreator: 'カラーパレットクリエーター',
         gradientGenerator: 'グラデーションジェネレーター',
+        tokenExtractor: 'カラートークン抽出',
         favorites: 'お気に入り'
       },
       palette: {
@@ -632,6 +664,36 @@ export default defineI18nConfig(() => ({
         savedSuccess: 'グラデーションを保存しました',
         loadedSuccess: 'グラデーションを読み込みました',
         savedName: 'グラデーション {number}'
+      },
+      tokenExtractor: {
+        title: 'カラートークン抽出',
+        seoTitle: 'カラートークン抽出 - Magicolor',
+        seoDescription: '任意のWebサイトからCSSカラートークン（カスタムプロパティ）を抽出：JSON、CSS変数、Tailwind設定としてコピーできます。',
+        urlPlaceholder: 'https://example.com',
+        extractLabel: 'トークンを抽出',
+        extracting: '抽出中…',
+        urlMissing: 'まずURLを入力してください。',
+        urlInvalid: 'URLが無効です。http(s)形式で入力してください。',
+        fetchFailed: 'ページを取得できませんでした。',
+        themeColor: 'テーマカラー',
+        tokensTitle: 'カラートークン',
+        tokensCount: '{count}件のトークン',
+        filterAll: 'すべて',
+        typeBrand: 'ブランド',
+        typeSemantic: 'セマンティック',
+        typeCustom: 'カスタム',
+        scopeRoot: 'ルート',
+        scopeScoped: 'スコープ付き',
+        paletteTitle: '抽出されたパレット',
+        noTokens: 'このページにカラートークンが見つかりませんでした。',
+        copyCss: 'CSSをコピー',
+        copyTailwind: 'Tailwindをコピー',
+        downloadJson: 'JSONをダウンロード',
+        downloadTailwind: 'Tailwind設定をダウンロード',
+        copiedCss: 'CSSをクリップボードにコピーしました',
+        copiedTailwind: 'Tailwind設定をコピーしました',
+        tokenCopied: 'トークンをコピーしました',
+        copyValue: '値をコピー'
       }
     },
     it: {
@@ -683,6 +745,7 @@ export default defineI18nConfig(() => ({
         allColors: 'Tutti i Colori',
         colorPaletteCreator: 'Color Palette Creator',
         gradientGenerator: 'Generatore di Gradienti',
+        tokenExtractor: 'Estrattore di Token Colore',
         favorites: 'Preferiti'
       },
       palette: {
@@ -948,6 +1011,36 @@ export default defineI18nConfig(() => ({
         savedSuccess: 'Gradiente salvato',
         loadedSuccess: 'Gradiente caricato',
         savedName: 'Gradiente {number}'
+      },
+      tokenExtractor: {
+        title: 'Estrattore di Token Colore',
+        seoTitle: 'Estrattore di Token Colore - Magicolor',
+        seoDescription: 'Estrai i token colore CSS (custom properties) da qualsiasi sito web: copiali come JSON, variabili CSS o config Tailwind.',
+        urlPlaceholder: 'https://example.com',
+        extractLabel: 'Estrai Token',
+        extracting: 'Estrazione…',
+        urlMissing: 'Inserisci prima l\'URL del sito.',
+        urlInvalid: 'URL non valido. Usa http(s).',
+        fetchFailed: 'Impossibile recuperare la pagina.',
+        themeColor: 'Colore tema',
+        tokensTitle: 'Token Colore',
+        tokensCount: '{count} token',
+        filterAll: 'Tutti',
+        typeBrand: 'Brand',
+        typeSemantic: 'Semantico',
+        typeCustom: 'Personalizzato',
+        scopeRoot: 'Root',
+        scopeScoped: 'Scoped',
+        paletteTitle: 'Palette Derivata',
+        noTokens: 'Nessun token colore trovato in questa pagina.',
+        copyCss: 'Copia CSS',
+        copyTailwind: 'Copia Tailwind',
+        downloadJson: 'Scarica JSON',
+        downloadTailwind: 'Scarica Config Tailwind',
+        copiedCss: 'CSS copiato negli appunti',
+        copiedTailwind: 'Config Tailwind copiata',
+        tokenCopied: 'Token copiato',
+        copyValue: 'Copia valore'
       }
     },
     es: {
@@ -999,6 +1092,7 @@ export default defineI18nConfig(() => ({
         allColors: 'Todos los Colores',
         colorPaletteCreator: 'Creador de Paletas de Colores',
         gradientGenerator: 'Generador de Degradados',
+        tokenExtractor: 'Extractor de Tokens de Color',
         favorites: 'Favoritos'
       },
       palette: {
@@ -1264,6 +1358,36 @@ export default defineI18nConfig(() => ({
         savedSuccess: 'Degradado guardado',
         loadedSuccess: 'Degradado cargado',
         savedName: 'Degradado {number}'
+      },
+      tokenExtractor: {
+        title: 'Extractor de Tokens de Color',
+        seoTitle: 'Extractor de Tokens de Color - Magicolor',
+        seoDescription: 'Extraé los tokens de color CSS (custom properties) de cualquier sitio web: copialos como JSON, variables CSS o config de Tailwind.',
+        urlPlaceholder: 'https://example.com',
+        extractLabel: 'Extraer Tokens',
+        extracting: 'Extrayendo…',
+        urlMissing: 'Ingresá primero una URL de sitio web.',
+        urlInvalid: 'URL inválida. Se espera una URL http(s).',
+        fetchFailed: 'No se pudo obtener la página.',
+        themeColor: 'Color de tema',
+        tokensTitle: 'Tokens de Color',
+        tokensCount: '{count} tokens',
+        filterAll: 'Todos',
+        typeBrand: 'Marca',
+        typeSemantic: 'Semántico',
+        typeCustom: 'Personalizado',
+        scopeRoot: 'Raíz',
+        scopeScoped: 'Scoped',
+        paletteTitle: 'Paleta Derivada',
+        noTokens: 'No se encontraron tokens de color en esta página.',
+        copyCss: 'Copiar CSS',
+        copyTailwind: 'Copiar Tailwind',
+        downloadJson: 'Descargar JSON',
+        downloadTailwind: 'Descargar Config Tailwind',
+        copiedCss: 'CSS copiado al portapapeles',
+        copiedTailwind: 'Config Tailwind copiada',
+        tokenCopied: 'Token copiado',
+        copyValue: 'Copiar valor'
       }
     },
     fr: {
@@ -1315,6 +1439,7 @@ export default defineI18nConfig(() => ({
         allColors: 'Toutes les Couleurs',
         colorPaletteCreator: 'Créateur de Palettes de Couleurs',
         gradientGenerator: 'Générateur de Dégradés',
+        tokenExtractor: 'Extracteur de Tokens de Couleur',
         favorites: 'Favoris'
       },
       palette: {
@@ -1580,6 +1705,36 @@ export default defineI18nConfig(() => ({
         savedSuccess: 'Dégradé enregistré',
         loadedSuccess: 'Dégradé chargé',
         savedName: 'Dégradé {number}'
+      },
+      tokenExtractor: {
+        title: 'Extracteur de Tokens de Couleur',
+        seoTitle: 'Extracteur de Tokens de Couleur - Magicolor',
+        seoDescription: 'Extrayez les tokens de couleur CSS (custom properties) de n\'importe quel site web : copiez-les en JSON, variables CSS ou config Tailwind.',
+        urlPlaceholder: 'https://example.com',
+        extractLabel: 'Extraire les Tokens',
+        extracting: 'Extraction…',
+        urlMissing: 'Saisissez d\'abord une URL de site web.',
+        urlInvalid: 'URL invalide. Attendu http(s).',
+        fetchFailed: 'Impossible de récupérer la page.',
+        themeColor: 'Couleur du thème',
+        tokensTitle: 'Tokens de Couleur',
+        tokensCount: '{count} tokens',
+        filterAll: 'Tous',
+        typeBrand: 'Marque',
+        typeSemantic: 'Sémantique',
+        typeCustom: 'Personnalisé',
+        scopeRoot: 'Racine',
+        scopeScoped: 'Scoped',
+        paletteTitle: 'Palette Dérivée',
+        noTokens: 'Aucun token de couleur trouvé sur cette page.',
+        copyCss: 'Copier le CSS',
+        copyTailwind: 'Copier Tailwind',
+        downloadJson: 'Télécharger le JSON',
+        downloadTailwind: 'Télécharger Config Tailwind',
+        copiedCss: 'CSS copié dans le presse-papiers',
+        copiedTailwind: 'Config Tailwind copiée',
+        tokenCopied: 'Token copié',
+        copyValue: 'Copier la valeur'
       }
     }
   }

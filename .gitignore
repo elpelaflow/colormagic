@@ -17,3 +17,4 @@ colors_and_palettes.csv
 layers/color-palette-creator/utils/__tests__/.tmp-parity/
 layers/color-palette-creator/utils/__tests__/parity-diffs.json
 scripts/.tmp-unit/
+scripts/.tmp-dembrandt/

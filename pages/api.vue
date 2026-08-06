@@ -101,6 +101,15 @@
       <pre class="border bg-gray-50 rounded-sm px-1 text-sm">body: { "image": "data:image/...;base64,...", "count": number }</pre>
     </div>
 
+    <!-- color token extractor -->
+    <div class="mb-4 space-y-2">
+      <p class="font-semibold">
+        [POST] color token extractor:
+      </p>
+      <pre class="border bg-gray-50 rounded-sm px-1">{{ colorTokenExtractorUrl }}</pre>
+      <pre class="border bg-gray-50 rounded-sm px-1 text-sm">body: { "url": "https://example.com" }</pre>
+    </div>
+
     <!-- feedback -->
     <div class="mb-4 space-y-2">
       <p class="font-semibold">
@@ -137,6 +146,7 @@ const randomColorUrl = `${apiUrl}/random-color`;
 const contrastCheckerUrl = `${apiUrl}/contrast-checker?primary=%23ffffff&secondary=%23000000`;
 const colorMixerUrl = `${apiUrl}/color-mixer?a=%23ff0000&b=%230000ff&ratio=0.5`;
 const imageColorPickerUrl = `${apiUrl}/image-color-picker`;
+const colorTokenExtractorUrl = `${apiUrl}/color-token-extractor`;
 const feedbackUrl = `${apiUrl}/feedback`;
 
 useSeoMeta({

@@ -14,7 +14,8 @@
     "test:unit": "node --experimental-strip-types scripts/unit-tests.mjs",
     "test:i18n": "node --experimental-strip-types scripts/check-i18n-keys.mjs",
     "test:favorites": "node --experimental-strip-types scripts/test-favorites.mjs",
-    "test": "npm run test:parity && npm run test:unit && npm run test:i18n && npm run test:favorites"
+    "test:token-extractor": "node --experimental-strip-types scripts/test-token-extractor.mjs",
+    "test": "npm run test:parity && npm run test:unit && npm run test:i18n && npm run test:favorites && npm run test:token-extractor"
   },
   "dependencies": {
     "@apideck/better-ajv-errors": "0.3.6",

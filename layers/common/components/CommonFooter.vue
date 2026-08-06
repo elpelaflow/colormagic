@@ -193,6 +193,10 @@ const toolsLinks = computed(() => [{
   label: t('nav.gradientGenerator')
 },
 {
+  to: localePath('/color-token-extractor'),
+  label: t('nav.tokenExtractor')
+},
+{
   to: localePath('/api'),
   label: t('nav.api')
 }]);

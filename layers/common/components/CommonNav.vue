@@ -198,6 +198,12 @@ const toolsLinks = computed(() => [{
   label: t('nav.gradientGenerator'),
   description: t('gradientGenerator.seoDescription'),
   icon: 'i-heroicons-bars-arrow-down'
+},
+{
+  to: localePath('/color-token-extractor'),
+  label: t('nav.tokenExtractor'),
+  description: t('tokenExtractor.seoDescription'),
+  icon: 'i-heroicons-code-bracket'
 }]);
 
 watch(useRoute(), () => {

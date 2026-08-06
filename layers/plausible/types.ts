@@ -36,4 +36,11 @@ export enum PlausibleEventName {
 
   FAVORITE_ADDED = 'favorite:added',
   FAVORITE_REMOVED = 'favorite:removed',
+
+  TOKEN_EXTRACTOR_EXTRACTED = 'token-extractor:extracted',
+  TOKEN_EXTRACTOR_TOKEN_COPIED = 'token-extractor:token:copied',
+  TOKEN_EXTRACTOR_CSS_COPIED = 'token-extractor:copied:css',
+  TOKEN_EXTRACTOR_TAILWIND_COPIED = 'token-extractor:copied:tailwind',
+  TOKEN_EXTRACTOR_JSON_DOWNLOADED = 'token-extractor:downloaded:json',
+  TOKEN_EXTRACTOR_TAILWIND_DOWNLOADED = 'token-extractor:downloaded:tailwind',
 }
