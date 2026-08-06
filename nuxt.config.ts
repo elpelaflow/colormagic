@@ -85,6 +85,12 @@ export default defineNuxtConfig({
         language: 'it-IT',
         name: 'Italian',
         flag: '🇮🇹'
+      },
+      {
+        code: 'es',
+        language: 'es-ES',
+        name: 'Spanish',
+        flag: '🇪🇸'
       }
     ]
   }

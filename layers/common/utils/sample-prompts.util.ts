@@ -44,9 +44,35 @@ const en = [
   'Teenage'
 ];
 
+const es = [
+  'Bosque',
+  'Océano',
+  'Playa',
+  'Verano',
+  'Lindo',
+  'Romántico',
+  'Elegante',
+  'Deportivo',
+  'Feliz',
+  'Primavera',
+  'Café',
+  'Acuario',
+  'Girasol',
+  'Fogata',
+  'Flor',
+  'Invierno',
+  'Neón',
+  'Otoño',
+  'Navidad',
+  'Adolescente'
+];
+
 export function getSamplePrompt(lang: string): string[] {
   if (lang === 'ja') {
     return ja;
+  }
+  if (lang === 'es') {
+    return es;
   }
   return en;
 };
