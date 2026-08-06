@@ -307,6 +307,66 @@
         </div>
       </div>
 
+      <!-- contrast (WCAG, Fase 2b) -->
+      <div
+        v-if="runtimeResult?.contrast?.length"
+        class="mb-10"
+      >
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+          <div class="flex items-center gap-3">
+            <p class="text-lg font-bold">
+              {{ t('tokenExtractor.contrastTitle') }}
+            </p>
+            <UBadge variant="soft">
+              {{ t('tokenExtractor.contrastPairs', { count: runtimeResult.contrast.length }) }}
+            </UBadge>
+          </div>
+          <p class="text-sm text-gray-500">
+            {{ t('tokenExtractor.contrastAaSummary', { pass: aaPassCount, total: runtimeResult.contrast.length }) }}
+          </p>
+        </div>
+
+        <ul class="border border-gray-200 rounded-lg divide-y divide-gray-200">
+          <li
+            v-for="entry in runtimeResult.contrast"
+            :key="entry.fg + entry.bg"
+            class="flex flex-wrap items-center gap-3 p-3 hover:bg-gray-50 transition-colors"
+          >
+            <div class="flex items-center gap-1">
+              <span
+                class="w-8 h-8 rounded border border-gray-200"
+                :style="{ backgroundColor: entry.fg }"
+                :title="entry.fg"
+              />
+              <span
+                class="w-8 h-8 rounded border border-gray-200"
+                :style="{ backgroundColor: entry.bg }"
+                :title="entry.bg"
+              />
+            </div>
+            <div class="min-w-0 flex-1">
+              <p class="font-mono text-sm font-semibold truncate">
+                {{ entry.fg }} on {{ entry.bg }}
+              </p>
+              <p class="text-xs text-gray-500">
+                {{ t('tokenExtractor.contrastUses', { count: entry.count }) }}
+              </p>
+            </div>
+            <p class="font-mono text-sm font-semibold">
+              {{ t('tokenExtractor.contrastRatio', { ratio: entry.ratio }) }}
+            </p>
+            <div class="flex items-center gap-1">
+              <UBadge size="sm" :color="entry.passesAA ? 'green' : 'red'">
+                AA
+              </UBadge>
+              <UBadge size="sm" :color="entry.passesAAA ? 'green' : 'red'">
+                AAA
+              </UBadge>
+            </div>
+          </li>
+        </ul>
+      </div>
+
       <!-- derived palette -->
       <div v-if="result.palette.length > 0">
         <p class="text-lg font-bold mb-4">
@@ -443,6 +503,15 @@ const tokenGroups = computed(() => {
 const cssExport = computed(() => result.value ? buildCssExport(result.value.tokens) : '');
 const tailwindExport = computed(() => result.value ? buildTailwindExport(result.value.tokens) : '');
 
+interface RuntimeContrastEntry {
+  fg: string;
+  bg: string;
+  count: number;
+  ratio: number;
+  passesAA: boolean;
+  passesAAA: boolean;
+}
+
 interface RuntimeResult {
   url: string;
   title: string | null;
@@ -451,8 +520,11 @@ interface RuntimeResult {
   sampled: number;
   unique: number;
   usagePalette: { hex: string; count: number; share: number }[];
+  contrast: RuntimeContrastEntry[];
   cached?: boolean;
 }
+
+const aaPassCount = computed(() => runtimeResult.value?.contrast?.filter(entry => entry.passesAA).length ?? 0);
 
 async function onRunRuntime(): Promise<void> {
   if (!result.value || isRuntimeRunning.value) return;

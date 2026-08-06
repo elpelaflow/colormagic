@@ -366,7 +366,12 @@ export default defineI18nConfig(() => ({
         runtimeShare: '{count} uses · {share}%',
         runtimeDuration: 'Took {seconds}s',
         runtimeCached: 'Cached result',
-        runtimeError: 'Rendered analysis unavailable. The renderer worker is offline.'
+        runtimeError: 'Rendered analysis unavailable. The renderer worker is offline.',
+        contrastTitle: 'Text Contrast (WCAG)',
+        contrastPairs: '{count} pairs',
+        contrastUses: '{count} uses',
+        contrastAaSummary: '{pass}/{total} pass AA',
+        contrastRatio: '{ratio}:1'
       }
     },
     ja: {
@@ -733,7 +738,12 @@ export default defineI18nConfig(() => ({
         runtimeShare: '{count}回使用 · {share}%',
         runtimeDuration: '{seconds}秒かかりました',
         runtimeCached: 'キャッシュ済み',
-        runtimeError: 'レンダリング分析は利用できません。レンダラーワーカーがオフラインです。'
+        runtimeError: 'レンダリング分析は利用できません。レンダラーワーカーがオフラインです。',
+        contrastTitle: 'テキストのコントラスト (WCAG)',
+        contrastPairs: '{count}組',
+        contrastUses: '{count}回使用',
+        contrastAaSummary: '{pass}/{total}がAA合格',
+        contrastRatio: '{ratio}:1'
       }
     },
     it: {
@@ -1100,7 +1110,12 @@ export default defineI18nConfig(() => ({
         runtimeShare: '{count} usi · {share}%',
         runtimeDuration: 'Impiegato {seconds}s',
         runtimeCached: 'Risultato in cache',
-        runtimeError: 'Analisi renderizzata non disponibile. Il worker di rendering è offline.'
+        runtimeError: 'Analisi renderizzata non disponibile. Il worker di rendering è offline.',
+        contrastTitle: 'Contrasto del Testo (WCAG)',
+        contrastPairs: '{count} coppie',
+        contrastUses: '{count} usi',
+        contrastAaSummary: '{pass}/{total} superano AA',
+        contrastRatio: '{ratio}:1'
       }
     },
     es: {
@@ -1467,7 +1482,12 @@ export default defineI18nConfig(() => ({
         runtimeShare: '{count} usos · {share}%',
         runtimeDuration: 'Tardó {seconds}s',
         runtimeCached: 'Resultado en caché',
-        runtimeError: 'Análisis renderizado no disponible. El worker de render está offline.'
+        runtimeError: 'Análisis renderizado no disponible. El worker de render está offline.',
+        contrastTitle: 'Contraste de Texto (WCAG)',
+        contrastPairs: '{count} pares',
+        contrastUses: '{count} usos',
+        contrastAaSummary: '{pass}/{total} cumplen AA',
+        contrastRatio: '{ratio}:1'
       }
     },
     fr: {
@@ -1834,7 +1854,12 @@ export default defineI18nConfig(() => ({
         runtimeShare: '{count} usages · {share}%',
         runtimeDuration: 'Durée : {seconds}s',
         runtimeCached: 'Résultat en cache',
-        runtimeError: 'Analyse rendue indisponible. Le worker de rendu est hors ligne.'
+        runtimeError: 'Analyse rendue indisponible. Le worker de rendu est hors ligne.',
+        contrastTitle: 'Contraste du Texte (WCAG)',
+        contrastPairs: '{count} paires',
+        contrastUses: '{count} usages',
+        contrastAaSummary: '{pass}/{total} passent AA',
+        contrastRatio: '{ratio}:1'
       }
     }
   }

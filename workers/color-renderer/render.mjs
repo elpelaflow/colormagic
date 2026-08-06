@@ -1,9 +1,16 @@
 /**
  * color-renderer — job de render.
  * Navega a la URL, deja correr el JS, y muestrea los colores COMPUTADOS
- * (getComputedStyle) de los elementos visibles para armar la paleta de uso.
+ * (getComputedStyle) de los elementos visibles para armar la paleta de uso
+ * y el contraste WCAG de los textos (fg sobre fondo efectivo).
+ *
+ * Limitaciones conocidas (Fase 2b):
+ * - Colores devueltos por getComputedStyle en `color(srgb ...)` (espacios de
+ *   color modernos) no se parsean y se descartan silenciosamente.
+ * - La `opacity` del elemento se aplica al color de texto, pero no a los
+ *   backgrounds de la cadena de ancestros.
  */
-import { aggregateUsage } from './lib.mjs';
+import { aggregateContrast, aggregateUsage } from './lib.mjs';
 
 function timeoutError() {
   const error = new Error('Render timed out.');
@@ -37,25 +44,84 @@ export async function renderSite(context, url, { signal, maxElements = 5000, set
     if (signal?.aborted) throw timeoutError();
 
     const data = await page.evaluate((maxElems) => {
-      const toHex = (value) => {
+      const parseRgba = (value) => {
         const m = String(value).match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/);
         if (!m) return null;
-        if (Number(m[4] ?? 1) === 0) return null;
-        return '#' + [m[1], m[2], m[3]].map((n) => Number(n).toString(16).padStart(2, '0')).join('');
+        return { r: +m[1], g: +m[2], b: +m[3], a: +(m[4] ?? 1) };
+      };
+      const toHex = (value) => {
+        const rgb = parseRgba(value);
+        if (!rgb || rgb.a === 0) return null;
+        return '#' + [rgb.r, rgb.g, rgb.b].map((n) => Math.round(n).toString(16).padStart(2, '0')).join('');
+      };
+      const rgbToHex = (rgb) =>
+        '#' + [rgb.r, rgb.g, rgb.b].map((n) => Math.max(0, Math.min(255, Math.round(n))).toString(16).padStart(2, '0')).join('');
+      const composite = (top, bottom) => {
+        const a = top.a + bottom.a * (1 - top.a);
+        if (a === 0) return { r: 0, g: 0, b: 0, a: 0 };
+        return {
+          r: (top.r * top.a + bottom.r * bottom.a * (1 - top.a)) / a,
+          g: (top.g * top.a + bottom.g * bottom.a * (1 - top.a)) / a,
+          b: (top.b * top.a + bottom.b * bottom.a * (1 - top.a)) / a,
+          a
+        };
+      };
+      // Fondo EFECTIVO: compone los backgrounds desde el elemento hacia arriba
+      // hasta un fondo opaco; si ninguno lo es, el canvas blanco del navegador.
+      // El orden importa: la bg del elemento se pinta ENCIMA de la del ancestro,
+      // así que se compone de abajo (canvas) hacia arriba (elemento).
+      const bgCache = new WeakMap();
+      const effectiveBg = (el) => {
+        const layers = [];
+        let node = el;
+        while (node) {
+          let bg = bgCache.get(node);
+          if (bg === undefined) {
+            bg = parseRgba(getComputedStyle(node).backgroundColor);
+            bgCache.set(node, bg ?? null);
+          }
+          if (bg && bg.a > 0) layers.push(bg);
+          if (bg && bg.a >= 1) break;
+          node = node.parentElement;
+        }
+        let result = { r: 255, g: 255, b: 255, a: 1 };
+        for (let i = layers.length - 1; i >= 0; i--) result = composite(layers[i], result);
+        return result;
+      };
+      const hasDirectText = (el) => {
+        for (const node of el.childNodes) {
+          if (node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0) return true;
+        }
+        return false;
       };
       const props = ['color', 'backgroundColor', 'fill', 'stroke'];
       const samples = [];
+      const contrastSamples = [];
       for (const el of Array.from(document.querySelectorAll('body *')).slice(0, maxElems)) {
         const cs = getComputedStyle(el);
         for (const prop of props) {
           const hex = toHex(cs[prop]);
           if (hex) samples.push(hex);
         }
+        if (hasDirectText(el)) {
+          const fg = parseRgba(cs.color);
+          if (fg && fg.a > 0) {
+            const opacity = parseFloat(cs.opacity) || 1;
+            if (opacity < 1) fg.a *= opacity; // texto atenuado (muted/disabled)
+            const bg = effectiveBg(el);
+            const blendedFg = fg.a >= 1 ? fg : composite(fg, bg);
+            const size = parseFloat(cs.fontSize) || 16;
+            const weight = parseInt(cs.fontWeight, 10) || 400;
+            const isLarge = size >= 24 || (size >= 18.66 && weight >= 700);
+            contrastSamples.push({ fg: rgbToHex(blendedFg), bg: rgbToHex(bg), isLarge });
+          }
+        }
       }
-      return { title: document.title, samples };
+      return { title: document.title, samples, contrastSamples };
     }, maxElements);
 
     const usagePalette = aggregateUsage(data.samples);
+    const contrast = aggregateContrast(data.contrastSamples);
     return {
       url,
       title: data.title || null,
@@ -63,7 +129,8 @@ export async function renderSite(context, url, { signal, maxElements = 5000, set
       viewport: '1440x900',
       sampled: data.samples.length,
       unique: usagePalette.length,
-      usagePalette
+      usagePalette,
+      contrast
     };
   } finally {
     signal?.removeEventListener('abort', onAbort);
