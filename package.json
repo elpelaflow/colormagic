@@ -10,7 +10,10 @@
     "postinstall": "nuxt prepare",
     "start": "node .output/server/index.mjs",
     "typecheck": "nuxi typecheck",
-    "test:parity": "node --experimental-strip-types layers/color-palette-creator/utils/__tests__/palette-parity.test.ts"
+    "test:parity": "node --experimental-strip-types layers/color-palette-creator/utils/__tests__/palette-parity.test.ts",
+    "test:unit": "node --experimental-strip-types scripts/unit-tests.mjs",
+    "test:i18n": "node --experimental-strip-types scripts/check-i18n-keys.mjs",
+    "test": "npm run test:parity && npm run test:unit && npm run test:i18n"
   },
   "dependencies": {
     "@apideck/better-ajv-errors": "0.3.6",

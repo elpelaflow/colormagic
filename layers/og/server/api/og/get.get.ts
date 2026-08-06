@@ -1,7 +1,8 @@
 export default defineEventHandler(async (event) => {
-  const query = await modules.og.validation.getInputQuery(event);
+  const { og } = getModules();
+  const query = await og.validation.getInputQuery(event);
 
-  const response = await modules.og.service.generateImage(
+  const response = await og.service.generateImage(
     query.colors.split(':'),
     query.text
   );

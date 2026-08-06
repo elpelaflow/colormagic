@@ -15,7 +15,22 @@ interface Modules {
   feedback: FeedbackModule
 }
 
-export let modules: Modules;
+/**
+ * Global de módulos inicializados. `null` cuando el setup aún no terminó
+ * (p. ej. Mongo caído al arrancar). Los handlers usan `getModules()` para
+ * recibir un 503 claro en vez de un error críptico de undefined.
+ */
+export let modules: Modules | null = null;
+
+export function getModules(): Modules {
+  if (modules === null) {
+    throw createError({
+      statusCode: 503,
+      statusMessage: 'Server is still starting up. Please try again in a moment.'
+    });
+  }
+  return modules;
+}
 
 export async function setup(): Promise<void> {
   const logger = getLoggerModule();

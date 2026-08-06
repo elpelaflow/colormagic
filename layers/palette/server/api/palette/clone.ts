@@ -1,8 +1,9 @@
 import type { PaletteDto } from '../../dtos/palette.dto';
 
 export default defineEventHandler(async (event): Promise<PaletteDto> => {
-  const body = await modules.palette.validation.getCloneInputBody(event);
-  const response = await modules.palette.service.cloneById(body.id, body.colors);
+  const { palette } = getModules();
+  const body = await palette.validation.getCloneInputBody(event);
+  const response = await palette.service.cloneById(body.id, body.colors);
 
   return response;
 });

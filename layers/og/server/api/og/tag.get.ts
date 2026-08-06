@@ -1,7 +1,8 @@
 export default defineEventHandler(async (event) => {
-  const query = await modules.og.validation.getTagQuery(event);
+  const { og } = getModules();
+  const query = await og.validation.getTagQuery(event);
 
-  const response = await modules.og.service.generateGridImageFromTags(
+  const response = await og.service.generateGridImageFromTags(
     query.tag.toLowerCase(),
     query.text
   );

@@ -1,0 +1,33 @@
+# Normalización de finales de línea: LF canónico en el repo para todos los textos.
+# En Windows el checkout puede usar CRLF (core.autocrlf), pero el blob guardado
+# es siempre LF — así no hay más diffs cosméticos LF<->CRLF.
+* text=auto eol=lf
+
+*.ts text eol=lf
+*.tsx text eol=lf
+*.vue text eol=lf
+*.js text eol=lf
+*.mjs text eol=lf
+*.cjs text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.css text eol=lf
+*.html text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.svg text eol=lf
+*.webmanifest text eol=lf
+*.sh text eol=lf
+
+# Binarios
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+*.acb binary
