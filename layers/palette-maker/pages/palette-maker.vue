@@ -16,17 +16,66 @@
           {{ $t('paletteMaker.hintGenerate') }}
           <kbd class="px-1.5 py-0.5 rounded border border-gray-300 dark:border-gray-600 font-mono text-xs">Space</kbd>
         </span>
-        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-gray-800">
-          {{ $t('paletteMaker.hintLock') }}
-          <kbd class="px-1.5 py-0.5 rounded border border-gray-300 dark:border-gray-600 font-mono text-xs">Ctrl/Cmd+1..9</kbd>
+        <!-- deshacer / rehacer (historial en memoria, máx 5) -->
+        <span class="inline-flex items-center gap-0.5 px-1 py-1 rounded-lg bg-gray-100 dark:bg-gray-800">
+          <UButton
+            icon="i-heroicons-arrow-uturn-left"
+            variant="ghost"
+            size="sm"
+            color="gray"
+            :disabled="!canUndo"
+            :title="$t('paletteMaker.undo')"
+            :aria-label="$t('paletteMaker.undo')"
+            @click="onUndo"
+          />
+          <UButton
+            icon="i-heroicons-arrow-uturn-right"
+            variant="ghost"
+            size="sm"
+            color="gray"
+            :disabled="!canRedo"
+            :title="$t('paletteMaker.redo')"
+            :aria-label="$t('paletteMaker.redo')"
+            @click="onRedo"
+          />
         </span>
+
+        <!-- corazón: guardar la paleta completa en favoritos (ClientOnly:
+             depende de colors, que vive en localStorage) -->
+        <ClientOnly>
+          <button
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-primary/10 transition-colors cursor-pointer select-none"
+            :title="$t('paletteMaker.savePalette')"
+            :aria-label="$t('paletteMaker.savePalette')"
+            :aria-pressed="paletteSaved"
+            @click="onTogglePaletteSave"
+          >
+            <span
+              :key="heartPulse"
+              class="inline-flex heart-pop"
+            >
+              <UIcon
+                :name="paletteSaved ? 'i-heroicons-heart-solid' : 'i-heroicons-heart'"
+                class="w-4 h-4 transition-colors"
+                :class="paletteSaved ? 'text-red-500' : ''"
+              />
+            </span>
+            <span>{{ $t('paletteMaker.savePalette') }}</span>
+          </button>
+          <template #fallback>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-gray-800 opacity-60">
+              <UIcon name="i-heroicons-heart" class="w-4 h-4" />
+              <span>{{ $t('paletteMaker.savePalette') }}</span>
+            </span>
+          </template>
+        </ClientOnly>
 
         <!-- modo armonía (ClientOnly: harmonyMode vive en localStorage) -->
         <ClientOnly>
           <label class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-gray-800 cursor-pointer select-none">
             <UIcon name="i-heroicons-swatch" class="w-4 h-4" />
             <span>{{ $t('paletteMaker.harmonyMode') }}</span>
-            <USwitch
+            <UToggle
               v-model="harmonyMode"
               size="sm"
               :aria-label="$t('paletteMaker.harmonyMode')"
@@ -57,36 +106,27 @@
       </template>
 
       <div class="flex h-[420px] rounded-xl overflow-hidden border border-gray-200 dark:border-gray-800 shadow-sm">
-        <template
+        <!-- colores pegados (sin divisores): el + aparece solo al acercar el mouse al límite -->
+        <ColorColumn
           v-for="(color, index) in colors"
           :key="color.id"
-        >
-          <ColorColumn
-            :color="color"
-            :index="index"
-            :can-remove="colors.length > MIN_COLORS"
-            @remove="onRemove(index)"
-            @toggle-lock="onToggleLock(index)"
-            @copy="onCopy(color)"
-            @save="onSave(color)"
-            @info="onInfo(color)"
-            @drag-start="onDragStart"
-            @drop-at="onDropAt"
-            @drag-end="onDragEnd"
-          />
-          <button
-            v-if="index < colors.length - 1"
-            class="w-9 shrink-0 flex items-center justify-center bg-gray-100 dark:bg-gray-800 text-gray-500
-                   hover:text-primary hover:bg-primary/10 transition-colors
-                   disabled:opacity-30 disabled:cursor-not-allowed"
-            :disabled="colors.length >= MAX_COLORS"
-            :title="$t('paletteMaker.addStop')"
-            :aria-label="$t('paletteMaker.addStop')"
-            @click="onAddIntermediate(index)"
-          >
-            <UIcon name="i-heroicons-plus" class="w-5 h-5" />
-          </button>
-        </template>
+          :color="color"
+          :index="index"
+          :can-remove="colors.length > MIN_COLORS"
+          :can-add-left="index > 0 && colors.length < MAX_COLORS"
+          :can-add-right="index < colors.length - 1 && colors.length < MAX_COLORS"
+          :show-details="colors.length <= 6"
+          @remove="onRemove(index)"
+          @toggle-lock="onToggleLock(index)"
+          @copy="onCopy(color)"
+          @save="onSave(color)"
+          @info="onInfo(color)"
+          @drag-start="onDragStart"
+          @drag-end="onDragEnd"
+          @drop-at="onDropAt"
+          @add-left="onAddIntermediate(index - 1)"
+          @add-right="onAddIntermediate(index)"
+        />
       </div>
     </ClientOnly>
 
@@ -248,18 +288,27 @@ const { copy } = useClipboard();
 const {
   colors,
   harmonyMode,
+  history,
+  future,
   generate,
   addIntermediate,
   removeColor,
   toggleLock,
-  moveColor
+  moveColor,
+  undo,
+  redo
 } = usePaletteMaker();
+const { isSaved: isPaletteSaved, toggleSave: togglePaletteSave } = usePaletteFavorites();
 
 watch(harmonyMode, (on) => {
   if (on) {
     sendPlausibleEvent(PlausibleEventName.PALETTE_MAKER_HARMONY_TOGGLED);
   }
 });
+
+const canUndo = computed(() => history.value.length > 0);
+const canRedo = computed(() => future.value.length > 0);
+const paletteSaved = computed(() => isPaletteSaved(colors.value.map((c) => c.hex)));
 const { savedColors, toggleSave, removeColor: removeSavedColor } = useColorFavorites();
 
 const {
@@ -324,6 +373,29 @@ function onCopyModal(): void {
 
 function onOpenColorPage(): void {
   sendPlausibleEvent(PlausibleEventName.PALETTE_MAKER_COLOR_PAGE_OPENED);
+}
+
+function onUndo(): void {
+  undo();
+  sendPlausibleEvent(PlausibleEventName.PALETTE_MAKER_UNDO);
+}
+
+function onRedo(): void {
+  redo();
+  sendPlausibleEvent(PlausibleEventName.PALETTE_MAKER_REDO);
+}
+
+const heartPulse = ref(0);
+
+function onTogglePaletteSave(): void {
+  const saved = togglePaletteSave(colors.value.map((c) => c.hex));
+  heartPulse.value += 1;
+  addSuccess(saved
+    ? t('paletteMaker.savedToFavorites')
+    : t('paletteMaker.removedFromFavorites'));
+  sendPlausibleEvent(saved
+    ? PlausibleEventName.PALETTE_MAKER_PALETTE_SAVED
+    : PlausibleEventName.PALETTE_MAKER_PALETTE_UNSAVED);
 }
 
 function onDragStart(index: number): void {
@@ -407,3 +479,21 @@ const infoColorPageUrl = computed(() => {
   return `${useRuntimeConfig().public.siteUrl}${formatOgUrl([details.hex], encodeURIComponent(details.name))}`;
 });
 </script>
+
+<style scoped>
+/* Pulso del corazón al guardar/quitar la paleta */
+@keyframes heart-pop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.4);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.heart-pop {
+  animation: heart-pop 0.3s ease;
+}
+</style>

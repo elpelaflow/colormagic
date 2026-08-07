@@ -50,6 +50,10 @@ export enum PlausibleEventName {
   SKIN_TONE_COPY_ALL = 'skin-tone:copied:all',
   SKIN_TONE_COLOR_PAGE_OPENED = 'skin-tone:color-page:opened',
 
+  COMPLEMENTARY_COLOR_COPIED = 'complementary-color:copied',
+  COMPLEMENTARY_COLOR_RANDOM = 'complementary-color:random',
+  COMPLEMENTARY_COLOR_PAGE_OPENED = 'complementary-color:page-opened',
+
   PALETTE_MAKER_GENERATED = 'palette-maker:generated',
   PALETTE_MAKER_STOP_ADDED = 'palette-maker:stop-added',
   PALETTE_MAKER_COLOR_COPIED = 'palette-maker:color:copied',
@@ -58,4 +62,8 @@ export enum PlausibleEventName {
   PALETTE_MAKER_COLUMN_REMOVED = 'palette-maker:column:removed',
   PALETTE_MAKER_COLOR_PAGE_OPENED = 'palette-maker:color-page:opened',
   PALETTE_MAKER_HARMONY_TOGGLED = 'palette-maker:harmony:toggled',
+  PALETTE_MAKER_PALETTE_SAVED = 'palette-maker:palette:saved',
+  PALETTE_MAKER_PALETTE_UNSAVED = 'palette-maker:palette:unsaved',
+  PALETTE_MAKER_UNDO = 'palette-maker:undo',
+  PALETTE_MAKER_REDO = 'palette-maker:redo',
 }

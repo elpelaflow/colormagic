@@ -18,6 +18,18 @@ export function useFavorites() {
     { serializer: StorageSerializers.map }
   );
 
+  // Self-heal: descarta entradas corruptas (p. ej. si la key fue pisada por el
+  // formato de otra feature, como pasó con palette-maker:favorites antes de
+  // separar la clave). Un Map con [undefined, undefined] o paletas sin `colors`
+  // rompía la grilla de Favorites.
+  const entries = Array.from(favorites.value);
+  const valid = entries.filter(
+    ([id, p]) => id && p && typeof p === 'object' && Array.isArray(p.colors)
+  );
+  if (valid.length !== entries.length) {
+    favorites.value = new Map(valid);
+  }
+
   function isFavorite(id: string): boolean {
     return favorites.value.has(id);
   }

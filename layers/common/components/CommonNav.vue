@@ -263,5 +263,11 @@ const utilsLinks = computed<{ to: string; label: string; description: string; ic
   label: t('nav.skinTonePalette'),
   description: t('skinTonePalette.seoDescription'),
   icon: 'i-heroicons-face-smile'
+},
+{
+  to: localePath('/complementary-color'),
+  label: t('nav.complementaryColor'),
+  description: t('complementaryColor.seoDescription'),
+  icon: 'i-heroicons-adjustments-horizontal'
 }]);
 </script>

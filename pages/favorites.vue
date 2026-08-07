@@ -25,6 +25,52 @@
         </ul>
       </template>
 
+      <!-- saved palettes (from Palette Maker ♥) -->
+      <section
+        v-if="savedPalettes.length"
+        class="mb-10"
+      >
+        <h2 class="text-lg font-semibold mb-3">
+          {{ $t('favorites.savedPalettesTitle') }}
+        </h2>
+        <ul class="flex flex-wrap gap-3">
+          <li
+            v-for="p in savedPalettes"
+            :key="p.id"
+            class="w-44 rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden shadow-sm bg-white dark:bg-gray-900"
+          >
+            <div class="flex h-10 w-full group relative">
+              <div
+                v-for="(hex, i) in p.colors"
+                :key="`${p.id}-${i}`"
+                class="flex-1"
+                :style="{ backgroundColor: hex }"
+                :title="hex"
+              />
+              <button
+                class="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded bg-black/40 text-white"
+                :title="$t('paletteMaker.remove')"
+                :aria-label="$t('paletteMaker.remove')"
+                @click="onRemoveSavedPalette(p)"
+              >
+                <UIcon name="i-heroicons-x-mark" class="w-3.5 h-3.5" />
+              </button>
+            </div>
+            <div class="p-2 flex items-center justify-between">
+              <span class="text-xs text-gray-500 font-mono">{{ p.colors.length }} {{ $t('favorites.savedPalettesCount') }}</span>
+              <UButton
+                size="xs"
+                variant="soft"
+                color="primary"
+                icon="i-heroicons-clipboard"
+                :label="$t('paletteMaker.copyHex')"
+                @click="onCopySavedPalette(p)"
+              />
+            </div>
+          </li>
+        </ul>
+      </section>
+
       <!-- saved colors (from Palette Maker ♥) -->
       <section
         v-if="savedColors.length"
@@ -121,11 +167,13 @@
 <script setup lang="ts">
 import { useClipboard } from '@vueuse/core';
 import type { SavedColor } from '~/layers/common/composables/useColorFavorites';
+import type { SavedPalette } from '~/layers/common/composables/usePaletteFavorites';
 
 const { t } = useI18n();
 const localePath = useLocalePath();
 const { favorites } = useFavorites();
 const { savedColors, removeColor: removeSavedColor } = useColorFavorites();
+const { savedPalettes, removePalette } = usePaletteFavorites();
 const { addSuccess } = useNotifications();
 const { copy } = useClipboard();
 
@@ -135,6 +183,15 @@ function onRemoveSaved(sc: SavedColor): void {
 
 function onCopySaved(sc: SavedColor): void {
   copy(sc.hex);
+  addSuccess(t('paletteMaker.copied'));
+}
+
+function onRemoveSavedPalette(p: SavedPalette): void {
+  removePalette(p.id);
+}
+
+function onCopySavedPalette(p: SavedPalette): void {
+  copy(p.colors.join(', '));
   addSuccess(t('paletteMaker.copied'));
 }
 

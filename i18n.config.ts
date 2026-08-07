@@ -22,7 +22,9 @@ export default defineI18nConfig(() => ({
         emptyDescription: 'Palettes you like will appear here. Start exploring and save your favorites.',
         addFavorite: 'Add to Favorites',
         removeFavorite: 'Remove from Favorites',
-        savedColorsTitle: 'Saved colors'
+        savedColorsTitle: 'Saved colors',
+        savedPalettesTitle: 'Saved palettes',
+        savedPalettesCount: 'colors'
       },
       generate: {
         placeholder: 'Enter keywords for image or mood of color',
@@ -54,6 +56,7 @@ export default defineI18nConfig(() => ({
         gradientGenerator: 'Gradient Generator',
         tokenExtractor: 'Color Token Extractor',
         skinTonePalette: 'Skin Tone Color Palette',
+        complementaryColor: 'Complementary Color',
         paletteMaker: 'Palette Maker',
         favorites: 'Favorites',
         utils: 'Utils'
@@ -66,7 +69,11 @@ export default defineI18nConfig(() => ({
         seoTitle: 'Palette Maker - Magicolor',
         seoDescription: 'Create custom color palettes exactly the way you want them.',
         hintGenerate: 'Generate new palette',
-        hintLock: 'Lock / unlock color',
+        undo: 'Undo',
+        redo: 'Redo',
+        savePalette: 'Save palette',
+        savedToFavorites: 'Saved to favorites',
+        removedFromFavorites: 'Removed from favorites',
         harmonyMode: 'Harmony mode',
         addStop: 'Add intermediate tone',
         remove: 'Remove color',
@@ -440,6 +447,18 @@ export default defineI18nConfig(() => ({
           olive: 'Olive undertone',
           red: 'Red undertone'
         }
+      },
+      complementaryColor: {
+        title: 'Complementary Color',
+        seoTitle: 'Complementary Color - Magicolor',
+        seoDescription: 'Find the exact opposite of any color on the color wheel: pick a color and instantly see its complementary hue, ready to copy.',
+        baseColor: 'Base color',
+        complementary: 'Complementary',
+        copyHex: 'Copy HEX',
+        openColorPage: 'Open color page',
+        hexPlaceholder: '#000000',
+        random: 'Random',
+        copied: 'Copied!'
       }
     },
     ja: {
@@ -462,7 +481,9 @@ export default defineI18nConfig(() => ({
         emptyDescription: '気に入ったパレットはここに表示されます。パレットを探して保存しましょう。',
         addFavorite: 'お気に入りに追加',
         removeFavorite: 'お気に入りから削除',
-        savedColorsTitle: '保存した色'
+        savedColorsTitle: '保存した色',
+        savedPalettesTitle: '保存したパレット',
+        savedPalettesCount: '色'
       },
       generate: {
         placeholder: '色の雰囲気やイメージを入力してください',
@@ -494,6 +515,7 @@ export default defineI18nConfig(() => ({
         gradientGenerator: 'グラデーションジェネレーター',
         tokenExtractor: 'カラートークン抽出',
         skinTonePalette: '肌の色カラーパレット',
+        complementaryColor: '補色カラー',
         paletteMaker: 'パレットメーカー',
         favorites: 'お気に入り',
         utils: 'ユーティリティ'
@@ -506,7 +528,11 @@ export default defineI18nConfig(() => ({
         seoTitle: 'パレットメーカー - Magicolor',
         seoDescription: '思い通りのカスタムカラーパレットを作成します。',
         hintGenerate: '新しいパレットを生成',
-        hintLock: '色を固定 / 解除',
+        undo: '元に戻す',
+        redo: 'やり直す',
+        savePalette: 'パレットを保存',
+        savedToFavorites: 'お気に入りに保存しました',
+        removedFromFavorites: 'お気に入りから削除しました',
         harmonyMode: 'ハーモニーモード',
         addStop: '中間色を追加',
         remove: '色を削除',
@@ -880,6 +906,18 @@ export default defineI18nConfig(() => ({
           olive: 'オリーブ系',
           red: 'レッド系'
         }
+      },
+      complementaryColor: {
+        title: '補色カラー',
+        seoTitle: '補色カラー - Magicolor',
+        seoDescription: 'カラーホイール上の色の正反対を見つけよう：色を選ぶと、コピー可能な補色が即座に表示されます。',
+        baseColor: 'ベースカラー',
+        complementary: '補色',
+        copyHex: 'HEXをコピー',
+        openColorPage: 'カラーページを開く',
+        hexPlaceholder: '#000000',
+        random: 'ランダム',
+        copied: 'コピーしました！'
       }
     },
     it: {
@@ -902,7 +940,9 @@ export default defineI18nConfig(() => ({
         emptyDescription: 'Le palette che ti piacciono appariranno qui. Esplora e salva i tuoi preferiti.',
         addFavorite: 'Aggiungi ai Preferiti',
         removeFavorite: 'Rimuovi dai Preferiti',
-        savedColorsTitle: 'Colori salvati'
+        savedColorsTitle: 'Colori salvati',
+        savedPalettesTitle: 'Palette salvate',
+        savedPalettesCount: 'colori'
       },
       generate: {
         placeholder: 'Inserisci l\'atmosfera o l\'immagine del colore',
@@ -934,6 +974,7 @@ export default defineI18nConfig(() => ({
         gradientGenerator: 'Generatore di Gradienti',
         tokenExtractor: 'Estrattore di Token Colore',
         skinTonePalette: 'Palette Toni di Pelle',
+        complementaryColor: 'Colore Complementare',
         paletteMaker: 'Palette Maker',
         favorites: 'Preferiti',
         utils: 'Utility'
@@ -946,7 +987,11 @@ export default defineI18nConfig(() => ({
         seoTitle: 'Palette Maker - Magicolor',
         seoDescription: 'Crea palette di colori personalizzate esattamente come vuoi.',
         hintGenerate: 'Genera nuova palette',
-        hintLock: 'Blocca / sblocca colore',
+        undo: 'Annulla',
+        redo: 'Ripeti',
+        savePalette: 'Salva palette',
+        savedToFavorites: 'Salvata nei preferiti',
+        removedFromFavorites: 'Rimossa dai preferiti',
         harmonyMode: 'Modalità armonia',
         addStop: 'Aggiungi tonalità intermedia',
         remove: 'Rimuovi colore',
@@ -1320,6 +1365,18 @@ export default defineI18nConfig(() => ({
           olive: 'Sottotono oliva',
           red: 'Sottotono rosso'
         }
+      },
+      complementaryColor: {
+        title: 'Colore Complementare',
+        seoTitle: 'Colore Complementare - Magicolor',
+        seoDescription: 'Trova l\'esatto opposto di qualsiasi colore sulla ruota cromatica: scegli un colore e vedi subito il suo complementare, pronto da copiare.',
+        baseColor: 'Colore base',
+        complementary: 'Complementare',
+        copyHex: 'Copia HEX',
+        openColorPage: 'Apri pagina colore',
+        hexPlaceholder: '#000000',
+        random: 'Casuale',
+        copied: 'Copiato!'
       }
     },
     es: {
@@ -1342,7 +1399,9 @@ export default defineI18nConfig(() => ({
         emptyDescription: 'Las paletas que te gusten aparecerán aquí. Explora y guarda tus favoritas.',
         addFavorite: 'Agregar a Favoritos',
         removeFavorite: 'Quitar de Favoritos',
-        savedColorsTitle: 'Colores guardados'
+        savedColorsTitle: 'Colores guardados',
+        savedPalettesTitle: 'Paletas guardadas',
+        savedPalettesCount: 'colores'
       },
       generate: {
         placeholder: 'Escribe palabras clave para la imagen o el ambiente del color',
@@ -1374,6 +1433,7 @@ export default defineI18nConfig(() => ({
         gradientGenerator: 'Generador de Degradados',
         tokenExtractor: 'Extractor de Tokens de Color',
         skinTonePalette: 'Paleta de Tonos de Piel',
+        complementaryColor: 'Color Complementario',
         paletteMaker: 'Creador de Paletas',
         favorites: 'Favoritos',
         utils: 'Utilidades'
@@ -1386,7 +1446,11 @@ export default defineI18nConfig(() => ({
         seoTitle: 'Creador de Paletas - Magicolor',
         seoDescription: 'Crea paletas de colores personalizadas exactamente como quieras.',
         hintGenerate: 'Generar nueva paleta',
-        hintLock: 'Fijar / desfijar color',
+        undo: 'Deshacer',
+        redo: 'Rehacer',
+        savePalette: 'Guardar paleta',
+        savedToFavorites: 'Guardada en favoritos',
+        removedFromFavorites: 'Quitada de favoritos',
         harmonyMode: 'Modo armonía',
         addStop: 'Agregar tono intermedio',
         remove: 'Eliminar color',
@@ -1760,6 +1824,18 @@ export default defineI18nConfig(() => ({
           olive: 'Subtono oliva',
           red: 'Subtono rojo'
         }
+      },
+      complementaryColor: {
+        title: 'Color Complementario',
+        seoTitle: 'Color Complementario - Magicolor',
+        seoDescription: 'Encontrá el opuesto exacto de cualquier color en la rueda cromática: elegí un color y mirá su complementario al instante, listo para copiar.',
+        baseColor: 'Color base',
+        complementary: 'Complementario',
+        copyHex: 'Copiar HEX',
+        openColorPage: 'Abrir página de color',
+        hexPlaceholder: '#000000',
+        random: 'Aleatorio',
+        copied: '¡Copiado!'
       }
     },
     fr: {
@@ -1782,7 +1858,9 @@ export default defineI18nConfig(() => ({
         emptyDescription: 'Les palettes que vous aimez apparaîtront ici. Explorez et enregistrez vos favoris.',
         addFavorite: 'Ajouter aux Favoris',
         removeFavorite: 'Retirer des Favoris',
-        savedColorsTitle: 'Couleurs enregistrées'
+        savedColorsTitle: 'Couleurs enregistrées',
+        savedPalettesTitle: 'Palettes enregistrées',
+        savedPalettesCount: 'couleurs'
       },
       generate: {
         placeholder: 'Saisissez des mots-clés pour l\'image ou l\'ambiance de la couleur',
@@ -1814,6 +1892,7 @@ export default defineI18nConfig(() => ({
         gradientGenerator: 'Générateur de Dégradés',
         tokenExtractor: 'Extracteur de Tokens de Couleur',
         skinTonePalette: 'Palette de Tons de Peau',
+        complementaryColor: 'Couleur Complémentaire',
         paletteMaker: 'Créateur de Palette',
         favorites: 'Favoris',
         utils: 'Utilitaires'
@@ -1826,7 +1905,11 @@ export default defineI18nConfig(() => ({
         seoTitle: 'Créateur de Palette - Magicolor',
         seoDescription: 'Créez des palettes de couleurs personnalisées exactement comme vous le souhaitez.',
         hintGenerate: 'Générer une nouvelle palette',
-        hintLock: 'Verrouiller / déverrouiller la couleur',
+        undo: 'Annuler',
+        redo: 'Rétablir',
+        savePalette: 'Enregistrer la palette',
+        savedToFavorites: 'Enregistrée dans les favoris',
+        removedFromFavorites: 'Retirée des favoris',
         harmonyMode: 'Mode harmonie',
         addStop: 'Ajouter une teinte intermédiaire',
         remove: 'Supprimer la couleur',
@@ -2200,6 +2283,18 @@ export default defineI18nConfig(() => ({
           olive: 'Sous-ton olive',
           red: 'Sous-ton rouge'
         }
+      },
+      complementaryColor: {
+        title: 'Couleur Complémentaire',
+        seoTitle: 'Couleur Complémentaire - Magicolor',
+        seoDescription: 'Trouvez l\'opposé exact de n\'importe quelle couleur sur la roue chromatique : choisissez une couleur et voyez instantanément son complémentaire, prêt à copier.',
+        baseColor: 'Couleur de base',
+        complementary: 'Complémentaire',
+        copyHex: 'Copier HEX',
+        openColorPage: 'Ouvrir la page couleur',
+        hexPlaceholder: '#000000',
+        random: 'Aléatoire',
+        copied: 'Copié !'
       }
     }
   }
