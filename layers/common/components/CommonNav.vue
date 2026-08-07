@@ -269,5 +269,11 @@ const utilsLinks = computed<{ to: string; label: string; description: string; ic
   label: t('nav.complementaryColor'),
   description: t('complementaryColor.seoDescription'),
   icon: 'i-heroicons-adjustments-horizontal'
+},
+{
+  to: localePath('/brand-colors'),
+  label: t('nav.brandColors'),
+  description: t('brandColors.seoDescription'),
+  icon: 'i-heroicons-building-office-2'
 }]);
 </script>

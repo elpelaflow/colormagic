@@ -205,6 +205,10 @@ const toolsLinks = computed(() => [{
   label: t('nav.complementaryColor')
 },
 {
+  to: localePath('/brand-colors'),
+  label: t('nav.brandColors')
+},
+{
   to: localePath('/palette-maker'),
   label: t('nav.paletteMaker')
 },

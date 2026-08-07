@@ -57,6 +57,7 @@ export default defineI18nConfig(() => ({
         tokenExtractor: 'Color Token Extractor',
         skinTonePalette: 'Skin Tone Color Palette',
         complementaryColor: 'Complementary Color',
+        brandColors: 'Brand Colors',
         paletteMaker: 'Palette Maker',
         favorites: 'Favorites',
         utils: 'Utils'
@@ -459,6 +460,21 @@ export default defineI18nConfig(() => ({
         hexPlaceholder: '#000000',
         random: 'Random',
         copied: 'Copied!'
+      },
+      brandColors: {
+        title: 'Brand Colors',
+        seoTitle: 'Brand Colors - Magicolor',
+        seoDescription: 'A reference of 900+ well-known brand color palettes: search any brand or hex and copy its official colors in one click.',
+        brandsCount: '{count} brands',
+        colorsCount: '{count} colors',
+        searchPlaceholder: 'Search brand or hex…',
+        searchEmpty: 'No brands match your search.',
+        showMore: 'Show more brands',
+        copyAll: 'Copy all brand colors',
+        copyAllCopied: 'All colors copied',
+        copyHex: 'Copy HEX',
+        copied: 'copied',
+        openBrand: 'Open brand website'
       }
     },
     ja: {
@@ -516,6 +532,7 @@ export default defineI18nConfig(() => ({
         tokenExtractor: 'カラートークン抽出',
         skinTonePalette: '肌の色カラーパレット',
         complementaryColor: '補色カラー',
+        brandColors: 'ブランドカラー',
         paletteMaker: 'パレットメーカー',
         favorites: 'お気に入り',
         utils: 'ユーティリティ'
@@ -918,6 +935,21 @@ export default defineI18nConfig(() => ({
         hexPlaceholder: '#000000',
         random: 'ランダム',
         copied: 'コピーしました！'
+      },
+      brandColors: {
+        title: 'ブランドカラー',
+        seoTitle: 'ブランドカラー - Magicolor',
+        seoDescription: '900以上の有名ブランドのカラーパレットを収録：ブランド名やHEXで検索して、公式カラーをワンクリックでコピー。',
+        brandsCount: '{count}ブランド',
+        colorsCount: '{count}色',
+        searchPlaceholder: 'ブランドまたはHEXを検索…',
+        searchEmpty: '検索に一致するブランドがありません。',
+        showMore: 'さらに表示',
+        copyAll: 'ブランドの全カラーをコピー',
+        copyAllCopied: '全カラーをコピーしました',
+        copyHex: 'HEXをコピー',
+        copied: 'コピーしました',
+        openBrand: 'ブランドサイトを開く'
       }
     },
     it: {
@@ -975,6 +1007,7 @@ export default defineI18nConfig(() => ({
         tokenExtractor: 'Estrattore di Token Colore',
         skinTonePalette: 'Palette Toni di Pelle',
         complementaryColor: 'Colore Complementare',
+        brandColors: 'Colori dei Brand',
         paletteMaker: 'Palette Maker',
         favorites: 'Preferiti',
         utils: 'Utility'
@@ -1377,6 +1410,21 @@ export default defineI18nConfig(() => ({
         hexPlaceholder: '#000000',
         random: 'Casuale',
         copied: 'Copiato!'
+      },
+      brandColors: {
+        title: 'Colori dei Brand',
+        seoTitle: 'Colori dei Brand - Magicolor',
+        seoDescription: 'Una raccolta di 900+ palette di colori di brand famosi: cerca un brand o un hex e copia i suoi colori ufficiali con un clic.',
+        brandsCount: '{count} brand',
+        colorsCount: '{count} colori',
+        searchPlaceholder: 'Cerca brand o hex…',
+        searchEmpty: 'Nessun brand corrisponde alla ricerca.',
+        showMore: 'Mostra altri brand',
+        copyAll: 'Copia tutti i colori del brand',
+        copyAllCopied: 'Tutti i colori copiati',
+        copyHex: 'Copia HEX',
+        copied: 'copiato',
+        openBrand: 'Apri il sito del brand'
       }
     },
     es: {
@@ -1434,6 +1482,7 @@ export default defineI18nConfig(() => ({
         tokenExtractor: 'Extractor de Tokens de Color',
         skinTonePalette: 'Paleta de Tonos de Piel',
         complementaryColor: 'Color Complementario',
+        brandColors: 'Colores de Marcas',
         paletteMaker: 'Creador de Paletas',
         favorites: 'Favoritos',
         utils: 'Utilidades'
@@ -1836,6 +1885,21 @@ export default defineI18nConfig(() => ({
         hexPlaceholder: '#000000',
         random: 'Aleatorio',
         copied: '¡Copiado!'
+      },
+      brandColors: {
+        title: 'Colores de Marcas',
+        seoTitle: 'Colores de Marcas - Magicolor',
+        seoDescription: 'Una referencia de más de 900 paletas de colores de marcas conocidas: buscá una marca o un hex y copiá sus colores oficiales con un clic.',
+        brandsCount: '{count} marcas',
+        colorsCount: '{count} colores',
+        searchPlaceholder: 'Buscar marca o hex…',
+        searchEmpty: 'Ninguna marca coincide con tu búsqueda.',
+        showMore: 'Mostrar más marcas',
+        copyAll: 'Copiar todos los colores de la marca',
+        copyAllCopied: 'Todos los colores copiados',
+        copyHex: 'Copiar HEX',
+        copied: 'copiado',
+        openBrand: 'Abrir sitio de la marca'
       }
     },
     fr: {
@@ -1893,6 +1957,7 @@ export default defineI18nConfig(() => ({
         tokenExtractor: 'Extracteur de Tokens de Couleur',
         skinTonePalette: 'Palette de Tons de Peau',
         complementaryColor: 'Couleur Complémentaire',
+        brandColors: 'Couleurs de Marques',
         paletteMaker: 'Créateur de Palette',
         favorites: 'Favoris',
         utils: 'Utilitaires'
@@ -2295,6 +2360,21 @@ export default defineI18nConfig(() => ({
         hexPlaceholder: '#000000',
         random: 'Aléatoire',
         copied: 'Copié !'
+      },
+      brandColors: {
+        title: 'Couleurs de Marques',
+        seoTitle: 'Couleurs de Marques - Magicolor',
+        seoDescription: 'Une référence de plus de 900 palettes de couleurs de marques connues : cherchez une marque ou un hex et copiez ses couleurs officielles en un clic.',
+        brandsCount: '{count} marques',
+        colorsCount: '{count} couleurs',
+        searchPlaceholder: 'Rechercher une marque ou un hex…',
+        searchEmpty: 'Aucune marque ne correspond à votre recherche.',
+        showMore: 'Afficher plus de marques',
+        copyAll: 'Copier toutes les couleurs de la marque',
+        copyAllCopied: 'Toutes les couleurs copiées',
+        copyHex: 'Copier HEX',
+        copied: 'copié',
+        openBrand: 'Ouvrir le site de la marque'
       }
     }
   }

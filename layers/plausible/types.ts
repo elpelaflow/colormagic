@@ -54,6 +54,10 @@ export enum PlausibleEventName {
   COMPLEMENTARY_COLOR_RANDOM = 'complementary-color:random',
   COMPLEMENTARY_COLOR_PAGE_OPENED = 'complementary-color:page-opened',
 
+  BRAND_COLORS_COPIED = 'brand-colors:copied',
+  BRAND_COLORS_COPY_ALL = 'brand-colors:copied:all',
+  BRAND_COLORS_BRAND_SITE_OPENED = 'brand-colors:brand-site:opened',
+
   PALETTE_MAKER_GENERATED = 'palette-maker:generated',
   PALETTE_MAKER_STOP_ADDED = 'palette-maker:stop-added',
   PALETTE_MAKER_COLOR_COPIED = 'palette-maker:color:copied',
