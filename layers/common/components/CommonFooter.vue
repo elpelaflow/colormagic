@@ -197,6 +197,14 @@ const toolsLinks = computed(() => [{
   label: t('nav.tokenExtractor')
 },
 {
+  to: localePath('/skin-tone-palette'),
+  label: t('nav.skinTonePalette')
+},
+{
+  to: localePath('/palette-maker'),
+  label: t('nav.paletteMaker')
+},
+{
   to: localePath('/api'),
   label: t('nav.api')
 }]);

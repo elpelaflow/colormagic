@@ -45,4 +45,17 @@ export enum PlausibleEventName {
   TOKEN_EXTRACTOR_TAILWIND_COPIED = 'token-extractor:copied:tailwind',
   TOKEN_EXTRACTOR_JSON_DOWNLOADED = 'token-extractor:downloaded:json',
   TOKEN_EXTRACTOR_TAILWIND_DOWNLOADED = 'token-extractor:downloaded:tailwind',
+
+  SKIN_TONE_COPIED = 'skin-tone:copied',
+  SKIN_TONE_COPY_ALL = 'skin-tone:copied:all',
+  SKIN_TONE_COLOR_PAGE_OPENED = 'skin-tone:color-page:opened',
+
+  PALETTE_MAKER_GENERATED = 'palette-maker:generated',
+  PALETTE_MAKER_STOP_ADDED = 'palette-maker:stop-added',
+  PALETTE_MAKER_COLOR_COPIED = 'palette-maker:color:copied',
+  PALETTE_MAKER_COLOR_SAVED = 'palette-maker:color:saved',
+  PALETTE_MAKER_COLOR_UNSAVED = 'palette-maker:color:unsaved',
+  PALETTE_MAKER_COLUMN_REMOVED = 'palette-maker:column:removed',
+  PALETTE_MAKER_COLOR_PAGE_OPENED = 'palette-maker:color-page:opened',
+  PALETTE_MAKER_HARMONY_TOGGLED = 'palette-maker:harmony:toggled',
 }

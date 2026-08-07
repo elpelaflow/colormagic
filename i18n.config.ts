@@ -21,7 +21,8 @@ export default defineI18nConfig(() => ({
         emptyTitle: 'No favorites yet',
         emptyDescription: 'Palettes you like will appear here. Start exploring and save your favorites.',
         addFavorite: 'Add to Favorites',
-        removeFavorite: 'Remove from Favorites'
+        removeFavorite: 'Remove from Favorites',
+        savedColorsTitle: 'Saved colors'
       },
       generate: {
         placeholder: 'Enter keywords for image or mood of color',
@@ -52,7 +53,34 @@ export default defineI18nConfig(() => ({
         colorPaletteCreator: 'Color Palette Creator',
         gradientGenerator: 'Gradient Generator',
         tokenExtractor: 'Color Token Extractor',
-        favorites: 'Favorites'
+        skinTonePalette: 'Skin Tone Color Palette',
+        paletteMaker: 'Palette Maker',
+        favorites: 'Favorites',
+        utils: 'Utils'
+      },
+      utils: {
+        comingSoon: 'Coming soon'
+      },
+      paletteMaker: {
+        title: 'Palette Maker',
+        seoTitle: 'Palette Maker - Magicolor',
+        seoDescription: 'Create custom color palettes exactly the way you want them.',
+        hintGenerate: 'Generate new palette',
+        hintLock: 'Lock / unlock color',
+        harmonyMode: 'Harmony mode',
+        addStop: 'Add intermediate tone',
+        remove: 'Remove color',
+        saveColor: 'Save color',
+        drag: 'Drag to reorder',
+        copyHex: 'Copy HEX',
+        copied: 'Copied!',
+        viewInfo: 'View color info',
+        lock: 'Lock',
+        unlock: 'Unlock',
+        savedColorsTitle: 'Saved colors',
+        infoSubtitle: 'Technical values, tints and shades',
+        tintsShades: 'Tints & shades',
+        openColorPage: 'Open color page'
       },
       palette: {
         seoTitle: 'Magicolor - AI Color Palette Generator',
@@ -376,6 +404,42 @@ export default defineI18nConfig(() => ({
         runtimeModeLight: 'Light',
         runtimeModeDark: 'Dark',
         usedOnPage: 'used on page'
+      },
+      skinTonePalette: {
+        title: 'Skin Tone Color Palette',
+        seoTitle: 'Skin Tone Color Palette - Magicolor',
+        seoDescription: 'A comprehensive, inclusive reference of 48 skin-tone hex codes, grouped from the lightest porcelains to the deepest ebonies across cool, neutral, warm, golden, olive and red undertones.',
+        copyAll: 'Copy all 48 hex codes',
+        copyAllCopied: 'All 48 hex codes copied',
+        copyHex: 'Copy HEX',
+        copied: 'copied',
+        openColorPage: 'Open color page: {name}',
+        namingNote: 'Naming note: these are neutral, tone-descriptive labels (based on hue and lightness, not ethnicity) offered as a practical starting palette. Skin tone is a continuous spectrum shaped by undertone, lighting and individual variation, so blend and shift these values freely for your subject and medium.',
+        groupTitles: [
+          'Fair & Porcelain Skin Tones',
+          'Light Skin Tones',
+          'Medium & Olive Skin Tones',
+          'Tan & Caramel Skin Tones',
+          'Brown & Cocoa Skin Tones',
+          'Deep & Rich Skin Tones'
+        ],
+        groupDescriptions: [
+          'The lightest range — porcelain to soft ivory, from cool pink to warm peach undertones.',
+          'Fair-to-light skin — sand, nude and blush beiges across cool and golden undertones.',
+          'Mid-range tones — beige, honey and true olive undertones that read neither warm nor cool.',
+          'Sun-warmed tans — caramel, amber and bronze across warm and golden undertones.',
+          'Rich brown tones — almond, walnut and mahogany with neutral, warm and red undertones.',
+          'The deepest range — espresso, mocha and ebony with warm, neutral and red undertones.'
+        ],
+        undertones: {
+          coolPink: 'Cool / Pink undertone',
+          neutral: 'Neutral undertone',
+          warm: 'Warm undertone',
+          warmPeach: 'Warm / Peach undertone',
+          warmGolden: 'Warm / Golden undertone',
+          olive: 'Olive undertone',
+          red: 'Red undertone'
+        }
       }
     },
     ja: {
@@ -397,7 +461,8 @@ export default defineI18nConfig(() => ({
         emptyTitle: 'まだお気に入りがありません',
         emptyDescription: '気に入ったパレットはここに表示されます。パレットを探して保存しましょう。',
         addFavorite: 'お気に入りに追加',
-        removeFavorite: 'お気に入りから削除'
+        removeFavorite: 'お気に入りから削除',
+        savedColorsTitle: '保存した色'
       },
       generate: {
         placeholder: '色の雰囲気やイメージを入力してください',
@@ -428,7 +493,34 @@ export default defineI18nConfig(() => ({
         colorPaletteCreator: 'カラーパレットクリエーター',
         gradientGenerator: 'グラデーションジェネレーター',
         tokenExtractor: 'カラートークン抽出',
-        favorites: 'お気に入り'
+        skinTonePalette: '肌の色カラーパレット',
+        paletteMaker: 'パレットメーカー',
+        favorites: 'お気に入り',
+        utils: 'ユーティリティ'
+      },
+      utils: {
+        comingSoon: '近日公開'
+      },
+      paletteMaker: {
+        title: 'パレットメーカー',
+        seoTitle: 'パレットメーカー - Magicolor',
+        seoDescription: '思い通りのカスタムカラーパレットを作成します。',
+        hintGenerate: '新しいパレットを生成',
+        hintLock: '色を固定 / 解除',
+        harmonyMode: 'ハーモニーモード',
+        addStop: '中間色を追加',
+        remove: '色を削除',
+        saveColor: '色を保存',
+        drag: 'ドラッグで並べ替え',
+        copyHex: 'HEXをコピー',
+        copied: 'コピーしました！',
+        viewInfo: '色の情報を見る',
+        lock: '固定',
+        unlock: '固定解除',
+        savedColorsTitle: '保存した色',
+        infoSubtitle: '技術的な値・ティント・シェード',
+        tintsShades: 'ティント & シェード',
+        openColorPage: 'カラーページを開く'
       },
       palette: {
         seoTitle: 'あなたの思い描く色をかんたんに',
@@ -752,6 +844,42 @@ export default defineI18nConfig(() => ({
         runtimeModeLight: 'ライト',
         runtimeModeDark: 'ダーク',
         usedOnPage: 'ページで使用'
+      },
+      skinTonePalette: {
+        title: '肌の色カラーパレット',
+        seoTitle: '肌の色カラーパレット - Magicolor',
+        seoDescription: '肌の色のHEXコード48色を、明るい陶器のような白から深い黒褐色まで、クール・ニュートラル・ウォーム・ゴールデン・オリーブ・レッドのアンダートーン別にまとめた包括的なリファレンス。',
+        copyAll: '48色のHEXコードをすべてコピー',
+        copyAllCopied: '48色すべてのHEXコードをコピーしました',
+        copyHex: 'HEXをコピー',
+        copied: 'コピーしました',
+        openColorPage: 'カラーページを開く: {name}',
+        namingNote: '命名について: これらは肌色の連続スペクトルを示す中立的なトーン記述ラベル（色相と明度に基づき、民族性には基づきません）で、実用的な出発点として提供しています。アンダートーン、照明、個人差によって肌色は無限に変化するため、被写体や媒体に合わせて自由に調整してください。',
+        groupTitles: [
+          'フェア & ポーセリン',
+          'ライト',
+          'ミディアム & オリーブ',
+          'タン & キャラメル',
+          'ブラウン & ココア',
+          'ディープ & リッチ'
+        ],
+        groupDescriptions: [
+          '最も明るい範囲 — ポーセリンからソフトアイボリーまで、クールピンクからウォームピーチのアンダートーン。',
+          'フェアからライトの肌 — サンド、ヌード、ブラッシュベージュ。クールとゴールデンのアンダートーン。',
+          '中間のトーン — ベージュ、ハニー、真のオリーブ。ウォームにもクールにも読めないアンダートーン。',
+          '日焼けしたタン — キャラメル、アンバー、ブロンズ。ウォームとゴールデンのアンダートーン。',
+          '豊かなブラウントーン — アーモンド、ウォールナット、マホガニー。ニュートラル、ウォーム、レッドのアンダートーン。',
+          '最も深い範囲 — エスプレッソ、モカ、エボニー。ウォーム、ニュートラル、レッドのアンダートーン。'
+        ],
+        undertones: {
+          coolPink: 'クール / ピンク系',
+          neutral: 'ニュートラル系',
+          warm: 'ウォーム系',
+          warmPeach: 'ウォーム / ピーチ系',
+          warmGolden: 'ウォーム / ゴールデン系',
+          olive: 'オリーブ系',
+          red: 'レッド系'
+        }
       }
     },
     it: {
@@ -773,7 +901,8 @@ export default defineI18nConfig(() => ({
         emptyTitle: 'Nessun preferito ancora',
         emptyDescription: 'Le palette che ti piacciono appariranno qui. Esplora e salva i tuoi preferiti.',
         addFavorite: 'Aggiungi ai Preferiti',
-        removeFavorite: 'Rimuovi dai Preferiti'
+        removeFavorite: 'Rimuovi dai Preferiti',
+        savedColorsTitle: 'Colori salvati'
       },
       generate: {
         placeholder: 'Inserisci l\'atmosfera o l\'immagine del colore',
@@ -804,7 +933,34 @@ export default defineI18nConfig(() => ({
         colorPaletteCreator: 'Color Palette Creator',
         gradientGenerator: 'Generatore di Gradienti',
         tokenExtractor: 'Estrattore di Token Colore',
-        favorites: 'Preferiti'
+        skinTonePalette: 'Palette Toni di Pelle',
+        paletteMaker: 'Palette Maker',
+        favorites: 'Preferiti',
+        utils: 'Utility'
+      },
+      utils: {
+        comingSoon: 'Prossimamente'
+      },
+      paletteMaker: {
+        title: 'Palette Maker',
+        seoTitle: 'Palette Maker - Magicolor',
+        seoDescription: 'Crea palette di colori personalizzate esattamente come vuoi.',
+        hintGenerate: 'Genera nuova palette',
+        hintLock: 'Blocca / sblocca colore',
+        harmonyMode: 'Modalità armonia',
+        addStop: 'Aggiungi tonalità intermedia',
+        remove: 'Rimuovi colore',
+        saveColor: 'Salva colore',
+        drag: 'Trascina per riordinare',
+        copyHex: 'Copia HEX',
+        copied: 'Copiato!',
+        viewInfo: 'Vedi info colore',
+        lock: 'Blocca',
+        unlock: 'Sblocca',
+        savedColorsTitle: 'Colori salvati',
+        infoSubtitle: 'Valori tecnici, tinte e ombre',
+        tintsShades: 'Tinte & ombre',
+        openColorPage: 'Apri pagina colore'
       },
       palette: {
         seoTitle: 'Genera la tua palette di colori ideale',
@@ -1128,6 +1284,42 @@ export default defineI18nConfig(() => ({
         runtimeModeLight: 'Chiaro',
         runtimeModeDark: 'Scuro',
         usedOnPage: 'usato nella pagina'
+      },
+      skinTonePalette: {
+        title: 'Palette di Colori per Tono di Pelle',
+        seoTitle: 'Palette di Colori per Tono di Pelle - Magicolor',
+        seoDescription: 'Una referenza completa e inclusiva di 48 codici HEX per i toni di pelle, dai porcellana più chiari agli ebano più profondi, con sottotoni freddi, neutri, caldi, dorati, oliva e rossi.',
+        copyAll: 'Copia tutti i 48 codici HEX',
+        copyAllCopied: 'Tutti i 48 codici HEX copiati',
+        copyHex: 'Copia HEX',
+        copied: 'copiato',
+        openColorPage: 'Apri pagina colore: {name}',
+        namingNote: 'Nota sui nomi: queste sono etichette neutre che descrivono il tono (basate su tonalità e chiarezza, non etnia), offerte come paletta pratica di partenza. Il tono della pelle è uno spettro continuo modellato da sottotono, illuminazione e variazione individuale: mescola e sposta liberamente questi valori per il tuo soggetto e mezzo.',
+        groupTitles: [
+          'Toni di Pelle Chiari & Porcellana',
+          'Toni di Pelle Chiari',
+          'Toni Medi & Oliva',
+          'Toni Abbronzati & Caramello',
+          'Toni Marroni & Cacao',
+          'Toni Profondi & Ricchi'
+        ],
+        groupDescriptions: [
+          'La gamma più chiara — dal porcellana all\u2019avorio morbido, dai sottotoni rosa freddi ai pesca caldi.',
+          'Pelle chiara — sabbia, nude e beige rosati con sottotoni freddi e dorati.',
+          'Toni intermedi — beige, miele e veri sottotoni oliva che non risultano né caldi né freddi.',
+          'Abbronzature calde — caramello, ambra e bronzo con sottotoni caldi e dorati.',
+          'Ricchi toni marroni — mandorla, noce e mogano con sottotoni neutri, caldi e rossi.',
+          'La gamma più profonda — espresso, moka ed ebano con sottotoni caldi, neutri e rossi.'
+        ],
+        undertones: {
+          coolPink: 'Sottotono freddo / rosa',
+          neutral: 'Sottotono neutro',
+          warm: 'Sottotono caldo',
+          warmPeach: 'Sottotono caldo / pesca',
+          warmGolden: 'Sottotono caldo / dorato',
+          olive: 'Sottotono oliva',
+          red: 'Sottotono rosso'
+        }
       }
     },
     es: {
@@ -1149,7 +1341,8 @@ export default defineI18nConfig(() => ({
         emptyTitle: 'Aún no hay favoritos',
         emptyDescription: 'Las paletas que te gusten aparecerán aquí. Explora y guarda tus favoritas.',
         addFavorite: 'Agregar a Favoritos',
-        removeFavorite: 'Quitar de Favoritos'
+        removeFavorite: 'Quitar de Favoritos',
+        savedColorsTitle: 'Colores guardados'
       },
       generate: {
         placeholder: 'Escribe palabras clave para la imagen o el ambiente del color',
@@ -1180,7 +1373,34 @@ export default defineI18nConfig(() => ({
         colorPaletteCreator: 'Creador de Paletas de Colores',
         gradientGenerator: 'Generador de Degradados',
         tokenExtractor: 'Extractor de Tokens de Color',
-        favorites: 'Favoritos'
+        skinTonePalette: 'Paleta de Tonos de Piel',
+        paletteMaker: 'Creador de Paletas',
+        favorites: 'Favoritos',
+        utils: 'Utilidades'
+      },
+      utils: {
+        comingSoon: 'Próximamente'
+      },
+      paletteMaker: {
+        title: 'Creador de Paletas',
+        seoTitle: 'Creador de Paletas - Magicolor',
+        seoDescription: 'Crea paletas de colores personalizadas exactamente como quieras.',
+        hintGenerate: 'Generar nueva paleta',
+        hintLock: 'Fijar / desfijar color',
+        harmonyMode: 'Modo armonía',
+        addStop: 'Agregar tono intermedio',
+        remove: 'Eliminar color',
+        saveColor: 'Guardar color',
+        drag: 'Arrastrar para reordenar',
+        copyHex: 'Copiar HEX',
+        copied: '¡Copiado!',
+        viewInfo: 'Ver info del color',
+        lock: 'Fijar',
+        unlock: 'Desfijar',
+        savedColorsTitle: 'Colores guardados',
+        infoSubtitle: 'Valores técnicos, tintes y sombras',
+        tintsShades: 'Tintes y sombras',
+        openColorPage: 'Abrir página de color'
       },
       palette: {
         seoTitle: 'Magicolor - Generador de Paletas de Colores con IA',
@@ -1504,6 +1724,42 @@ export default defineI18nConfig(() => ({
         runtimeModeLight: 'Claro',
         runtimeModeDark: 'Oscuro',
         usedOnPage: 'usado en la página'
+      },
+      skinTonePalette: {
+        title: 'Paleta de Colores de Tonos de Piel',
+        seoTitle: 'Paleta de Colores de Tonos de Piel - Magicolor',
+        seoDescription: 'Una referencia completa e inclusiva de 48 códigos HEX de tonos de piel, agrupados desde las porcelanas más claras hasta los ébanos más profundos, con subtonos fríos, neutros, cálidos, dorados, oliva y rojos.',
+        copyAll: 'Copiar los 48 códigos HEX',
+        copyAllCopied: 'Los 48 códigos HEX copiados',
+        copyHex: 'Copiar HEX',
+        copied: 'copiado',
+        openColorPage: 'Abrir página de color: {name}',
+        namingNote: 'Nota sobre los nombres: son etiquetas neutras que describen el tono (basadas en matiz y claridad, no en etnicidad), ofrecidas como paleta práctica de partida. El tono de piel es un espectro continuo moldeado por el subtono, la iluminación y la variación individual: mezclá y desplazá estos valores libremente para tu sujeto y medio.',
+        groupTitles: [
+          'Tonos de Piel Claros & Porcelana',
+          'Tonos de Piel Claros',
+          'Tonos Medios & Oliva',
+          'Tonos Bronceados & Caramelo',
+          'Tonos Marrones & Cacao',
+          'Tonos Profundos & Ricos'
+        ],
+        groupDescriptions: [
+          'El rango más claro — de porcelana a marfil suave, con subtonos de rosa frío a durazno cálido.',
+          'Piel clara — arena, nude y beiges rosados con subtonos fríos y dorados.',
+          'Tonos medios — beige, miel y verdaderos subtonos oliva que no se leen ni cálidos ni fríos.',
+          'Bronceados cálidos — caramelo, ámbar y bronce con subtonos cálidos y dorados.',
+          'Ricos tonos marrones — almendra, nogal y caoba con subtonos neutros, cálidos y rojos.',
+          'El rango más profundo — espresso, moca y ébano con subtonos cálidos, neutros y rojos.'
+        ],
+        undertones: {
+          coolPink: 'Subtono frío / rosado',
+          neutral: 'Subtono neutro',
+          warm: 'Subtono cálido',
+          warmPeach: 'Subtono cálido / durazno',
+          warmGolden: 'Subtono cálido / dorado',
+          olive: 'Subtono oliva',
+          red: 'Subtono rojo'
+        }
       }
     },
     fr: {
@@ -1525,7 +1781,8 @@ export default defineI18nConfig(() => ({
         emptyTitle: 'Aucun favori pour le moment',
         emptyDescription: 'Les palettes que vous aimez apparaîtront ici. Explorez et enregistrez vos favoris.',
         addFavorite: 'Ajouter aux Favoris',
-        removeFavorite: 'Retirer des Favoris'
+        removeFavorite: 'Retirer des Favoris',
+        savedColorsTitle: 'Couleurs enregistrées'
       },
       generate: {
         placeholder: 'Saisissez des mots-clés pour l\'image ou l\'ambiance de la couleur',
@@ -1556,7 +1813,34 @@ export default defineI18nConfig(() => ({
         colorPaletteCreator: 'Créateur de Palettes de Couleurs',
         gradientGenerator: 'Générateur de Dégradés',
         tokenExtractor: 'Extracteur de Tokens de Couleur',
-        favorites: 'Favoris'
+        skinTonePalette: 'Palette de Tons de Peau',
+        paletteMaker: 'Créateur de Palette',
+        favorites: 'Favoris',
+        utils: 'Utilitaires'
+      },
+      utils: {
+        comingSoon: 'Bientôt disponible'
+      },
+      paletteMaker: {
+        title: 'Créateur de Palette',
+        seoTitle: 'Créateur de Palette - Magicolor',
+        seoDescription: 'Créez des palettes de couleurs personnalisées exactement comme vous le souhaitez.',
+        hintGenerate: 'Générer une nouvelle palette',
+        hintLock: 'Verrouiller / déverrouiller la couleur',
+        harmonyMode: 'Mode harmonie',
+        addStop: 'Ajouter une teinte intermédiaire',
+        remove: 'Supprimer la couleur',
+        saveColor: 'Enregistrer la couleur',
+        drag: 'Glisser pour réordonner',
+        copyHex: 'Copier le HEX',
+        copied: 'Copié !',
+        viewInfo: 'Voir les infos couleur',
+        lock: 'Verrouiller',
+        unlock: 'Déverrouiller',
+        savedColorsTitle: 'Couleurs enregistrées',
+        infoSubtitle: 'Valeurs techniques, teintes et nuances',
+        tintsShades: 'Teintes & nuances',
+        openColorPage: 'Ouvrir la page couleur'
       },
       palette: {
         seoTitle: 'Magicolor - Générateur de Palettes de Couleurs IA',
@@ -1880,6 +2164,42 @@ export default defineI18nConfig(() => ({
         runtimeModeLight: 'Clair',
         runtimeModeDark: 'Sombre',
         usedOnPage: 'utilisé sur la page'
+      },
+      skinTonePalette: {
+        title: 'Palette de Couleurs de Tons de Peau',
+        seoTitle: 'Palette de Couleurs de Tons de Peau - Magicolor',
+        seoDescription: 'Une référence complète et inclusive de 48 codes HEX de tons de peau, des porcelaines les plus claires aux ébènes les plus profonds, avec des sous-tons froids, neutres, chauds, dorés, olive et rouges.',
+        copyAll: 'Copier les 48 codes HEX',
+        copyAllCopied: 'Les 48 codes HEX copiés',
+        copyHex: 'Copier HEX',
+        copied: 'copié',
+        openColorPage: 'Ouvrir la page couleur : {name}',
+        namingNote: 'Note sur les noms : ce sont des étiquettes neutres décrivant le ton (basées sur la teinte et la clarté, pas sur l\u2019ethnicité), proposées comme palette de départ pratique. Le teint est un spectre continu façonné par le sous-ton, l\u2019éclairage et la variation individuelle : mélangez et déplacez librement ces valeurs pour votre sujet et votre support.',
+        groupTitles: [
+          'Tons de Peau Clairs & Porcelaine',
+          'Tons de Peau Clairs',
+          'Tons Moyens & Olive',
+          'Tons Hâlés & Caramel',
+          'Tons Bruns & Cacao',
+          'Tons Profonds & Riches'
+        ],
+        groupDescriptions: [
+          'La gamme la plus claire — du porcelaine à l\u2019ivoire doux, des sous-tons rose froid aux pêche chaud.',
+          'Peau claire à claire — sable, nude et beiges rosés avec des sous-tons froids et dorés.',
+          'Tons moyens — beige, miel et véritables sous-tons olive qui ne paraissent ni chauds ni froids.',
+          'Hâles chauds — caramel, ambre et bronze avec des sous-tons chauds et dorés.',
+          'Riches tons bruns — amande, noix et acajou avec des sous-tons neutres, chauds et rouges.',
+          'La gamme la plus profonde — espresso, moka et ébène avec des sous-tons chauds, neutres et rouges.'
+        ],
+        undertones: {
+          coolPink: 'Sous-ton froid / rose',
+          neutral: 'Sous-ton neutre',
+          warm: 'Sous-ton chaud',
+          warmPeach: 'Sous-ton chaud / pêche',
+          warmGolden: 'Sous-ton chaud / doré',
+          olive: 'Sous-ton olive',
+          red: 'Sous-ton rouge'
+        }
       }
     }
   }

@@ -33,7 +33,7 @@
             </li>
           </ul>
 
-          <!-- popover -->
+          <!-- tools popover -->
           <UPopover
             v-model:open="isOpen"
             mode="hover"
@@ -60,6 +60,41 @@
                     },
                   }"
                 />
+              </div>
+            </template>
+          </UPopover>
+
+          <!-- utils popover -->
+          <UPopover
+            v-model:open="isUtilsOpen"
+            mode="hover"
+          >
+            <UButton
+              variant="soft"
+              class="hover:text-primary font-semibold"
+              size="md"
+              icon="i-heroicons-chevron-down-16-solid"
+              trailing
+            >
+              {{ $t('nav.utils') }}
+            </UButton>
+
+            <template #panel>
+              <div class="p-2">
+                <UHeaderPopoverLinks
+                  v-if="utilsLinks.length"
+                  :links="utilsLinks"
+                  :ui="{
+                    base: 'text-left',
+                    wrapper: 'grid gap-2 max-w-xs space-y-0 items-start justify-start text-left',
+                    icon: {
+                      base: 'text-primary w-4 h-4 mt-2'
+                    },
+                  }"
+                />
+                <p v-else class="px-3 py-2 text-sm text-gray-500 whitespace-nowrap">
+                  {{ $t('utils.comingSoon') }}
+                </p>
               </div>
             </template>
           </UPopover>
@@ -114,7 +149,7 @@
         </div>
 
         <!-- links -->
-        <UVerticalNavigation :links="[[...links],[...toolsLinks]]" />
+        <UVerticalNavigation :links="[[...links],[...toolsLinks],[...utilsLinks]]" />
       </div>
     </UModal>
   </nav>
@@ -125,6 +160,7 @@ const { t } = useI18n();
 const localePath = useLocalePath();
 
 const isOpen = ref(false);
+const isUtilsOpen = ref(false);
 
 const {
   isOpen: isModalOpen,
@@ -204,10 +240,28 @@ const toolsLinks = computed(() => [{
   label: t('nav.tokenExtractor'),
   description: t('tokenExtractor.seoDescription'),
   icon: 'i-heroicons-code-bracket'
+},
+{
+  to: localePath('/palette-maker'),
+  label: t('nav.paletteMaker'),
+  description: t('paletteMaker.seoDescription'),
+  icon: 'i-heroicons-swatch'
 }]);
 
 watch(useRoute(), () => {
   isOpen.value = false;
+  isUtilsOpen.value = false;
   closeModal();
 });
+
+/**
+ * Utilidades: se van agregando acá a medida que se crean.
+ * Cada entrada: { to, label, description, icon } — mismo shape que toolsLinks.
+ */
+const utilsLinks = computed<{ to: string; label: string; description: string; icon: string }[]>(() => [{
+  to: localePath('/skin-tone-palette'),
+  label: t('nav.skinTonePalette'),
+  description: t('skinTonePalette.seoDescription'),
+  icon: 'i-heroicons-face-smile'
+}]);
 </script>
