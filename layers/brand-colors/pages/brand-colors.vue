@@ -86,16 +86,26 @@
               {{ brand.category }}
             </p>
 
-            <!-- hex list -->
-            <div class="flex flex-wrap gap-1.5 mt-2">
+            <!-- hex list (máx 3 visibles; "…" despliega el resto) -->
+            <div class="flex flex-wrap items-center gap-1.5 mt-2">
               <button
-                v-for="hex in brand.colors"
+                v-for="hex in previewHexes(brand)"
                 :key="hex"
                 type="button"
                 class="font-mono text-[11px] px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-800 hover:bg-primary-50 dark:hover:bg-primary-900/40 transition-colors cursor-pointer"
                 @click="onCopyColor(brand, hex)"
               >
                 {{ hex }}
+              </button>
+              <button
+                v-if="brand.colors.length > PREVIEW_HEX_COUNT"
+                type="button"
+                class="font-mono text-[11px] px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-800 hover:bg-primary-100 dark:hover:bg-primary-900/60 transition-colors cursor-pointer"
+                :aria-label="expandedBrands.has(brand.slug) ? t('brandColors.collapseHex') : t('brandColors.showAllHex', { count: brand.colors.length })"
+                :title="expandedBrands.has(brand.slug) ? t('brandColors.collapseHex') : t('brandColors.showAllHex', { count: brand.colors.length })"
+                @click="toggleExpanded(brand.slug)"
+              >
+                {{ expandedBrands.has(brand.slug) ? '−' : `+${brand.colors.length - PREVIEW_HEX_COUNT}` }}
               </button>
             </div>
           </div>
@@ -133,6 +143,27 @@ const { copy } = useClipboard();
 const brands = BRAND_COLORS_WITH_COLORS;
 const totalColors = TOTAL_BRAND_COLORS;
 const query = ref('');
+
+const PREVIEW_HEX_COUNT = 3;
+const expandedBrands = ref<Set<string>>(new Set());
+
+/** Los hex a mostrar: hasta 3 si hay más y no está expandida; todos si está expandida o tiene ≤ 3. */
+function previewHexes(brand: BrandColor): string[] {
+  if (expandedBrands.value.has(brand.slug) || brand.colors.length <= PREVIEW_HEX_COUNT) {
+    return brand.colors;
+  }
+  return brand.colors.slice(0, PREVIEW_HEX_COUNT);
+}
+
+function toggleExpanded(slug: string): void {
+  const next = new Set(expandedBrands.value);
+  if (next.has(slug)) {
+    next.delete(slug);
+  } else {
+    next.add(slug);
+  }
+  expandedBrands.value = next;
+}
 
 const VISIBLE_STEP = 60;
 const visibleCount = ref(VISIBLE_STEP);
